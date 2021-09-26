@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/maomao.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/maomao.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/maomao.png">
+  <link rel="mask-icon" href="/images/maomao.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="nodejs+hexo+typora搭建github.io">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建个人网站博客">
+<meta property="og:url" content="http://example.com/2021/09/19/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99%E5%8D%9A%E5%AE%A2/index.html">
+<meta property="og:site_name" content="Xi Xuan&#39;s Blog">
+<meta property="og:description" content="nodejs+hexo+typora搭建github.io">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/2021-09-19-20-12-48.png">
+<meta property="og:image" content="http://example.com/images/2021-09-19-20-00-26.png">
+<meta property="og:image" content="http://example.com/images/2021-09-19-20-21-33.png">
+<meta property="og:image" content="http://example.com/images/2021-09-19-20-33-10.png">
+<meta property="og:image" content="http://example.com/images/2021-09-19-20-48-31.png">
+<meta property="og:image" content="http://example.com/images/2021-09-19-20-48-57.png">
+<meta property="og:image" content="http://example.com/images/2021-09-19-20-51-41.png">
+<meta property="article:published_time" content="2021-09-19T11:34:50.000Z">
+<meta property="article:modified_time" content="2021-09-20T08:55:15.822Z">
+<meta property="article:author" content="Xi Xuan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2021-09-19-20-12-48.png">
+
+
+<link rel="canonical" href="http://example.com/2021/09/19/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99%E5%8D%9A%E5%AE%A2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/09/19/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99%E5%8D%9A%E5%AE%A2/","path":"2021/09/19/搭建个人网站博客/","title":"搭建个人网站博客"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>搭建个人网站博客 | Xi Xuan's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Xi Xuan's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section">归档</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section">分类</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section">标签</a></li>
+        <li class="menu-item menu-item-abouts"><a href="/abouts/" rel="section">关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">1.</span> <span class="nav-text">环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85git"><span class="nav-number">1.1.</span> <span class="nav-text">1、安装git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%AE%89%E8%A3%85nodejs"><span class="nav-number">1.2.</span> <span class="nav-text">2、安装nodejs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E5%BC%80%E5%A7%8B%E9%85%8D%E7%BD%AE"><span class="nav-number">1.3.</span> <span class="nav-text">3、开始配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-config-yml"><span class="nav-number">1.3.1.</span> <span class="nav-text">配置_config.yml</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E5%86%99markdown%E6%A0%BC%E5%BC%8F%E5%8D%9A%E5%AE%A2"><span class="nav-number">2.</span> <span class="nav-text">本地写markdown格式博客</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%86%E6%9C%AC%E5%9C%B0%E5%8D%9A%E5%AE%A2%E4%B8%8A%E4%BC%A0%E5%88%B0github-io"><span class="nav-number">3.</span> <span class="nav-text">将本地博客上传到github.io</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Xi Xuan"
+      src="/images/xuanxi.jpg">
+  <p class="site-author-name" itemprop="name">Xi Xuan</p>
+  <div class="site-description" itemprop="description"> 一杯冰咖啡 </div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuanxixi" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuanxixi" rel="noopener" target="_blank">GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/xuanxi1110@gmail.com" title="E-Mail → xuanxi1110@gmail.com">E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/19/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99%E5%8D%9A%E5%AE%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xuanxi.jpg">
+      <meta itemprop="name" content="Xi Xuan">
+      <meta itemprop="description" content=" 一杯冰咖啡 ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xi Xuan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          搭建个人网站博客
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-09-19 19:34:50" itemprop="dateCreated datePublished" datetime="2021-09-19T19:34:50+08:00">2021-09-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-20 16:55:15" itemprop="dateModified" datetime="2021-09-20T16:55:15+08:00">2021-09-20</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/hexo%E6%90%AD%E5%BB%BAgithub-io/" itemprop="url" rel="index"><span itemprop="name">hexo搭建github.io</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">nodejs+hexo+typora搭建github.io</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><h2 id="1、安装git"><a href="#1、安装git" class="headerlink" title="1、安装git"></a>1、安装git</h2><p><a target="_blank" rel="noopener" href="https://git-scm.com/download/win">https://git-scm.com/download/win</a><br><img src="/images/2021-09-19-20-12-48.png"><br>一直下一步，验证：命令行敲&gt;git,有显示代表已装上git.</p>
+<h2 id="2、安装nodejs"><a href="#2、安装nodejs" class="headerlink" title="2、安装nodejs"></a>2、安装nodejs</h2><p><a target="_blank" rel="noopener" href="https://nodejs.org/en/">https://nodejs.org/en/</a><br><img src="/images/2021-09-19-20-00-26.png"><br>一直点下一步，即可。</p>
+<h2 id="3、开始配置"><a href="#3、开始配置" class="headerlink" title="3、开始配置"></a>3、开始配置</h2><blockquote>
+<p>node -v    #查看node版本<br>npm -v    #查看npm版本<br>npm install -g cnpm –registry=<a target="_blank" rel="noopener" href="http://registry.npm.taobao.org/">http://registry.npm.taobao.org</a>    #安装淘宝的cnpm 管理器<br>cnpm -v    #查看cnpm版本<br>cnpm install -g hexo-cli    #安装hexo框架<br>hexo -v    #查看hexo版本</p>
+</blockquote>
+<p>以下都是对blog目录操作：</p>
+<blockquote>
+<p>mkdir blog    #创建blog目录<br>cd blog     #进入blog目录<br>sudo hexo init     #生成博客 初始化博客<br>hexo s    #启动本地博客服务<br><a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000/</a>    #本地访问地址<br>#返回blog目录<br>hexo clean #清理<br>hexo g #生成<br>#Github创建一个新的仓库 YourGithubName.github.io  (我的是：<a target="_blank" rel="noopener" href="https://xuanxixi.github.io/">https://xuanxixi.github.io</a>)<br>cnpm install –save hexo-deployer-git #在blog目录下安装git部署插件  </p>
+</blockquote>
+<hr>
+<h3 id="配置-config-yml"><a href="#配置-config-yml" class="headerlink" title="配置_config.yml"></a>配置_config.yml</h3><hr>
+<pre><code># Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy:
+    type: git
+    repo: https://github.com/YourGithubName/YourGithubName.github.io.git
+    branch: master
+</code></pre>
+<hr>
+<blockquote>
+<p>hexo d    #部署到Github仓库里<br><a target="_blank" rel="noopener" href="https://yourgithubname.github.io/">https://YourGithubName.github.io/</a>  #访问这个地址可以查看博客<br> git clone <a target="_blank" rel="noopener" href="https://github.com/litten/hexo-theme-yilia.git">https://github.com/litten/hexo-theme-yilia.git</a> themes/yilia #下载yilia主题到本地<br>修改hexo根目录下的 _config.yml 文件 ： theme: yilia<br>hexo c    #清理一下<br>hexo g    #生成<br>hexo d    #部署到远程Github仓库<br><a target="_blank" rel="noopener" href="https://yourgithubname.github.io/">https://YourGithubName.github.io/</a>  #查看博客  </p>
+</blockquote>
+<p>这里输入<a target="_blank" rel="noopener" href="http://xuanxixi.github.io可以看到博客网站/">http://xuanxixi.github.io可以看到博客网站</a><br><img src="/images/2021-09-19-20-21-33.png"></p>
+<h1 id="本地写markdown格式博客"><a href="#本地写markdown格式博客" class="headerlink" title="本地写markdown格式博客"></a>本地写markdown格式博客</h1><p>   在./blog/sources/_posts下放我们写的博客，都是.md格式。这里我推荐使用vscode来写博客。vscode的下载+汉化也很简单，参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/x15011238662/article/details/85094006">https://blog.csdn.net/x15011238662/article/details/85094006</a></p>
+<p>在./blog/sources/_posts下打开git bash，输入</p>
+<blockquote>
+<p><img src="/images/2021-09-19-20-33-10.png"><br>hexo new “搭建个人网站博客”<br>##就可以创建 一个md文件</p>
+</blockquote>
+<h1 id="将本地博客上传到github-io"><a href="#将本地博客上传到github-io" class="headerlink" title="将本地博客上传到github.io"></a>将本地博客上传到github.io</h1><p>在./blog下面打开git bash </p>
+<blockquote>
+<p>hexo clean<br>hexo g<br>hexo d  </p>
+</blockquote>
+<p><img src="/images/2021-09-19-20-48-31.png"><br><img src="/images/2021-09-19-20-48-57.png"></p>
+<p>打开<a target="_blank" rel="noopener" href="http://xuanxixi.github.io/">http://xuanxixi.github.io</a></p>
+<p><img src="/images/2021-09-19-20-51-41.png"></p>
+<p>问题：<br>error：spawn failed…<br>解决办法：<br>删除.deploy_git文件夹;<br>输入git config –global core.autocrlf false<br>然后，依次执行：<br>hexo clean<br>hexo g<br>hexo d<br>问题解决。暴力直接，有效。  </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Xi Xuan
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2021/09/19/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99%E5%8D%9A%E5%AE%A2/" title="搭建个人网站博客">http://example.com/2021/09/19/搭建个人网站博客/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/01/%E5%8C%BB%E5%AD%A6%E8%82%9D%E8%84%8F%E5%9B%BE%E5%83%8F-%E8%AF%AD%E4%B9%89%E5%88%86%E5%89%B2/" rel="prev" title="语义分割 - 识别肝脏医学图像">
+                  <i class="fa fa-chevron-left"></i> 语义分割 - 识别肝脏医学图像
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/21/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-IDLAB%20VoxCeleb%20Speaker%20Recognition%20Challenge%202020%E7%B3%BB%E7%BB%9F%E6%8F%8F%E8%BF%B0/" rel="next" title="论文阅读 | IDLAB VoxCeleb Speaker Recognition Challenge 2020系统描述">
+                  论文阅读 | IDLAB VoxCeleb Speaker Recognition Challenge 2020系统描述 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HePeng</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">39k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">35 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

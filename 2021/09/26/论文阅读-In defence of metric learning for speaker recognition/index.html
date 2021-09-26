@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/maomao.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/maomao.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/maomao.png">
+  <link rel="mask-icon" href="/images/maomao.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="主干网络VGG和Resnet,对比了不同的metric learning损失函数在说话人领域的应用，重点调参:scale和margin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文阅读 | In defence of metric learning for speaker recognition">
+<meta property="og:url" content="http://example.com/2021/09/26/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-In%20defence%20of%20metric%20learning%20for%20speaker%20recognition/index.html">
+<meta property="og:site_name" content="Xi Xuan&#39;s Blog">
+<meta property="og:description" content="主干网络VGG和Resnet,对比了不同的metric learning损失函数在说话人领域的应用，重点调参:scale和margin">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/2021-09-25-15-34-14.png">
+<meta property="og:image" content="http://example.com/images/2021-09-26-11-50-24.png">
+<meta property="og:image" content="http://example.com/images/2021-09-26-11-53-10.png">
+<meta property="og:image" content="http://example.com/images/2021-09-26-11-58-12.png">
+<meta property="og:image" content="http://example.com/images/2021-09-26-12-04-00.png">
+<meta property="og:image" content="http://example.com/images/2021-09-26-12-08-13.png">
+<meta property="og:image" content="http://example.com/images/2021-09-26-12-32-31.png">
+<meta property="og:image" content="http://example.com/images/2021-09-26-12-33-17.png">
+<meta property="og:image" content="http://example.com/images/2021-09-26-20-16-44.png">
+<meta property="og:image" content="http://example.com/images/2021-09-26-20-34-41.png">
+<meta property="og:image" content="http://example.com/images/2021-09-26-20-38-34.png">
+<meta property="og:image" content="http://example.com/images/2021-09-26-20-37-30.png">
+<meta property="og:image" content="http://example.com/images/2021-09-26-20-42-09.png">
+<meta property="og:image" content="http://example.com/images/2021-09-26-20-59-41.png">
+<meta property="og:image" content="http://example.com/images/2021-09-26-21-54-52.png">
+<meta property="og:image" content="http://example.com/images/2021-09-26-21-55-17.png">
+<meta property="article:published_time" content="2021-09-26T14:42:50.000Z">
+<meta property="article:modified_time" content="2021-09-26T13:57:53.266Z">
+<meta property="article:author" content="Xi Xuan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2021-09-25-15-34-14.png">
+
+
+<link rel="canonical" href="http://example.com/2021/09/26/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-In%20defence%20of%20metric%20learning%20for%20speaker%20recognition/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/09/26/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-In%20defence%20of%20metric%20learning%20for%20speaker%20recognition/","path":"2021/09/26/论文阅读-In defence of metric learning for speaker recognition/","title":"论文阅读 | In defence of metric learning for speaker recognition"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>论文阅读 | In defence of metric learning for speaker recognition | Xi Xuan's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Xi Xuan's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section">归档</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section">分类</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section">标签</a></li>
+        <li class="menu-item menu-item-abouts"><a href="/abouts/" rel="section">关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">0 摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Introduction-%E5%BC%95%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">1.  Introduction 引言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Training-functions-%E8%AE%AD%E7%BB%83%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">2. Training functions 训练函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-Classification-objectives-%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB"><span class="nav-number">3.1.</span> <span class="nav-text">2.1  Classification objectives 目标分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-Metric-learning-objectives-%E5%BA%A6%E9%87%8F%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 Metric learning objectives 度量学习目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Experiments%E5%AE%9E%E9%AA%8C"><span class="nav-number">3.3.</span> <span class="nav-text">3. Experiments实验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E8%BE%93%E5%85%A5%E8%A1%A8%E7%A4%BA"><span class="nav-number">3.4.</span> <span class="nav-text">3.1  输入表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-Trunk-architecture%E4%B8%BB%E5%B9%B2%E7%BB%93%E6%9E%84"><span class="nav-number">3.5.</span> <span class="nav-text">3.2. Trunk architecture主干结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-Implementation-details-%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82"><span class="nav-number">3.6.</span> <span class="nav-text">3.3 Implementation details 实现细节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-Evaluation-%E8%AF%84%E4%BC%B0"><span class="nav-number">3.7.</span> <span class="nav-text">3.4 Evaluation 评估</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Conclusions-%E7%BB%93%E8%AE%BA"><span class="nav-number">3.8.</span> <span class="nav-text">4.  Conclusions 结论</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Xi Xuan"
+      src="/images/xuanxi.jpg">
+  <p class="site-author-name" itemprop="name">Xi Xuan</p>
+  <div class="site-description" itemprop="description"> 一杯冰咖啡 </div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuanxixi" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuanxixi" rel="noopener" target="_blank">GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/xuanxi1110@gmail.com" title="E-Mail → xuanxi1110@gmail.com">E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/26/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-In%20defence%20of%20metric%20learning%20for%20speaker%20recognition/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xuanxi.jpg">
+      <meta itemprop="name" content="Xi Xuan">
+      <meta itemprop="description" content=" 一杯冰咖啡 ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xi Xuan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          论文阅读 | In defence of metric learning for speaker recognition
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-09-26 22:42:50 / 修改时间：21:57:53" itemprop="dateCreated datePublished" datetime="2021-09-26T22:42:50+08:00">2021-09-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ASR%E5%A3%B0%E7%BA%B9%E8%AF%86%E5%88%AB%E7%B3%BB%E5%88%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">ASR声纹识别系列-论文笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">主干网络VGG和Resnet,对比了不同的metric learning损失函数在说话人领域的应用，重点调参:scale和margin</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>论文题目：In defence of metric learning for speaker recognition<br> Son Chung, J., “In defence of metric learning for speaker recognition”, <i>arXiv e-prints</i>, 2020.<br> 公司：Naver Corporation, South Korea </p>
+</blockquote>
+<h1 id="0-摘要"><a href="#0-摘要" class="headerlink" title="0 摘要"></a>0 摘要</h1><p>本文的目标是“开放集”说话人识别，理想的嵌入应该能够将信息压缩成紧凑的话语级表示，紧凑说话人类内距离，增大说话人类间距离。在说话人识别中，一个流行的观点是，用分类目标训练的网络优于度量学习方法。在本文中，我们对VoxCeleb数据集上最流行的说话人识别的损失函数进行了广泛的评估。我们证明，与基于分类的损失相比，香草三元组损失表现出了竞争性的性能，那些用我们提出的度量学习目标训练的方法优于最先进的方法。<br>指标术语:说话人识别，说话人验证，度量学习。</p>
+<h1 id="1-Introduction-引言"><a href="#1-Introduction-引言" class="headerlink" title="1.  Introduction 引言"></a>1.  Introduction 引言</h1><p>介绍说话人识别的研究历史悠久，近年来受到越来越多的关注。用于说话人识别的大规模数据集，如VoxCeleb[1,2]和Speakers in the Wild[3]已经可以免费获得，促进了该领域的快速进展说话人识别可分为闭式设置和开放式设置。对于闭集设置，所有的测试标识都是在训练集中预定义的，因此可以作为一个分类问题来处理。对于开放式设置，在训练中看不到测试恒等式，这接近于实践。这是一个度量学习问题，其中声音必须映射到一个有区别的嵌入空间。这是本研究的重点，也是大多数其他研究的重点。我们正在讨论后一个问题。<br>利用深度神经网络进行说话人识别的开创性工作已经通过分类损失学习到了说话人的嵌入[1,4，5]。 从那时起，流行的方法是使用softmax分类器来训练嵌入[6,7,8]。虽然 softmax loss可以学习可分离的嵌入，但由于它没有明确地设计来优化嵌入相似性，所以它们不够有区别性。因此， softmax训练模型常常与PLDA[9]后端结合来生成评分函数(scoring functions)[5,10]。[11]解决了这一缺陷，提出了 angular softmax (A-Softmax)，其中使用余弦相似度作为 softmax 层的logit输入，许多工作证明了它在说话人识别方面优于vanilla softmax[6, 7, 8, 12, 13]。Additive margin variants，AM-Softmax[14, 15]和AAM-Softmax[16]，已经被提出通过在目标logit中引入余弦裕度惩罚（cosine margin penalty）来增加类间方差，由于其易于实现和良好的性能，这些方法已经非常流行[17,18,19,20,21,22,23,24]。然而，AM-Softmax和AM-Softmax的训练已被证明是具有挑战性的，因为它们对损失函数中的 scale and margin非常敏感。</p>
+<p>度量学习目标通过直接学习嵌入，为当前流行的基于分类的方法提供了强有力的替代。由于开集说话人识别本质上是一个度量学习问题，关键是学习类内距离小而类间距离大的特征。通过直接优化距离度量，对比 loss [25]和triplet loss [26]在说话人识别上表现良好[27,28]，但这些方法需要careful pair 或triplet loss的选择，这既耗时又对性能敏感。</p>
+<p>与我们的工作最密切相关的是原型网络（ prototypical networks）[29]，它学习一个度量空间，在这个度量空间中，开放集分类可以通过计算每个类的原型表示的距离来执行，通过一个模拟测试场景的训练过程。多重否定的使用有助于稳定学习，因为损失函数可以强制要求一个嵌入的不是批中的所有否定，而不是在triplet loss的情况下的一个特定否定。[30, 31]采用了说话人识别的原型框架。最初提出用于说话人识别的广义端到端损失[32]也与这种设置密切相关。<br>由于说话人识别系统在设计上有很大的差异，因此比较先前的工作中不同的 loss functions是具有挑战性和不可靠的。流行的主干架构包括基于tdnn的系统，如x-vector[5]和更深层次的[8]，以及来自计算机视觉社区的网络架构，如ResNet[33]。已经提出了一系列编码器来将帧级信息聚合成话语级嵌入，从简单的平均[1]到统计池[4,7]和基于字典的编码[17,34]。[5]已经证明，数据增强可以显著提高说话人识别性能，但增强方法可以从添加噪声[35]到室内脉冲响应(RIR)模拟[36]。<br>因此，为了直接比较一系列损失函数，我们在保持其他训练细节不变的情况下，进行了超过20000个gpu小时的精心实验。与普遍的看法相反，我们证明，与大多数AM-Softmax和AM-Softmax训练的网络相比，使用vanilla triplet loss 训练的网络表现出了竞争性的性能，而使用我们提出的角目标( angular objective)训练的网络表现优于所有可比方法</p>
+<h1 id="2-Training-functions-训练函数"><a href="#2-Training-functions-训练函数" class="headerlink" title="2. Training functions 训练函数"></a>2. Training functions 训练函数</h1><p>本节描述我们实验中使用的损失函数，包括原型损失函数的一个新的角度变量（ a new angular variant of the prototypical loss）。<br><img src="/images/2021-09-25-15-34-14.png"></p>
+<h2 id="2-1-Classification-objectives-目标分类"><a href="#2-1-Classification-objectives-目标分类" class="headerlink" title="2.1  Classification objectives 目标分类"></a>2.1  Classification objectives 目标分类</h2><p>VoxCeleb2开发集包含C = 5,994个演讲者或类。在训练时，每个小批包含N个来自不同说话人的话语，这些话语的嵌入为xi，对应的说话人标签为yi，其中1 &lt; i &lt; N, 1 &lt; y &lt; C。<br>softmax损失由一个softmax函数和一个多类交叉熵损失组成。它被表述为:<br><img src="/images/2021-09-26-11-50-24.png"><br>其中W和b分别是主干架构的最后一层的权重和偏差。这种损失函数只惩罚分类错误，而不明确强制类内紧性和类间分离。</p>
+<p>AM-Softmax (CosFace)。通过对权值和输入向量进行归一化，可以将softmax损失重新表述为后验概率仅依赖于权值和输入向量夹角的余弦值。这个损耗函数，被作者称为Normalised Softmax loss (NSL)，公式如下:<br><img src="/images/2021-09-26-11-53-10.png"><br>cos (θj,i)是归一化向量Wj and xi.的点积。然而，NSL学习到的嵌入并不能充分区分，因为NSL只惩罚分类错误。为了缓解这个问题，我们将 cosine margin m 引入到方程中:<br><img src="/images/2021-09-26-11-58-12.png"><br>其中s为( fixed scale factor)固定比例因子，防止训练阶段梯度过小。</p>
+<p>AAM-Softmax (ArcFace)。这相当于CosFace，除了在xi 和 Wyi之间有额外的angular margin penalty惩罚 m。加性角裕度惩罚（The additive angular margin penalty ）等于归一化超球中的测量距离裕度惩罚（the geodesic distance margin penalty）。<br><img src="/images/2021-09-26-12-04-00.png"></p>
+<h2 id="2-2-Metric-learning-objectives-度量学习目标"><a href="#2-2-Metric-learning-objectives-度量学习目标" class="headerlink" title="2.2 Metric learning objectives 度量学习目标"></a>2.2 Metric learning objectives 度量学习目标</h2><p>对于度量学习目标，每个小批包含来自N个不同说话者的M个话语，其嵌入是xj,i，其中1 &lt; j &lt; N and 1 &lt; i &lt; M。  </p>
+<p>Triplet：Triplet loss使锚点和正锚点之间的L2距离最小化(相同类别)，并使锚点和负锚点之间的距离最大化(不同类别)。<br><img src="/images/2021-09-26-12-08-13.png"><br>对于我们的实现，在小批量中从不同的说话人中抽取负样本，并通过硬负面挖掘函数（ the hard negative mining function）选择样本xk。这需要每个人说两句话。</p>
+<p>Prototypical:每个mini-batch包含一个支持集S和一个查询集q。为了简单起见，我们假设查询是每个说话者发出的第m个语音。那么原型 prototype(或质心 centroid)是:<br><img src="/images/2021-09-26-12-32-31.png"><br>采用欧几里得距离的平方作为距离度量，由原论文提出:<br><img src="/images/2021-09-26-12-33-17.png"></p>
+<p>在训练期间，每个查询例子根据到每个说话人原型的距离的softmax对N个说话人进行分类:</p>
+<p><img src="/images/2021-09-26-20-16-44.png"></p>
+<p>这里，Sj,j是查询和同一说话人的原型从支持集的平方欧氏距离。softmax函数有效地服务于hard negative mining(难分样本挖掘)的目的，因为最难分的负样本对梯度的影响最大。通常选择M的值来匹配测试时的预期情况，例如5次射击学习 5-shot learning的M=5+ 1，这样原型由5个不同的话语组成。这样，训练中的任务与测试场景中的任务完全匹配。</p>
+<p>Generalised end-to-end (GE2E)：全面的端到端(GE2E)。<br>在GE2E训练中，除查询本身外，批处理中的每个语句都被用来形成质心。因此，与查询相同类的质心比其他类的质心少计算一次。它们被定义为:<br><img src="/images/2021-09-26-20-34-41.png"><br>相似矩阵定义为嵌入点与所有质心之间的比例余弦相似度:<br><img src="/images/2021-09-26-20-38-34.png"><br>其中w&gt;0和b是可学习的 scale and bias。最终的GE2E损失定义为<br><img src="/images/2021-09-26-20-37-30.png"></p>
+<p>Angular Prototypical:<br>The angular prototypical loss使用与原始原型损耗the original prototypical loss相同的批形成same batch formation，从每个类中保留一个话语作为查询。这比GE2E-like形式更有优势，因为每个质心都是由支持集中相同数量的话语组成的，因此可以在训练过程中准确地模拟测试场景。我们使用基于余弦的相似性度量，具有可学习的e scale and bias，如GE2E损失。<br><img src="/images/2021-09-26-20-42-09.png"><br>利用角损失函数 angular loss function引入尺度不变性( scale invariance)，提高了目标对特征方差的鲁棒性(robustness)，显示出更稳定的收敛(stable convergence)[37]。结果的目标与原始的原型损失相同，公式8。</p>
+<h2 id="3-Experiments实验"><a href="#3-Experiments实验" class="headerlink" title="3. Experiments实验"></a>3. Experiments实验</h2><p>在本节中，我们将描述实验设置，这与第2节中描述的所有目标相同。</p>
+<h2 id="3-1-输入表示"><a href="#3-1-输入表示" class="headerlink" title="3.1  输入表示"></a>3.1  输入表示</h2><p>在训练中，我们使用固定长度( fixed length)的2秒时间片段，从每个话语音频中随机提取。提取频谱图的汉明窗宽度（ hamming window of width）为25ms，步长（ step）为10ms。对于Thin ResNet模型，使用257维原始频谱图（Spectrograms）作为网络的输入。对于VGGM-40和Fast ResNet，使用40维Mel滤波器组作为输入。均值和方差归一化(MVN)是通过对网络输入应用实例归一化[38]来实现的。由于VoxCeleb数据集主要由连续语音组成，语音活动检测(VAD：voice activity detection)在训练和测试中没有使用。</p>
+<h2 id="3-2-Trunk-architecture主干结构"><a href="#3-2-Trunk-architecture主干结构" class="headerlink" title="3.2. Trunk architecture主干结构"></a>3.2. Trunk architecture主干结构</h2><p>在下面描述的主干体系结构上进行了实验。前两个模型与[39]中使用和描述的模型相同，而最后一个是ResNet模型的变体，以减少计算需求。表1对体系结构进行了比较。<br>VGG-M-40<br>VGG-M模型被提出用于图像分类[40]，并被[1]用于说话人识别。该网络具有高效、分类性能好等优点。VGG-M-40是[1]提出的网络的改进，以40维滤波器组作为输入，而不是513维谱图。时间平均池化(TAP：The temporal average pooling)层取特征沿时域的平均值，以产生话语级（ utterance-level）的表示。</p>
+<p>Thin ResNet-34.<br>残差网络[33]在图像识别中得到了广泛的应用，最近又被应用到说话人识别中[2,34,17,391]。Thin ResNet-34与原来的34层ResNet相同，只是为了减少计算成本，在每个剩余块中只使用了四分之一的通道。该模型只有140万个参数，而标准的ResNet-34有2200万个参数。自注意池(SAP： Self-attentive pooling )[34]用于将帧级（frame-level）特征聚合为话语级（utterance-level）表示，同时注意对话语级说话人识别提供更多信息的帧。[34]和[39]的Thin ResNets在实现细节上略有不同，但在我们的实验中，我们使用了[39]的Thin ResNets。</p>
+<p>Fast ResNet-34.<br>滤波器的数量和大小与Thin ResNets[33,39]相同，但输入维度比[39]小，strides比[34]早，以减少计算需求。由于空间限制，可以在附带的代码中找到确切的规范。其性能与两种Thin ResNet模型相当，而计算成本却不到这些模型的一半。<br><img src="/images/2021-09-26-20-59-41.png"><br>表1:网络统计。乘积运算(MACs:Multiply accumulate operations)测量一个2秒的输入。</p>
+<h2 id="3-3-Implementation-details-实现细节"><a href="#3-3-Implementation-details-实现细节" class="headerlink" title="3.3 Implementation details 实现细节"></a>3.3 Implementation details 实现细节</h2><p>Datasets.<br>在VoxCeleb2[2]开发集上对网络进行训练，在VoxCeleb1[1]测试集上对网络进行评价。请注意，VoxCeleb2的开发集与VoxCeleb1数据集是完全分离的(即没有共同的说话人)。</p>
+<p>Training.<br>我们的实现基于PyTorch框架[41]，并在NAVER智能机器学习(NSML： NAVER Smart Machine Learning )平台[42]上进行训练。这些模型使用的是NVIDIA V100 GPU, 32GB内存，500个epochs。对于每个 epoch，我们从5994个说话人中随机抽取最多100个话语音频，以减少类别样本的不均衡。我们使用Adam优化器，初始学习率为0.001，每10个epochs.减少5%。对于度量学习目标，我们使用适合GPU的最大批大小 largest batch size。对于分类目标，我们使用 fixed batch size固定批次大小200。VGG-M-40模型的训练大约需要一天，Fast ResNet模型需要两天，Thin ResNet模型需要五天。所有实验都独立重复三次，以尽量减少随机初始化的影响，我们报告了实验的平均值和标准偏差。</p>
+<p>Data augmentation 在训练过程中，除了随机抽样外，没有进行任何数据增强。</p>
+<p>Curriculum learning. Curriculum学习。<br>AAM-Softmax损失函数从随机初始化开始表现出不稳定的收敛，m值较大，如0.3。因此，我们从m=0.1开始训练模型，并在100个epoch后将其增加到m= 0.3。这个策略在表2中被称为“ Curriculum”。类似地，如果the triplet loss在训练的早期过于困难，the triplet loss会导致模型出现偏离。我们只在100个 epochs之后才启用hard negative mining，此时网络只看到最困难的1%的negatives。</p>
+<h2 id="3-4-Evaluation-评估"><a href="#3-4-Evaluation-评估" class="headerlink" title="3.4 Evaluation 评估"></a>3.4 Evaluation 评估</h2><p>Evaluation protocol.<br>训练后的网络在VoxCelebl测试集上进行评估。我们从每个测试片段中定期采样10个4秒的暂时temporal 样本，并从每对片段中计算所有可能组合(10 × 10= 100)之间的相似性。100个相似点的平均值作为分数。该协议使用在[2，39].</p>
+<p>Results.<br><img src="/images/2021-09-26-21-54-52.png"><br>表2:VoxCelebl测试集的(EER， %)我们报告了重复实验的平均值和标准差。CHNM: Curriculum Hard Negative Mining.</p>
+<p><img src="/images/2021-09-26-21-55-17.png"><br>表3:training batch size对测试成绩的影响。在VoxCelebl测试集中使用Thin ResNet-34架构的(EER， %)。我们报告了重复实验的平均值和标准差。  </p>
+<p>结果如表2所示。可以看出，使用AM-Softmax和AAMSoftmax损失函数训练的网络性能对训练时设置的margin和scale值非常敏感。我们对m和s的许多组合进行迭代，以找到最优值。用最常见的设置训练的模型(m=0.3和s = 30的AM-Softmax)优于vanilla triplet loss.<br>通过在训练中使用多个负样本，广义端到端损失和原型损失比三重损失有所改善。当M的值与测试场景匹配时，原型网络的性能最好，这消除了超参数优化的必要性。用提出的角度目标 angular objective训练的模型的性能超过了所有基于分类和度量学习方法all<br>classification-based and metric learning methods.<br>最近在VoxCeleb2数据集上有大量的工作，但我们不会与表中的这些工作进行比较，因为这项工作的目标是比较相同条件下不同损失函数的性能。然而，我们不知道在网络参数数量相近的情况下，有哪项工作的性能比我们的方法更好。</p>
+<p>Batch size.<br>批次大小对各损失函数的影响如表3所示。我们观察到更大的批大小对度量学习方法的性能有积极的影响。这可以解释为在批内sample harder negatives<br>within the batch的能力。对于经过 classification loss.训练的网络，我们没有这样的观察。</p>
+<h2 id="4-Conclusions-结论"><a href="#4-Conclusions-结论" class="headerlink" title="4.  Conclusions 结论"></a>4.  Conclusions 结论</h2><p>在本文中，我们提出了一个度量学习在说话人识别中的例子。我们的大量实验表明，GE2E和原型网络（ prototypical networks）的性能优于目前流行的基于分类的方法。我们还提出了原型网络的角变量（angular variant of the prototypical networks），它优于所有现有的训练函数。最后，我们发布了一个用于大规模说话人识别的灵活的PyTorch训练器，可用于促进该领域的进一步研究。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Xi Xuan
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2021/09/26/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-In%20defence%20of%20metric%20learning%20for%20speaker%20recognition/" title="论文阅读 | In defence of metric learning for speaker recognition">http://example.com/2021/09/26/论文阅读-In defence of metric learning for speaker recognition/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/24/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-The%20SpeakIn%20System%20for%20VoxCeleb%20Speaker%20Recognition%20Challange%202021/" rel="prev" title="论文阅读 | The SpeakIn System for VoxCeleb Speaker Recognition Challange 2021">
+                  <i class="fa fa-chevron-left"></i> 论文阅读 | The SpeakIn System for VoxCeleb Speaker Recognition Challange 2021
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HePeng</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">39k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">35 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

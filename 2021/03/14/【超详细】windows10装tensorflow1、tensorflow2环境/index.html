@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/maomao.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/maomao.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/maomao.png">
+  <link rel="mask-icon" href="/images/maomao.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="windows10+cuda+cudnn tf1keras+tf2keras环境安装">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【超详细】windows10装tensorflow1、tensorflow2环境">
+<meta property="og:url" content="http://example.com/2021/03/14/%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E3%80%91windows10%E8%A3%85tensorflow1%E3%80%81tensorflow2%E7%8E%AF%E5%A2%83/index.html">
+<meta property="og:site_name" content="Xi Xuan&#39;s Blog">
+<meta property="og:description" content="windows10+cuda+cudnn tf1keras+tf2keras环境安装">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/2021-09-20-21-26-49.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-21-27-50.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-21-28-31.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-21-31-05.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-21-31-36.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-21-31-58.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-21-32-25.png">
+<meta property="og:image" content="http://example.com/iamges/2021-09-20-21-32-45.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-21-33-24.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-21-34-03.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-21-34-47.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-21-35-12.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-21-35-31.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-21-35-55.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-21-36-21.png">
+<meta property="article:published_time" content="2021-03-14T11:34:50.000Z">
+<meta property="article:modified_time" content="2021-09-20T13:52:14.397Z">
+<meta property="article:author" content="Xi Xuan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2021-09-20-21-26-49.png">
+
+
+<link rel="canonical" href="http://example.com/2021/03/14/%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E3%80%91windows10%E8%A3%85tensorflow1%E3%80%81tensorflow2%E7%8E%AF%E5%A2%83/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/03/14/%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E3%80%91windows10%E8%A3%85tensorflow1%E3%80%81tensorflow2%E7%8E%AF%E5%A2%83/","path":"2021/03/14/【超详细】windows10装tensorflow1、tensorflow2环境/","title":"【超详细】windows10装tensorflow1、tensorflow2环境"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>【超详细】windows10装tensorflow1、tensorflow2环境 | Xi Xuan's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Xi Xuan's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section">归档</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section">分类</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section">标签</a></li>
+        <li class="menu-item menu-item-abouts"><a href="/abouts/" rel="section">关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%B8%8B%E8%BD%BDanaconda3"><span class="nav-number">1.</span> <span class="nav-text">一、下载anaconda3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%A0%B9%E6%8D%AEtensorflow%E5%AE%98%E7%BD%91%E6%8C%87%E7%A4%BA%E7%9A%84%E7%89%88%E6%9C%AC%EF%BC%8C%E7%A1%AE%E5%AE%9Apython-cuda-cudnn%E7%9A%84%E7%89%88%E6%9C%AC"><span class="nav-number">2.</span> <span class="nav-text">二、根据tensorflow官网指示的版本，确定python\cuda\cudnn的版本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%85%8D%E7%BD%AEconda%E3%80%81pip%E9%95%9C%E5%83%8F%E6%BA%90"><span class="nav-number">3.</span> <span class="nav-text">三、配置conda、pip镜像源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%90%8D%E4%B8%BA%E2%80%9Ctf1keras%E2%80%9D%E7%9A%84%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83"><span class="nav-number">4.</span> <span class="nav-text">四、创建一个名为“tf1keras”的虚拟环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%90%8D%E4%B8%BA%E2%80%9Ctf2keras%E2%80%9D%E7%9A%84%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83"><span class="nav-number">5.</span> <span class="nav-text">五、创建一个名为“tf2keras”的虚拟环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%AE%89%E8%A3%85CUDA10-1-cudnn7-6"><span class="nav-number">6.</span> <span class="nav-text">六、安装CUDA10.1+cudnn7.6</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E5%AE%89%E8%A3%85CUDA10-0-cudnn7-4"><span class="nav-number">7.</span> <span class="nav-text">七、安装CUDA10.0+cudnn7.4</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E5%AE%89%E8%A3%85tensorflow1-14%E5%88%B0%E2%80%9Ctf1keras%E2%80%9D%E7%8E%AF%E5%A2%83%E9%87%8C"><span class="nav-number">8.</span> <span class="nav-text">八、安装tensorflow1.14到“tf1keras”环境里</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B9%9D%E3%80%81%E5%AE%89%E8%A3%85tensorflow2-3%E5%88%B0%E2%80%9Ctf2keras%E2%80%9D%E7%8E%AF%E5%A2%83%E9%87%8C"><span class="nav-number">9.</span> <span class="nav-text">九、安装tensorflow2.3到“tf2keras”环境里</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%81%E3%80%81%E9%AA%8C%E8%AF%81tf2%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84gpu%E6%98%AF%E5%90%A6%E8%83%BD%E7%94%A8"><span class="nav-number">10.</span> <span class="nav-text">十、验证tf2环境下的gpu是否能用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E5%88%87%E6%8D%A2tf1%E5%92%8Ctf2%E7%8E%AF%E5%A2%83"><span class="nav-number">11.</span> <span class="nav-text">十一、切换tf1和tf2环境</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Xi Xuan"
+      src="/images/xuanxi.jpg">
+  <p class="site-author-name" itemprop="name">Xi Xuan</p>
+  <div class="site-description" itemprop="description"> 一杯冰咖啡 </div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuanxixi" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuanxixi" rel="noopener" target="_blank">GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/xuanxi1110@gmail.com" title="E-Mail → xuanxi1110@gmail.com">E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/14/%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E3%80%91windows10%E8%A3%85tensorflow1%E3%80%81tensorflow2%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xuanxi.jpg">
+      <meta itemprop="name" content="Xi Xuan">
+      <meta itemprop="description" content=" 一杯冰咖啡 ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xi Xuan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【超详细】windows10装tensorflow1、tensorflow2环境
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-03-14 19:34:50" itemprop="dateCreated datePublished" datetime="2021-03-14T19:34:50+08:00">2021-03-14</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-20 21:52:14" itemprop="dateModified" datetime="2021-09-20T21:52:14+08:00">2021-09-20</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E9%85%8D%E7%BD%AE/" itemprop="url" rel="index"><span itemprop="name">个人深度学习工作站配置</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">windows10+cuda+cudnn tf1keras+tf2keras环境安装</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="一、下载anaconda3"><a href="#一、下载anaconda3" class="headerlink" title="一、下载anaconda3"></a>一、下载anaconda3</h1><p><a target="_blank" rel="noopener" href="https://www.anaconda.com/products/individual#Downloads">https://www.anaconda.com/products/individual#Downloads</a><br>或复制以下链接到迅雷直接下载：<a target="_blank" rel="noopener" href="https://repo.anaconda.com/archive/Anaconda3-2020.11-Windows-x86_64.exe">https://repo.anaconda.com/archive/Anaconda3-2020.11-Windows-x86_64.exe</a></p>
+<p><img src="/images/2021-09-20-21-26-49.png"></p>
+<p>一直“next”，选择“All User”,“Path”配置环境变量都勾上，直到“Finsh”</p>
+<h1 id="二、根据tensorflow官网指示的版本，确定python-cuda-cudnn的版本"><a href="#二、根据tensorflow官网指示的版本，确定python-cuda-cudnn的版本" class="headerlink" title="二、根据tensorflow官网指示的版本，确定python\cuda\cudnn的版本"></a>二、根据tensorflow官网指示的版本，确定python\cuda\cudnn的版本</h1><p>官网：<a target="_blank" rel="noopener" href="https://www.tensorflow.org/install/source_windows%E3%80%90%E9%9C%80%E8%A6%81%E8%BF%9E%E5%A4%96%E7%BD%91vpn%E6%89%8D%E8%83%BD%E8%AE%BF%E9%97%AE%E3%80%91">https://www.tensorflow.org/install/source_windows【需要连外网vpn才能访问】</a></p>
+<p>没有vpn可看下图：<br><img src="/images/2021-09-20-21-27-50.png"><br><img src="/images/2021-09-20-21-28-31.png"></p>
+<p>确定接下来装tf1环境：python3.6.9+CUDA10.0+cudnn7.4+tensorflow-gpu1.14.0+tensorflow1.14.0<br>确定接下来装tf2环境：python3.6.9+CUDA10.1+cudnn7.6+tensorflow-gpu2.3.0+tensorflow2.3.0</p>
+<h1 id="三、配置conda、pip镜像源"><a href="#三、配置conda、pip镜像源" class="headerlink" title="三、配置conda、pip镜像源"></a>三、配置conda、pip镜像源</h1><p>为了接下来conda install 和pip install 速度更快，我们要配置conda、pip镜像源</p>
+<p>conda:<br>Windows 用户无法直接创建名为.condarc的文件，可先执行conda config –set show_channel_urls yes生成该文件。生成的文件在C:\Users\bifthan.condarc</p>
+<p>若要对其进行修改，可以编辑用户目录下的.condarc文件，其路径为C:\Users\bifthan.condarc</p>
+<p>这里推荐使用清华镜像源，若要使用其他源可以善用搜索</p>
+<p>将下列配置覆盖到该文件中，即可使用清华镜像源进行快速下载</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">channels:</span><br><span class="line"></span><br><span class="line">  - defaults</span><br><span class="line"></span><br><span class="line">show_channel_urls: true</span><br><span class="line"></span><br><span class="line">channel_alias: https://mirrors.tuna.tsinghua.edu.cn/anaconda</span><br><span class="line"></span><br><span class="line">default_channels:</span><br><span class="line"></span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main</span><br><span class="line"></span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free</span><br><span class="line"></span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r</span><br><span class="line"></span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/pro</span><br><span class="line"></span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2</span><br><span class="line"></span><br><span class="line">custom_channels:</span><br><span class="line"></span><br><span class="line">  conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line"></span><br><span class="line">  msys2: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line"></span><br><span class="line">  bioconda: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line"></span><br><span class="line">  menpo: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line"></span><br><span class="line">  pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line"></span><br><span class="line">  simpleitk: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>conda config –show channels可以查看全部源</p>
+<p><img src="/images/2021-09-20-21-31-05.png"></p>
+<p>pip:在C:\Users\bifthan\pip  下面新建pip.ini文件，把下面复制到文件中，保存</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[global]</span><br><span class="line"></span><br><span class="line">trusted-host=pypi.doubanio.com            </span><br><span class="line"></span><br><span class="line">index-url=https://pypi.doubanio.com/simple/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>下面这3个pip源速度都不错，可以任选</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">https://pypi.doubanio.com/ 豆瓣</span><br><span class="line"></span><br><span class="line">http://mirrors.aliyun.com/pypi/ 阿里</span><br><span class="line"></span><br><span class="line">http://pypi.mirrors.ustc.edu.cn/ 中国科学技术大学</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="四、创建一个名为“tf1keras”的虚拟环境"><a href="#四、创建一个名为“tf1keras”的虚拟环境" class="headerlink" title="四、创建一个名为“tf1keras”的虚拟环境"></a>四、创建一个名为“tf1keras”的虚拟环境</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">conda remove -n tf1keras--all</span><br><span class="line"></span><br><span class="line">conda create -n tf1keraspython=3.6.9# 创建一个python3的环境，名为tf1keras</span><br><span class="line"></span><br><span class="line">conda activate tf1keras# 激活tf1keras环境</span><br><span class="line"></span><br><span class="line">conda install jupyter notebook# 安装ipykernel模块</span><br><span class="line"></span><br><span class="line">python -m ipykernel install --user --name tf1keras --display-name &quot;tf1keras&quot; # 进行配置</span><br><span class="line"></span><br><span class="line">jupyter kernelspec list#查看jupyter notebook里的kernel</span><br><span class="line"></span><br><span class="line">若想删除 jupyter kernelspec remove music#删除名叫icsharpkernel的kernel</span><br></pre></td></tr></table></figure>
+
+<h1 id="五、创建一个名为“tf2keras”的虚拟环境"><a href="#五、创建一个名为“tf2keras”的虚拟环境" class="headerlink" title="五、创建一个名为“tf2keras”的虚拟环境"></a>五、创建一个名为“tf2keras”的虚拟环境</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">conda remove -n tf2gpu --all</span><br><span class="line"></span><br><span class="line">conda create -n tf2keras python=3.6.9# 创建一个python3的环境，名为tf2keras</span><br><span class="line"></span><br><span class="line">conda activate tf2keras # 激活tf2keras环境</span><br><span class="line"></span><br><span class="line">conda install jupyter notebook# 安装ipykernel模块</span><br><span class="line"></span><br><span class="line">python -m ipykernel install --user --name tf2keras --display-name &quot;tf2keras&quot; # 进行配置</span><br><span class="line"></span><br><span class="line">jupyter kernelspec list#查看jupyter notebook里的kernel</span><br><span class="line"></span><br><span class="line">若想删除 jupyter kernelspec remove tf2keras#删除名叫icsharpkernel的kernel</span><br></pre></td></tr></table></figure>
+<h1 id="六、安装CUDA10-1-cudnn7-6"><a href="#六、安装CUDA10-1-cudnn7-6" class="headerlink" title="六、安装CUDA10.1+cudnn7.6"></a>六、安装CUDA10.1+cudnn7.6</h1><p>安装cuda10.1:<br>官网：<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-toolkit-archive">https://developer.nvidia.com/cuda-toolkit-archive</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.nvidia.com/compute/cuda/10.1/Prod/local_installers/cuda_10.1.168_425.25_win10.exe">https://developer.nvidia.com/compute/cuda/10.1/Prod/local_installers/cuda_10.1.168_425.25_win10.exe</a></p>
+<p>复制链接到迅雷下载<br><img src="/images/2021-09-20-21-31-36.png"></p>
+<p><img src="/images/2021-09-20-21-31-58.png"></p>
+<p>一直下一步，直到结束。</p>
+<p>配置系统变量-电脑-属性-下面框里—-Path–C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\bin<br><img src="/images/2021-09-20-21-32-25.png"></p>
+<p>再检查下面的框里是否有</p>
+<p>CUDA_PATH                   C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1</p>
+<p>CUDA_PATH_V10_1     C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1<br><img src="/iamges/2021-09-20-21-32-45.png"></p>
+<p>nvcc -V验证一下是否已经装好。</p>
+<p>安装cudnn7.6<br>cudnn:<a target="_blank" rel="noopener" href="https://developer.nvidia.com/rdp/cudnn-download">https://developer.nvidia.com/rdp/cudnn-download</a></p>
+<p>login:需要注册账号密码登录<br><img src="/images/2021-09-20-21-33-24.png"></p>
+<p>或者复制<a target="_blank" rel="noopener" href="https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.1_20191031/cudnn-10.1-windows10-x64-v7.6.5.32.zip%E8%BF%85%E9%9B%B7%E4%B8%8B%E8%BD%BD">https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.1_20191031/cudnn-10.1-windows10-x64-v7.6.5.32.zip迅雷下载</a></p>
+<p>解压缩之后，把cudnn下面的三个文件夹中的文件</p>
+<p><img src="/images/2021-09-20-21-34-03.png"></p>
+<p>然后再系统环境变量的Path中，加以下路径</p>
+<p>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\lib\x64</p>
+<h1 id="七、安装CUDA10-0-cudnn7-4"><a href="#七、安装CUDA10-0-cudnn7-4" class="headerlink" title="七、安装CUDA10.0+cudnn7.4"></a>七、安装CUDA10.0+cudnn7.4</h1><p>同上</p>
+<p>CUDA10.0：<a target="_blank" rel="noopener" href="https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers/cuda_10.0.130_411.31_win10">https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers/cuda_10.0.130_411.31_win10</a></p>
+<p>复制到迅雷下载</p>
+<p>cudnn7.4：<a target="_blank" rel="noopener" href="https://developer.nvidia.com/rdp/cudnn-download">https://developer.nvidia.com/rdp/cudnn-download</a></p>
+<h1 id="八、安装tensorflow1-14到“tf1keras”环境里"><a href="#八、安装tensorflow1-14到“tf1keras”环境里" class="headerlink" title="八、安装tensorflow1.14到“tf1keras”环境里"></a>八、安装tensorflow1.14到“tf1keras”环境里</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install tensorflow==1.14.0</span><br></pre></td></tr></table></figure>
+
+<p>如果上述方法装不上</p>
+<p>还有一种方法：把tensorflow1.14.0下载到本地，</p>
+<p><a target="_blank" rel="noopener" href="https://pypi.org/project/tensorflow/1.14.0/#files">https://pypi.org/project/tensorflow/1.14.0/#files</a></p>
+<p><img src="/images/2021-09-20-21-34-47.png"></p>
+<p>选择py36-windows版本</p>
+<p>然后在路径下进入虚拟环境tf2keras，再打开cmd，输入pip install 文件名</p>
+<p>安装成功。</p>
+<h1 id="九、安装tensorflow2-3到“tf2keras”环境里"><a href="#九、安装tensorflow2-3到“tf2keras”环境里" class="headerlink" title="九、安装tensorflow2.3到“tf2keras”环境里"></a>九、安装tensorflow2.3到“tf2keras”环境里</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install tensorflow==2.3.0</span><br></pre></td></tr></table></figure>
+
+<p>如果上述方法装不上</p>
+<p>还有一种方法：把tensorflow2.3.0下载到本地，</p>
+<p><a target="_blank" rel="noopener" href="https://pypi.org/project/tensorflow/2.3.0/#files">https://pypi.org/project/tensorflow/2.3.0/#files</a></p>
+<p><img src="/images/2021-09-20-21-35-12.png"><br>选择py36-windows版本然后在路径下进入虚拟环境tf2keras，再打开cmd，输入pip install 文件名，安装成功。<br><img src="/images/2021-09-20-21-35-31.png"></p>
+<h1 id="十、验证tf2环境下的gpu是否能用"><a href="#十、验证tf2环境下的gpu是否能用" class="headerlink" title="十、验证tf2环境下的gpu是否能用"></a>十、验证tf2环境下的gpu是否能用</h1><p>进到tf2keras环境–</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt;python</span><br><span class="line"></span><br><span class="line">&gt;import tensorflow as tf</span><br><span class="line"></span><br><span class="line">&gt;tf.test.is_gpu_available()</span><br></pre></td></tr></table></figure>
+<p><img src="/images/2021-09-20-21-35-55.png"></p>
+<p>没有报错，就代表全部都配置好了。</p>
+<h1 id="十一、切换tf1和tf2环境"><a href="#十一、切换tf1和tf2环境" class="headerlink" title="十一、切换tf1和tf2环境"></a>十一、切换tf1和tf2环境</h1><p>要更改系统环境变量，CUDA_PATH的v10.0/v10.1即可</p>
+<p>用tf1就改成v10.0；用tf2就改成v10.1。改后重启生效。</p>
+<p><img src="/images/2021-09-20-21-36-21.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Xi Xuan
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2021/03/14/%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E3%80%91windows10%E8%A3%85tensorflow1%E3%80%81tensorflow2%E7%8E%AF%E5%A2%83/" title="【超详细】windows10装tensorflow1、tensorflow2环境">http://example.com/2021/03/14/【超详细】windows10装tensorflow1、tensorflow2环境/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/14/ubuntu%E4%B8%AA%E4%BA%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E9%85%8D%E7%BD%AE/" rel="prev" title="ubuntu个人深度学习工作站配置">
+                  <i class="fa fa-chevron-left"></i> ubuntu个人深度学习工作站配置
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/08/01/%E5%8C%BB%E5%AD%A6%E8%82%9D%E8%84%8F%E5%9B%BE%E5%83%8F-%E8%AF%AD%E4%B9%89%E5%88%86%E5%89%B2/" rel="next" title="语义分割 - 识别肝脏医学图像">
+                  语义分割 - 识别肝脏医学图像 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HePeng</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">39k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">35 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/maomao.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/maomao.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/maomao.png">
+  <link rel="mask-icon" href="/images/maomao.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="VoxCeleb Speaker Recognition Challenge 2021 (VoxSRC-21)在有监督和无监督的说话人验证轨道中得分最高的参赛作品">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文阅读 | The SpeakIn System for VoxCeleb Speaker Recognition Challange 2021">
+<meta property="og:url" content="http://example.com/2021/09/24/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-The%20SpeakIn%20System%20for%20VoxCeleb%20Speaker%20Recognition%20Challange%202021/index.html">
+<meta property="og:site_name" content="Xi Xuan&#39;s Blog">
+<meta property="og:description" content="VoxCeleb Speaker Recognition Challenge 2021 (VoxSRC-21)在有监督和无监督的说话人验证轨道中得分最高的参赛作品">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/2021-09-24-20-46-10.png">
+<meta property="og:image" content="http://example.com/images/2021-09-24-20-54-27.png">
+<meta property="og:image" content="http://example.com/images/2021-09-24-20-55-35.png">
+<meta property="og:image" content="http://example.com/images/2021-09-24-20-57-51.png">
+<meta property="og:image" content="http://example.com/images/2021-09-24-21-05-29.png">
+<meta property="og:image" content="http://example.com/images/2021-09-24-21-08-31.png">
+<meta property="og:image" content="http://example.com/images/2021-09-24-22-15-41.png">
+<meta property="og:image" content="http://example.com/images/2021-09-24-22-15-07.png">
+<meta property="og:image" content="http://example.com/images/2021-09-24-22-16-40.png">
+<meta property="og:image" content="http://example.com/images/2021-09-24-22-30-35.png">
+<meta property="article:published_time" content="2021-09-24T14:42:50.000Z">
+<meta property="article:modified_time" content="2021-09-24T14:31:56.111Z">
+<meta property="article:author" content="Xi Xuan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2021-09-24-20-46-10.png">
+
+
+<link rel="canonical" href="http://example.com/2021/09/24/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-The%20SpeakIn%20System%20for%20VoxCeleb%20Speaker%20Recognition%20Challange%202021/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/09/24/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-The%20SpeakIn%20System%20for%20VoxCeleb%20Speaker%20Recognition%20Challange%202021/","path":"2021/09/24/论文阅读-The SpeakIn System for VoxCeleb Speaker Recognition Challange 2021/","title":"论文阅读 | The SpeakIn System for VoxCeleb Speaker Recognition Challange 2021"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>论文阅读 | The SpeakIn System for VoxCeleb Speaker Recognition Challange 2021 | Xi Xuan's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Xi Xuan's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section">归档</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section">分类</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section">标签</a></li>
+        <li class="menu-item menu-item-abouts"><a href="/abouts/" rel="section">关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">0 摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-System-Description-%E7%B3%BB%E7%BB%9F%E6%8F%8F%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">1. System Description 系统描述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-Datasets-and-Data-Augmentation-%E6%95%B0%E6%8D%AE%E9%9B%86%E5%92%8C%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 Datasets and Data Augmentation 数据集和数据增强</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-1-Training-Data"><span class="nav-number">2.2.</span> <span class="nav-text">1.1.1. Training Data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-2-Developing-Set"><span class="nav-number">2.3.</span> <span class="nav-text">1.1.2  Developing Set</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-3-Features"><span class="nav-number">2.4.</span> <span class="nav-text">1.1.3  Features</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-Network-Structures"><span class="nav-number">2.5.</span> <span class="nav-text">1.2  Network Structures</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-1-Backbone"><span class="nav-number">2.6.</span> <span class="nav-text">1.2.1 Backbone</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-2-Pooling-Method-%E6%B1%A0%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">2.7.</span> <span class="nav-text">1.2.2 Pooling Method 池化方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-3-%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">2.8.</span> <span class="nav-text">1.2.3 损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3%E8%AE%AD%E7%BB%83%E7%AD%96%E7%95%A5"><span class="nav-number">2.9.</span> <span class="nav-text">1.3训练策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-Back-end-%E5%90%8E%E7%AB%AF%E6%89%93%E5%88%86"><span class="nav-number">2.10.</span> <span class="nav-text">1.4 Back-end 后端打分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-Results"><span class="nav-number">2.11.</span> <span class="nav-text">1.5 Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-1-Baseline-System-Ablation-Study"><span class="nav-number">2.12.</span> <span class="nav-text">1.5.1. Baseline System Ablation Study</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-2-Sub-Systems-and-Fusion-Performance%E5%AD%90%E7%B3%BB%E7%BB%9F%E5%92%8C%E8%9E%8D%E5%90%88%E6%80%A7%E8%83%BD"><span class="nav-number">2.13.</span> <span class="nav-text">1.5.2  Sub-Systems and Fusion Performance子系统和融合性能</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Conclusions-%E7%BB%93%E8%AE%BA"><span class="nav-number">3.</span> <span class="nav-text">2. Conclusions 结论</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Xi Xuan"
+      src="/images/xuanxi.jpg">
+  <p class="site-author-name" itemprop="name">Xi Xuan</p>
+  <div class="site-description" itemprop="description"> 一杯冰咖啡 </div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuanxixi" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuanxixi" rel="noopener" target="_blank">GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/xuanxi1110@gmail.com" title="E-Mail → xuanxi1110@gmail.com">E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/24/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-The%20SpeakIn%20System%20for%20VoxCeleb%20Speaker%20Recognition%20Challange%202021/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xuanxi.jpg">
+      <meta itemprop="name" content="Xi Xuan">
+      <meta itemprop="description" content=" 一杯冰咖啡 ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xi Xuan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          论文阅读 | The SpeakIn System for VoxCeleb Speaker Recognition Challange 2021
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-09-24 22:42:50 / 修改时间：22:31:56" itemprop="dateCreated datePublished" datetime="2021-09-24T22:42:50+08:00">2021-09-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ASR%E5%A3%B0%E7%BA%B9%E8%AF%86%E5%88%AB%E7%B3%BB%E5%88%97-%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">ASR声纹识别系列-论文笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">VoxCeleb Speaker Recognition Challenge 2021 (VoxSRC-21)在有监督和无监督的说话人验证轨道中得分最高的参赛作品</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>论文题目：The SpeakIn System for VoxCeleb Speaker Recognition Challange 2021<br> Zhao, M., Ma, Y., Liu, M., and Xu, M., “The SpeakIn System for VoxCeleb Speaker Recognition Challange 2021”, <i>arXiv e-prints</i>, 2021.<br> 公司：SpeakIn Technologies Co. Ltd.</p>
+</blockquote>
+<h1 id="0-摘要"><a href="#0-摘要" class="headerlink" title="0 摘要"></a>0 摘要</h1><p>摘要本报告描述了我们提交到2021年VoxCeleb Speaker Recognition Challenge (VoxSRC)的第1和第2轨道2021)。track 1和track 2使用相同的speaker verification system，只使用VoxCeleb2-dev作为我们的training set。本报告探讨了几个部分，包括数据增强、网络结构、基于领域的大边际微调和后端优化。我们的系统是9个模型的融合，并在VoxSRC 2021的这两个轨道上取得了第一名。我们提交的minDCF是0.1034，而相应的荣誉是1.8460%。索引术语:说话人验证，说话人识别<br>Index Terms:说话人识别，说话人验证<br>speaker recognition, speaker verification</p>
+<h1 id="1-System-Description-系统描述"><a href="#1-System-Description-系统描述" class="headerlink" title="1. System Description 系统描述"></a>1. System Description 系统描述</h1><p>对于Track 1和Track 2，我们采用相同的系统设置，除了Voxceleb2-dev[1]，没有任何额外的数据。这一部分将重点介绍我们在这个挑战中实现的方法。  </p>
+<h2 id="1-1-Datasets-and-Data-Augmentation-数据集和数据增强"><a href="#1-1-Datasets-and-Data-Augmentation-数据集和数据增强" class="headerlink" title="1.1 Datasets and Data Augmentation 数据集和数据增强"></a>1.1 Datasets and Data Augmentation 数据集和数据增强</h2><h2 id="1-1-1-Training-Data"><a href="#1-1-1-Training-Data" class="headerlink" title="1.1.1. Training Data"></a>1.1.1. Training Data</h2><p>VoxCeleb2-dev数据集包含1,092,2009个话语和5,994个说话者。数据增强在训练说话人验证模型中也非常重要。我们在这里采用了3倍的速度增强[2,3]，以产生额外的2倍说话者。基于SoX速度函数，该数据集中的每个语音片段都被0.9或1.1因子扰动。然后我们获得了3,276,027个发言和17,982个发言者。传统的基于kaldi的[4,5]方法(离线增强)在该领域被广泛采用。最近的研究[6,7]提到了一种新的动态增强数据的方法(在线增强)。我们的系统包含离线和在线训练模式。这两种不同的数据增强方法分别适用于不同的训练模式:<br>• Offine训练模式:在该训练方法中，我们使用RIRs[8]和MUSAN[9]创建额外的四份训练话语副本，数据增强过程基于Kaldi VoxCeleb配方。在此之后，来自17,982个说话人的16,380,135条语音被生成，以提取声学特征。<br>• 在线训练模式:我们采用链式增强，而不是将不同类型的增强[7]串联起来。这意味着我们预先定义了一个由几个增强元素组成的效果链，并且每个增强元素都有被激活的可能性。效应链如下:</p>
+<pre><code>- 增益增加的概率为0.2
+- 白噪声增加的概率为0.2
+- RIR混响和噪声增加的概率为0.6
+- 时间延伸以0.2的概率增加
+</code></pre>
+<p>值得一提的是，在线增加也采用了离线3倍的速度增加，类别数为17,982。速度的增加会改变演讲者的音高(pitch)，而时间的延长不会改变音高(pitch)。同时加入前景噪声和背景噪声，从MUSAN噪声和RIRs噪声中随机选取。</p>
+<h2 id="1-1-2-Developing-Set"><a href="#1-1-2-Developing-Set" class="headerlink" title="1.1.2  Developing Set"></a>1.1.2  Developing Set</h2><p>为了评估我们模型的性能，我们使用了5个测试集[1,10]作为我们的开发集:<br>• VoxCeleb1-0:从只有40个说话人的VoxCeleb1测试数据集中采样37,720条音频。<br>• VoxCeleb1-E:这是VoxCeleb1-0的扩展版本。这个数据集包含1251个说话人的581,480条音频。<br>• VoxCeleb1-H:这个数据集有552,536条音频。由于这一组中的每一对都有相同的国籍和性别，这就更难了。<br>• VoxSRC20-dev:这是VoxSRC2020的验证集，试验包含由VoxCeleb_cd提供的域外数据。这个数据集有263,486条音频。<br>• VoxSRC21-val:这是VoxSRC2021的验证集，包含6万条音频。这组试验包含更多的多语言数据。  </p>
+<h2 id="1-1-3-Features"><a href="#1-1-3-Features" class="headerlink" title="1.1.3  Features"></a>1.1.3  Features</h2><p>在离线（ offline）训练模式下，基于Kaldi提取81维和96维log Mel滤波组能量。窗口大小为25毫秒，帧移为10毫秒。在没有额外语音激活检测(VAD)的情况下，提取了200帧特征。在（online）在线训练模式下，语音片段被切成2秒，并在飞行中增强。基于torchaudio提取96维log Mel滤波组能量。在两种训练模式下，所有特征均归一化为倒谱均值。</p>
+<h2 id="1-2-Network-Structures"><a href="#1-2-Network-Structures" class="headerlink" title="1.2  Network Structures"></a>1.2  Network Structures</h2><h2 id="1-2-1-Backbone"><a href="#1-2-1-Backbone" class="headerlink" title="1.2.1 Backbone"></a>1.2.1 Backbone</h2><p>卷积神经网络[6,11,12]已经成为说话人验证任务的主流解决方案。我们的骨干包括两种最先进的型号:RepVGG和ResNet</p>
+<p>• RepVGG:最近的研究提出了一种构建ConvNets的新方法。该方法称为重新参数化技术。该方法将训练时间和推理时间结构解耦。RepVGG, 作为一种重新参数化的模型，在计算机视觉领域具有很强的竞争力。我们,在第一次引入了这个RepVGG架构演讲者验证。如图1所示，RepVGG Block有一个独立的3x3和1x1卷积层使用批处理规范化和标识分支，只有批处理规范化层在训练时间。由于卷积和批处理归一化可以融合成一个卷积层和两个1x1卷积层批处理归一化层可以转换为3x3卷积层，这个块中的所有分支都等于三个3 x3的隆起。所有这些3x3卷积共享相同的设置(内核大小、步幅、组、扩张因子等等)（(kernel size, stride, groups, dilation, and so on），这样他们就可以融合成一个3x3的卷积，只需要简单地添加参数过滤器。当合并到一个3x3卷积和一个ReLU层，这个在推断过程中与VGG块相同时间。我们选择RepVGG-A2、RepVGG-B1、RepVGGB2g4和RepVGG-B2作为我们的骨干。所有的模型采用64 base channels ，除了RepVGG-A2使用96 base channels 。</p>
+<p>• ResNet:[14]作为最经典的ConvNets之一，ResNet已经证明了它在说话人验证方面的能力。在我们的系统中，既有基于基本块(basic-block-based)的ResNet-34，也有基于瓶颈块(bottleneck-block-based)的ResNet(更深层次的结构:ResNet-101和ResNet-152)。这些resnet的所有基本通道都是64。</p>
+<h2 id="1-2-2-Pooling-Method-池化方法"><a href="#1-2-2-Pooling-Method-池化方法" class="headerlink" title="1.2.2 Pooling Method 池化方法"></a>1.2.2 Pooling Method 池化方法</h2><p>池化层的目标是将变量序列聚合为话语级嵌入。实现这一目的的基本思路是沿着时间轴[15]计算均值和标准导数。然而，不同框架的贡献可能是不相等的，这一事实可能会受到限制。引入注意机制[16]来计算骨干输出的加权统计量。此外，还引入了多线程（multi-head mechanism）机制来增加注意的多样性，如多线程自注意力机制(MHSA：multi-head self-attentive)池化层[17]和自多线程注意力机制(MHA：self multi-head attention)池化层[18]。这两种方法的主要区别在于注意机制中头的定义。后者不是通过不同的“头”(我们称之为查询)来关注整个特性，而是将特性分成几个部分，每个“头”关注其相应的部分。结合以上两种多头方法，我们首次提出了一种多查询多头注意池机制(MQMHA：multi-query multihead attention pooling mechanism )。因为这方法可以帮助我们关注不同的部分，获得更多样化的信息。方法描述如下:</p>
+<p><img src="/images/2021-09-24-20-46-10.png"></p>
+<h2 id="1-2-3-损失函数"><a href="#1-2-3-损失函数" class="headerlink" title="1.2.3 损失函数"></a>1.2.3 损失函数</h2><p>近年来，基于边缘的softmax算法在说话人识别中得到了广泛的应用。为了获得更好的性能，我们通过两种方法增强AM-Softmax[19,20]和AAMSoftmax[21]损耗函数。首先，引入子中心方法[22]，以减小可能的噪声样本的影响。公式由:<br><img src="/images/2021-09-24-20-54-27.png"><br>Max函数表示选择了最近的中心它抑制了可能干扰主导类中心的噪声样本其次，我们提出了Inter-TopK惩罚，进一步关注那些获得高度相似度的比较不属于自己的样本的中心。因此，它对这些容易分类错误的中心增加了额外的惩罚。鉴于有N个样例和多个C类的批次，在AM-Softmax的基础上增加额外Inter-TopK惩罚的配方为:<br><img src="/images/2021-09-24-20-55-35.png"></p>
+<p><img src="/images/2021-09-24-20-57-51.png"></p>
+<h2 id="1-3训练策略"><a href="#1-3训练策略" class="headerlink" title="1.3训练策略"></a>1.3训练策略</h2><p>我们使用Pytorch[23]进行实验。我们所有的模型都经过两个阶段的训练。在第一阶段，SGD优化器的动力为0.9和权重衰减1e-3(在线训练4e-4)。我们使用了8个gpu和1024个小批量，初始学习率为0.08来训练我们所有的模型。如1.1.1节所述，为避免过拟合，加快训练速度，每批样本采用200帧。我们采用ReduceLROnPlateau调度器，每2000次迭代验证一次，patience为2。最小学习率为1.0e-6，衰减系数为0.1。此外，边际值从0逐渐增加到0.2[24]。在基于大边距的微调阶段（ large-margin-based fine-tuning stage）[25]中，设置与第一阶段略有不同。首先，我们将速度增广部分从训练集中去除，以避免域失配。只剩下5994个类别。其次，我们将帧大小从200改变为600，并将边缘从0.2指数级增加为0.5。AM-Softmax损失被AM-Softmax损失取代。为了使训练更加稳定，我们去掉了Inter-TopK惩罚。最后，我们采用较小的微调学习率8e-5和256批大小。当衰减系数为0.5时，学习率调度基本不变</p>
+<h2 id="1-4-Back-end-后端打分"><a href="#1-4-Back-end-后端打分" class="headerlink" title="1.4 Back-end 后端打分"></a>1.4 Back-end 后端打分</h2><p>在完成微调阶段后，从完全连通层提取512维扬声器嵌入，然后进行长度归一化，计算余弦相似度。此外，我们利用speaker-wise adaptive score normalization (AS-Norm)[3]和Quality Measure Functions (QMF)[11,25]来校准分数，这些方法大大提高了性能。对于AS-Norm，我们选择了没有任何增强的原始VoxCeleb2开发数据集。提取嵌入内容后，所有嵌入内容均为说话人平均，共5994个队列。然后，分数将由这个说话者智慧的AS-Norm使用前400名冒名顶替者的分数进行校准。对于QMF，我们结合了Kaldi计算的语音时长、基于AS-Norm的冒名者均值和非归一化嵌入量三种质量。与IDLAB的[11]方式一样，我们也从最初的VoxCeleb2-dev中选择了30k个试验作为QMF的训练集。然后训练Logistic回归(LR)作为我们的QMF模型。<br><img src="/images/2021-09-24-21-05-29.png"></p>
+<h2 id="1-5-Results"><a href="#1-5-Results" class="headerlink" title="1.5 Results"></a>1.5 Results</h2><h2 id="1-5-1-Baseline-System-Ablation-Study"><a href="#1-5-1-Baseline-System-Ablation-Study" class="headerlink" title="1.5.1. Baseline System Ablation Study"></a>1.5.1. Baseline System Ablation Study</h2><p><img src="/images/2021-09-24-21-08-31.png"><br><img src="/images/2021-09-24-22-15-41.png"><br><img src="/images/2021-09-24-22-15-07.png"><br><img src="/images/2021-09-24-22-16-40.png"><br>对于我们所有的模型，我们都遵循同样的程序，唯一的变量是我们的主干backbone.</p>
+<h2 id="1-5-2-Sub-Systems-and-Fusion-Performance子系统和融合性能"><a href="#1-5-2-Sub-Systems-and-Fusion-Performance子系统和融合性能" class="headerlink" title="1.5.2  Sub-Systems and Fusion Performance子系统和融合性能"></a>1.5.2  Sub-Systems and Fusion Performance子系统和融合性能</h2><p>表2描述了我们所有的子系统。总共使用9个不同的主干来生成不同的表示。离线训练系统同时使用81维和96维声学特征，而在线训练系统只使用96维声学特征。表3展示了我们各个子系统在各种试验中取得的结果。我们发现，与基线系统等较小的模型相比，RepVGG-B1和ResNet101等大型模型似乎产生了更好的结果。然而，一个更大的模型，如ResNet-152和RepVGG-B2，就急剧增加的参数而言，不能带来类似的性能提升。此外，值得一提的是，这些更大的模型在VoxCeleb2-dev数据集上显示出过度拟合的迹象。由于学习率小于le-4，这些大系统的EER和minDCF下降。然而，即使我们在早期阶段终止了培训，这些系统的性能仍然保持SOTA。96维Fbank特征是81维Fbank特征的良好补充。我们使用的在线系统不是最佳选择，因为我们仍在研究这种新的训练模式。虽然它显示了一个有竞争力的结果，但在离线系统中不能达到我们大的最好的结果。<br>表4显示了我们提交给VoxSRC2021的一些文件和我们的融合系统的最终结果。值得一提的是，我们的RepVGG-B1仅用一个模型就实现了0.1212 minDCF和2.2410% EER，而ResNet-152实现了0.1195 minDCF和2.16% EER。我们根据VoxCeleb1-H和VoxSRC21-val的结果调整了所有这些模型的融合权重。在VoxSRC2021挑战赛中，最终的融合结果是0.1034 minDCF和1.846% EER。与ResNet-152模型相比，minDCF和EER的融合结果分别提高了12.47%和14.54%。<br><img src="/images/2021-09-24-22-30-35.png"></p>
+<h1 id="2-Conclusions-结论"><a href="#2-Conclusions-结论" class="headerlink" title="2. Conclusions 结论"></a>2. Conclusions 结论</h1><p>在这个挑战中，我们首先在说话人验证中引入了一个新的主干结构(RepVGG)。我们还提出了MQMHA、Inter-Topk损失和基于域的大裕度微调方法。所有这些方法和大型骨干确保了我们在VoxSRC 2021的第1和2轨道上的第一个位置。本系统的最终结果为0.1034 minDCF和1.846% EER。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Xi Xuan
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2021/09/24/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-The%20SpeakIn%20System%20for%20VoxCeleb%20Speaker%20Recognition%20Challange%202021/" title="论文阅读 | The SpeakIn System for VoxCeleb Speaker Recognition Challange 2021">http://example.com/2021/09/24/论文阅读-The SpeakIn System for VoxCeleb Speaker Recognition Challange 2021/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/21/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-IDLAB%20VoxCeleb%20Speaker%20Recognition%20Challenge%202020%E7%B3%BB%E7%BB%9F%E6%8F%8F%E8%BF%B0/" rel="prev" title="论文阅读 | IDLAB VoxCeleb Speaker Recognition Challenge 2020系统描述">
+                  <i class="fa fa-chevron-left"></i> 论文阅读 | IDLAB VoxCeleb Speaker Recognition Challenge 2020系统描述
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/26/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-In%20defence%20of%20metric%20learning%20for%20speaker%20recognition/" rel="next" title="论文阅读 | In defence of metric learning for speaker recognition">
+                  论文阅读 | In defence of metric learning for speaker recognition <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HePeng</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">39k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">35 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

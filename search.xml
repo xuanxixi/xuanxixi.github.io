@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>【超详细】windows10装tensorflow1、tensorflow2环境</title>
+    <url>/2021/03/14/%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E3%80%91windows10%E8%A3%85tensorflow1%E3%80%81tensorflow2%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<h1 id="一、下载anaconda3"><a href="#一、下载anaconda3" class="headerlink" title="一、下载anaconda3"></a>一、下载anaconda3</h1><p><a href="https://www.anaconda.com/products/individual#Downloads">https://www.anaconda.com/products/individual#Downloads</a><br>或复制以下链接到迅雷直接下载：<a href="https://repo.anaconda.com/archive/Anaconda3-2020.11-Windows-x86_64.exe">https://repo.anaconda.com/archive/Anaconda3-2020.11-Windows-x86_64.exe</a></p>
+<p><img src="/images/2021-09-20-21-26-49.png"></p>
+<p>一直“next”，选择“All User”,“Path”配置环境变量都勾上，直到“Finsh”</p>
+<h1 id="二、根据tensorflow官网指示的版本，确定python-cuda-cudnn的版本"><a href="#二、根据tensorflow官网指示的版本，确定python-cuda-cudnn的版本" class="headerlink" title="二、根据tensorflow官网指示的版本，确定python\cuda\cudnn的版本"></a>二、根据tensorflow官网指示的版本，确定python\cuda\cudnn的版本</h1><p>官网：<a href="https://www.tensorflow.org/install/source_windows%E3%80%90%E9%9C%80%E8%A6%81%E8%BF%9E%E5%A4%96%E7%BD%91vpn%E6%89%8D%E8%83%BD%E8%AE%BF%E9%97%AE%E3%80%91">https://www.tensorflow.org/install/source_windows【需要连外网vpn才能访问】</a></p>
+<p>没有vpn可看下图：<br><img src="/images/2021-09-20-21-27-50.png"><br><img src="/images/2021-09-20-21-28-31.png"></p>
+<p>确定接下来装tf1环境：python3.6.9+CUDA10.0+cudnn7.4+tensorflow-gpu1.14.0+tensorflow1.14.0<br>确定接下来装tf2环境：python3.6.9+CUDA10.1+cudnn7.6+tensorflow-gpu2.3.0+tensorflow2.3.0</p>
+<h1 id="三、配置conda、pip镜像源"><a href="#三、配置conda、pip镜像源" class="headerlink" title="三、配置conda、pip镜像源"></a>三、配置conda、pip镜像源</h1><p>为了接下来conda install 和pip install 速度更快，我们要配置conda、pip镜像源</p>
+<p>conda:<br>Windows 用户无法直接创建名为.condarc的文件，可先执行conda config –set show_channel_urls yes生成该文件。生成的文件在C:\Users\bifthan.condarc</p>
+<p>若要对其进行修改，可以编辑用户目录下的.condarc文件，其路径为C:\Users\bifthan.condarc</p>
+<p>这里推荐使用清华镜像源，若要使用其他源可以善用搜索</p>
+<p>将下列配置覆盖到该文件中，即可使用清华镜像源进行快速下载</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">channels:</span><br><span class="line"></span><br><span class="line">  - defaults</span><br><span class="line"></span><br><span class="line">show_channel_urls: true</span><br><span class="line"></span><br><span class="line">channel_alias: https://mirrors.tuna.tsinghua.edu.cn/anaconda</span><br><span class="line"></span><br><span class="line">default_channels:</span><br><span class="line"></span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main</span><br><span class="line"></span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free</span><br><span class="line"></span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r</span><br><span class="line"></span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/pro</span><br><span class="line"></span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2</span><br><span class="line"></span><br><span class="line">custom_channels:</span><br><span class="line"></span><br><span class="line">  conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line"></span><br><span class="line">  msys2: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line"></span><br><span class="line">  bioconda: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line"></span><br><span class="line">  menpo: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line"></span><br><span class="line">  pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line"></span><br><span class="line">  simpleitk: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>conda config –show channels可以查看全部源</p>
+<p><img src="/images/2021-09-20-21-31-05.png"></p>
+<p>pip:在C:\Users\bifthan\pip  下面新建pip.ini文件，把下面复制到文件中，保存</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">[global]</span><br><span class="line"></span><br><span class="line">trusted-host=pypi.doubanio.com            </span><br><span class="line"></span><br><span class="line">index-url=https://pypi.doubanio.com/simple/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>下面这3个pip源速度都不错，可以任选</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">https://pypi.doubanio.com/ 豆瓣</span><br><span class="line"></span><br><span class="line">http://mirrors.aliyun.com/pypi/ 阿里</span><br><span class="line"></span><br><span class="line">http://pypi.mirrors.ustc.edu.cn/ 中国科学技术大学</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="四、创建一个名为“tf1keras”的虚拟环境"><a href="#四、创建一个名为“tf1keras”的虚拟环境" class="headerlink" title="四、创建一个名为“tf1keras”的虚拟环境"></a>四、创建一个名为“tf1keras”的虚拟环境</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">conda remove -n tf1keras--all</span><br><span class="line"></span><br><span class="line">conda create -n tf1keraspython=3.6.9# 创建一个python3的环境，名为tf1keras</span><br><span class="line"></span><br><span class="line">conda activate tf1keras# 激活tf1keras环境</span><br><span class="line"></span><br><span class="line">conda install jupyter notebook# 安装ipykernel模块</span><br><span class="line"></span><br><span class="line">python -m ipykernel install --user --name tf1keras --display-name &quot;tf1keras&quot; # 进行配置</span><br><span class="line"></span><br><span class="line">jupyter kernelspec list#查看jupyter notebook里的kernel</span><br><span class="line"></span><br><span class="line">若想删除 jupyter kernelspec remove music#删除名叫icsharpkernel的kernel</span><br></pre></td></tr></table></figure>
+
+<h1 id="五、创建一个名为“tf2keras”的虚拟环境"><a href="#五、创建一个名为“tf2keras”的虚拟环境" class="headerlink" title="五、创建一个名为“tf2keras”的虚拟环境"></a>五、创建一个名为“tf2keras”的虚拟环境</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">conda remove -n tf2gpu --all</span><br><span class="line"></span><br><span class="line">conda create -n tf2keras python=3.6.9# 创建一个python3的环境，名为tf2keras</span><br><span class="line"></span><br><span class="line">conda activate tf2keras # 激活tf2keras环境</span><br><span class="line"></span><br><span class="line">conda install jupyter notebook# 安装ipykernel模块</span><br><span class="line"></span><br><span class="line">python -m ipykernel install --user --name tf2keras --display-name &quot;tf2keras&quot; # 进行配置</span><br><span class="line"></span><br><span class="line">jupyter kernelspec list#查看jupyter notebook里的kernel</span><br><span class="line"></span><br><span class="line">若想删除 jupyter kernelspec remove tf2keras#删除名叫icsharpkernel的kernel</span><br></pre></td></tr></table></figure>
+<h1 id="六、安装CUDA10-1-cudnn7-6"><a href="#六、安装CUDA10-1-cudnn7-6" class="headerlink" title="六、安装CUDA10.1+cudnn7.6"></a>六、安装CUDA10.1+cudnn7.6</h1><p>安装cuda10.1:<br>官网：<a href="https://developer.nvidia.com/cuda-toolkit-archive">https://developer.nvidia.com/cuda-toolkit-archive</a></p>
+<p><a href="https://developer.nvidia.com/compute/cuda/10.1/Prod/local_installers/cuda_10.1.168_425.25_win10.exe">https://developer.nvidia.com/compute/cuda/10.1/Prod/local_installers/cuda_10.1.168_425.25_win10.exe</a></p>
+<p>复制链接到迅雷下载<br><img src="/images/2021-09-20-21-31-36.png"></p>
+<p><img src="/images/2021-09-20-21-31-58.png"></p>
+<p>一直下一步，直到结束。</p>
+<p>配置系统变量-电脑-属性-下面框里—-Path–C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\bin<br><img src="/images/2021-09-20-21-32-25.png"></p>
+<p>再检查下面的框里是否有</p>
+<p>CUDA_PATH                   C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1</p>
+<p>CUDA_PATH_V10_1     C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1<br><img src="/iamges/2021-09-20-21-32-45.png"></p>
+<p>nvcc -V验证一下是否已经装好。</p>
+<p>安装cudnn7.6<br>cudnn:<a href="https://developer.nvidia.com/rdp/cudnn-download">https://developer.nvidia.com/rdp/cudnn-download</a></p>
+<p>login:需要注册账号密码登录<br><img src="/images/2021-09-20-21-33-24.png"></p>
+<p>或者复制<a href="https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.1_20191031/cudnn-10.1-windows10-x64-v7.6.5.32.zip%E8%BF%85%E9%9B%B7%E4%B8%8B%E8%BD%BD">https://developer.nvidia.com/compute/machine-learning/cudnn/secure/7.6.5.32/Production/10.1_20191031/cudnn-10.1-windows10-x64-v7.6.5.32.zip迅雷下载</a></p>
+<p>解压缩之后，把cudnn下面的三个文件夹中的文件</p>
+<p><img src="/images/2021-09-20-21-34-03.png"></p>
+<p>然后再系统环境变量的Path中，加以下路径</p>
+<p>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\lib\x64</p>
+<h1 id="七、安装CUDA10-0-cudnn7-4"><a href="#七、安装CUDA10-0-cudnn7-4" class="headerlink" title="七、安装CUDA10.0+cudnn7.4"></a>七、安装CUDA10.0+cudnn7.4</h1><p>同上</p>
+<p>CUDA10.0：<a href="https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers/cuda_10.0.130_411.31_win10">https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers/cuda_10.0.130_411.31_win10</a></p>
+<p>复制到迅雷下载</p>
+<p>cudnn7.4：<a href="https://developer.nvidia.com/rdp/cudnn-download">https://developer.nvidia.com/rdp/cudnn-download</a></p>
+<h1 id="八、安装tensorflow1-14到“tf1keras”环境里"><a href="#八、安装tensorflow1-14到“tf1keras”环境里" class="headerlink" title="八、安装tensorflow1.14到“tf1keras”环境里"></a>八、安装tensorflow1.14到“tf1keras”环境里</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip install tensorflow==1.14.0</span><br></pre></td></tr></table></figure>
+
+<p>如果上述方法装不上</p>
+<p>还有一种方法：把tensorflow1.14.0下载到本地，</p>
+<p><a href="https://pypi.org/project/tensorflow/1.14.0/#files">https://pypi.org/project/tensorflow/1.14.0/#files</a></p>
+<p><img src="/images/2021-09-20-21-34-47.png"></p>
+<p>选择py36-windows版本</p>
+<p>然后在路径下进入虚拟环境tf2keras，再打开cmd，输入pip install 文件名</p>
+<p>安装成功。</p>
+<h1 id="九、安装tensorflow2-3到“tf2keras”环境里"><a href="#九、安装tensorflow2-3到“tf2keras”环境里" class="headerlink" title="九、安装tensorflow2.3到“tf2keras”环境里"></a>九、安装tensorflow2.3到“tf2keras”环境里</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip install tensorflow==2.3.0</span><br></pre></td></tr></table></figure>
+
+<p>如果上述方法装不上</p>
+<p>还有一种方法：把tensorflow2.3.0下载到本地，</p>
+<p><a href="https://pypi.org/project/tensorflow/2.3.0/#files">https://pypi.org/project/tensorflow/2.3.0/#files</a></p>
+<p><img src="/images/2021-09-20-21-35-12.png"><br>选择py36-windows版本然后在路径下进入虚拟环境tf2keras，再打开cmd，输入pip install 文件名，安装成功。<br><img src="/images/2021-09-20-21-35-31.png"></p>
+<h1 id="十、验证tf2环境下的gpu是否能用"><a href="#十、验证tf2环境下的gpu是否能用" class="headerlink" title="十、验证tf2环境下的gpu是否能用"></a>十、验证tf2环境下的gpu是否能用</h1><p>进到tf2keras环境–</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">&gt;python</span><br><span class="line"></span><br><span class="line">&gt;import tensorflow as tf</span><br><span class="line"></span><br><span class="line">&gt;tf.test.is_gpu_available()</span><br></pre></td></tr></table></figure>
+<p><img src="/images/2021-09-20-21-35-55.png"></p>
+<p>没有报错，就代表全部都配置好了。</p>
+<h1 id="十一、切换tf1和tf2环境"><a href="#十一、切换tf1和tf2环境" class="headerlink" title="十一、切换tf1和tf2环境"></a>十一、切换tf1和tf2环境</h1><p>要更改系统环境变量，CUDA_PATH的v10.0/v10.1即可</p>
+<p>用tf1就改成v10.0；用tf2就改成v10.1。改后重启生效。</p>
+<p><img src="/images/2021-09-20-21-36-21.png"></p>
+]]></content>
+      <categories>
+        <category>个人深度学习工作站配置</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ubuntu个人深度学习工作站配置</title>
+    <url>/2021/03/14/ubuntu%E4%B8%AA%E4%BA%BA%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E7%AB%99%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>Nvidia460+cuda11.0+cudnn8.1.1+Anaconda3+Python 3.6.9<br>设备：2块GeForce GTX 1660<br>版本：Nvidia460+cuda11.0+cudnn8.1.1+Anaconda3+python3.8.5<br>主要根据该链接配置：<a href="https://zhuanlan.zhihu.com/p/336429888">https://zhuanlan.zhihu.com/p/336429888</a></p>
+<p>换源：添加中科大源、清华源、阿里云源</p>
+<p>源的写法和ubuntu版本是有关的，不要写错。这里是Ubuntu18.04</p>
+<p>参考：<a href="https://www.cnblogs.com/wangjq19920210/p/9124193.html">https://www.cnblogs.com/wangjq19920210/p/9124193.html</a></p>
+<p><a href="https://blog.csdn.net/qq_34525916/article/details/110953980">https://blog.csdn.net/qq_34525916/article/details/110953980</a></p>
+<p>安装完Nvidia显卡驱动之后，cuda安装补充：<a href="https://www.jianshu.com/p/10c4d273ec57">https://www.jianshu.com/p/10c4d273ec57</a></p>
+<p><img src="/images/2021-09-20-21-50-05.png"></p>
+<p>注意：CUDA的driver不要选  前面有X代表选择。</p>
+<p>Ubuntu 20.04安装Anaconda3+配置+使用jupyter notebook<br><a href="https://blog.csdn.net/weixin_44776894/article/details/106159483">https://blog.csdn.net/weixin_44776894/article/details/106159483</a></p>
+<p>本地conda环境搭建</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">conda remove -n testy --all</span><br><span class="line"></span><br><span class="line">conda create -n tf2 python=3.6.9# 创建一个python3的环境，名为tf2keras</span><br><span class="line"></span><br><span class="line">conda activate tf2# 激活tf2keras环境</span><br><span class="line"></span><br><span class="line">conda install jupyter notebook# 安装ipykernel模块</span><br><span class="line"></span><br><span class="line">python -m ipykernel install --user --name audiotf2 --display-name &quot;audiotf2&quot; # 进行配置</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">jupyter kernelspec list#查看jupyter notebook里的kernel</span><br><span class="line"></span><br><span class="line">jupyter kernelspec remove testy#删除名叫icsharpkernel的kernel</span><br></pre></td></tr></table></figure>
+
+
+<p>验证本地conda环境是否搭建好</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">activate pv3</span><br><span class="line"></span><br><span class="line">jupyter notebook</span><br></pre></td></tr></table></figure>
+
+<p>弹出页面-新建-kernel里有pv3选项代表已经搭建好</p>
+<p>cudnn: <a href="https://developer.nvidia.com/rdp/cudnn-download">https://developer.nvidia.com/rdp/cudnn-download</a></p>
+<p>tf2keras:  <a href="https://pypi.org/project/tensorflow-gpu/2.2.0/">https://pypi.org/project/tensorflow-gpu/2.2.0/</a></p>
+<p>keras:  <a href="https://pypi.org/project/tensorflow-gpu/1.14.0/">https://pypi.org/project/tensorflow-gpu/1.14.0/</a></p>
+]]></content>
+      <categories>
+        <category>个人深度学习工作站配置</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>语义分割 - 识别肝脏医学图像</title>
+    <url>/2021/08/01/%E5%8C%BB%E5%AD%A6%E8%82%9D%E8%84%8F%E5%9B%BE%E5%83%8F-%E8%AF%AD%E4%B9%89%E5%88%86%E5%89%B2/</url>
+    <content><![CDATA[<h2 id="语义分割-识别肝脏医学图像"><a href="#语义分割-识别肝脏医学图像" class="headerlink" title="语义分割 - 识别肝脏医学图像"></a>语义分割 - 识别肝脏医学图像</h2><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><h4 id="1-所需环境"><a href="#1-所需环境" class="headerlink" title="1. 所需环境"></a>1. 所需环境</h4><h4 id="2-数据集"><a href="#2-数据集" class="headerlink" title="2. 数据集"></a>2. 数据集</h4><h4 id="3-数据预处理"><a href="#3-数据预处理" class="headerlink" title="3. 数据预处理"></a>3. 数据预处理</h4><h4 id="4-网络结构Unet和Att-Unet"><a href="#4-网络结构Unet和Att-Unet" class="headerlink" title="4. 网络结构Unet和Att-Unet"></a>4. 网络结构Unet和Att-Unet</h4><h4 id="5-训练步骤"><a href="#5-训练步骤" class="headerlink" title="5. 训练步骤"></a>5. 训练步骤</h4><h4 id="6-训练结果"><a href="#6-训练结果" class="headerlink" title="6. 训练结果"></a>6. 训练结果</h4><h4 id="7-单张图片预测"><a href="#7-单张图片预测" class="headerlink" title="7. 单张图片预测"></a>7. 单张图片预测</h4><hr>
+<h2 id="1、所需环境"><a href="#1、所需环境" class="headerlink" title="1、所需环境"></a>1、所需环境</h2><p>torch==1.2.<br>torchvision==0.4.</p>
+<h2 id="2、数据集"><a href="#2、数据集" class="headerlink" title="2、数据集"></a>2、数据集</h2><ol>
+<li>原图在./ganzang_Datasets/Imags，共 400 张</li>
+<li>标签在 ./ganzang_Datasets/Labels，共 400 张</li>
+</ol>
+<h2 id="3、数据预处理"><a href="#3、数据预处理" class="headerlink" title="3、数据预处理"></a>3、数据预处理</h2><ol>
+<li><p>在训练前运行png2txt.py按照train:val=9:1划分数据集(train 360 张，val 40张)会在./ganzang_Datasets/ImageSets/Segmentation下生成trainval.txt、<br>train.txt、val.txt，里面存放的是原图图片文件名称。</p>
+</li>
+<li><p>./until/dataloader_medical.py对数据集进行预处理，不需运行，只需导入。</p>
+</li>
+</ol>
+<h2 id="4、网络结构-Unet-和-Att-Unet"><a href="#4、网络结构-Unet-和-Att-Unet" class="headerlink" title="4、网络结构 Unet 和 Att-Unet"></a>4、网络结构 Unet 和 Att-Unet</h2><p>分别运行Unet-summary.py和Att-Unet-summary.py可以得到Unet和Att-<br>Unet的网络结构和参数。或者直接打开Unet.txt和AttU-net.txt查看网络结构<br>和参数。</p>
+<ol>
+<li>Unet</li>
+</ol>
+<ol>
+<li>原理：Unet可以分为三个部分：</li>
+</ol>
+<p>⚫ 主干特征提取部分：Unet的主干特征提取部分与VGG16类似，为<br>conv2d和MaxPool2d的堆叠。利用主干特征提取部分，可以获得 5<br>个初步有效的特征层。在下一步，利用这 5 个有效特征层进行特征融<br>合。<br>⚫ 加强特征提取部分：利用上一步获得的 5 个初步有效特征层进行上采<br>样，并且进行特征融合，最终得到一个融合所有特征的特征层。<br>⚫ 预测部分：利用最终获得的一个融合所有特征的特征层，对每个特征<br>点进行分类，相当于对每一个像素点进行分类。<br>2) 代码实现：</p>
+<p>⚫ 主干特征提取部分：使用VGG16的conv2d和MaxPool2d进行堆叠，<br>当输入的图像大小为(512,512,3)时，具体实现如下：<br>Conv1:进行 2 次 3 × 3 的 64 通道卷积，获得 1 个(512,512, 64 )的初步有效<br>特征层，再进行 2 × 2 最大池化，获得 1 个( 256 , 256 , 64 )的特征层<br>Conv 2 : 进行 2 次 3 × 3 的 128 通道卷积，获得 1 个( 256 , 256 , 128 )的初步<br>有效特征层，再进行 2 × 2 最大池化，获得 1 个( 128 , 128 , 128 ) 的特征层<br>Conv 3 : 进行 3 次 3 × 3 的 256 通道卷积，获得 1 个( 128 , 128 , 256 )的初步<br>有效特征层，再进行 2 × 2 最大池化，获得 1 个( 64 , 64 , 256 ) 的特征层  </p>
+<p>Conv 4 : 进行 3 次 3 × 3 的 512 通道卷积，获得 1 个( 64 , 64 , 512 )的初步有<br>效特征层，再进行 2 × 2 最大池化，获得 1 个( 32 , 32 , 512 ) 的特征层<br>Conv 5 : 进行 3 次 3 × 3 的 256 通道卷积，获得 1 个( 32 , 32 , 512 ) 的特征层  </p>
+<h2 id="主干特征提取部分代码如下：或见-nets-vgg-py"><a href="#主干特征提取部分代码如下：或见-nets-vgg-py" class="headerlink" title="主干特征提取部分代码如下：或见./nets/vgg.py"></a>主干特征提取部分代码如下：或见./nets/vgg.py</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import torch</span><br><span class="line">import torch.nn as nn</span><br><span class="line">from torchvision.models.utils import load_state_dict_from_url</span><br><span class="line">class VGG(nn.Module):</span><br><span class="line"> def __init__(self, features, num_classes=1000):</span><br><span class="line"> super(VGG, self).__init__()</span><br><span class="line"> self.features = features</span><br><span class="line"> self.avgpool = nn.AdaptiveAvgPool2d((7, 7))</span><br><span class="line"> self.classifier = nn.Sequential(</span><br><span class="line"> nn.Linear(512 * 7 * 7, 4096),</span><br><span class="line"> nn.ReLU(True),</span><br><span class="line"> nn.Dropout(),</span><br><span class="line"> nn.Linear(4096, 4096),</span><br><span class="line"> nn.ReLU(True),</span><br><span class="line"> nn.Dropout(),</span><br><span class="line"> nn.Linear(4096, num_classes),</span><br><span class="line"> )</span><br><span class="line"> self._initialize_weights()</span><br><span class="line"> def forward(self, x):</span><br><span class="line"> x = self.features(x)</span><br><span class="line"> x = self.avgpool(x)</span><br><span class="line"> x = torch.flatten(x, 1)</span><br><span class="line"> x = self.classifier(x)</span><br><span class="line"> return x</span><br><span class="line"> def _initialize_weights(self):</span><br><span class="line"> for m in self.modules():</span><br><span class="line"> if isinstance(m, nn.Conv2d):</span><br><span class="line"> nn.init.kaiming_normal_(m.weight, mode=&#x27;fan_out&#x27;, </span><br><span class="line">nonlinearity=&#x27;relu&#x27;)</span><br><span class="line"> if m.bias is not None:</span><br><span class="line"> nn.init.constant_(m.bias, 0)</span><br><span class="line"> elif isinstance(m, nn.BatchNorm2d):</span><br><span class="line"> nn.init.constant_(m.weight, 1)</span><br><span class="line"> nn.init.constant_(m.bias, 0)</span><br><span class="line"> elif isinstance(m, nn.Linear):</span><br><span class="line"> nn.init.normal_(m.weight, 0, 0.01)</span><br><span class="line"> nn.init.constant_(m.bias, 0)</span><br><span class="line">def make_layers(cfg, batch_norm=False, in_channels = 3):</span><br><span class="line"> layers = []</span><br><span class="line"> for v in cfg:</span><br><span class="line"> if v == &#x27;M&#x27;:</span><br><span class="line"> layers += [nn.MaxPool2d(kernel_size=2, stride=2)]</span><br><span class="line"> else:</span><br><span class="line"> conv2d = nn.Conv2d(in_channels, v, kernel_size=3, padding=1)</span><br><span class="line"> if batch_norm:</span><br><span class="line"> layers += [conv2d, nn.BatchNorm2d(v), nn.ReLU(inplace=True)]</span><br><span class="line"> else:</span><br><span class="line"> layers += [conv2d, nn.ReLU(inplace=True)]</span><br><span class="line"> in_channels = v</span><br><span class="line"> return nn.Sequential(*layers)</span><br><span class="line"># 512,512,3 -&gt; 512,512,64 -&gt; 256,256,64 -&gt; 256,256,128 -&gt; 128,128,128 -&gt; </span><br><span class="line">128,128,256 -&gt; 64,64,256</span><br><span class="line"># 64,64,512 -&gt; 32,32,512 -&gt; 32,32,512</span><br><span class="line">cfgs = &#123;</span><br><span class="line"> &#x27;D&#x27;: [64, 64, &#x27;M&#x27;, 128, 128, &#x27;M&#x27;, 256, 256, 256, &#x27;M&#x27;, 512, 512, 512, &#x27;M&#x27;, </span><br><span class="line">512, 512, 512, &#x27;M&#x27;]</span><br><span class="line">&#125;</span><br><span class="line">def VGG16(pretrained, in_channels, **kwargs):</span><br><span class="line"> model = VGG(make_layers(cfgs[&quot;D&quot;], batch_norm = False, in_channels = </span><br><span class="line">in_channels), **kwargs)</span><br><span class="line"> if pretrained:</span><br><span class="line"> state_dict = </span><br><span class="line">load_state_dict_from_url(&quot;https://download.pytorch.org/models/vgg16-</span><br><span class="line">397923af.pth&quot;, model_dir=&quot;./model_data&quot;)</span><br><span class="line"> model.load_state_dict(state_dict)</span><br><span class="line"> </span><br><span class="line"> del model.avgpool</span><br><span class="line"> del model.classifier</span><br><span class="line"> return model</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>⚫ 加强特征提取部分：利用上一步得到的 5 个初步的有效特征层进行特征融合，特征融合的方式是对特征层进行上采样，并进行堆叠。获得一个(512,512,64)的融合了所有特征的特征层<br>⚫ 预测部分：利用一个 1 × 1 卷积进行通道调整，将最终特征层的通道数<br>调整成num_classes=2（肝脏、背景）。</p>
+<h2 id="加强特征提取部分和预测部分的代码如下。或见-nets-unet-py"><a href="#加强特征提取部分和预测部分的代码如下。或见-nets-unet-py" class="headerlink" title="加强特征提取部分和预测部分的代码如下。或见 ./nets/unet.py"></a>加强特征提取部分和预测部分的代码如下。或见 ./nets/unet.py</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import torch</span><br><span class="line">import torch.nn as nn</span><br><span class="line">from nets.vgg import VGG16</span><br><span class="line">class unetUp(nn.Module):</span><br><span class="line"> def __init__(self, in_size, out_size):</span><br><span class="line"> super(unetUp, self).__init__()</span><br><span class="line"> self.conv1 = nn.Conv2d(in_size, out_size, kernel_size=3, </span><br><span class="line">padding=1)</span><br><span class="line"> self.conv2 = nn.Conv2d(out_size, out_size, kernel_size=3, </span><br><span class="line">padding=1)</span><br><span class="line"> self.up = nn.UpsamplingBilinear2d(scale_factor=2)</span><br><span class="line"> def forward(self, inputs1, inputs2):</span><br><span class="line"> outputs = torch.cat([inputs1, self.up(inputs2)], 1)</span><br><span class="line"> outputs = self.conv1(outputs)</span><br><span class="line"> outputs = self.conv2(outputs)</span><br><span class="line"> return outputs</span><br><span class="line">class Unet(nn.Module):</span><br><span class="line"> def __init__(self, num_classes=21, in_channels=3, </span><br><span class="line">pretrained=False):</span><br><span class="line"> super(Unet, self).__init__()</span><br><span class="line"> self.vgg = VGG16(pretrained=pretrained,in_channels=in_channels)</span><br><span class="line"> in_filters = [192, 384, 768, 1024]</span><br><span class="line"> out_filters = [64, 128, 256, 512]</span><br><span class="line"> # upsampling</span><br><span class="line"> # 64,64,512</span><br><span class="line"> self.up_concat4 = unetUp(in_filters[3], out_filters[3])</span><br><span class="line"> # 128,128,256</span><br><span class="line"> self.up_concat3 = unetUp(in_filters[2], out_filters[2])</span><br><span class="line"> # 256,256,128</span><br><span class="line"> self.up_concat2 = unetUp(in_filters[1], out_filters[1])</span><br><span class="line"> # 512,512,64</span><br><span class="line"> self.up_concat1 = unetUp(in_filters[0], out_filters[0])</span><br><span class="line"> # final conv (without any concat)</span><br><span class="line"> self.final = nn.Conv2d(out_filters[0], num_classes, 1)</span><br><span class="line"> def forward(self, inputs):</span><br><span class="line"> feat1 = self.vgg.features[ :4 ](inputs)</span><br><span class="line"> feat2 = self.vgg.features[4 :9 ](feat1)</span><br><span class="line"> feat3 = self.vgg.features[9 :16](feat2)</span><br><span class="line"> feat4 = self.vgg.features[16:23](feat3)</span><br><span class="line"> feat5 = self.vgg.features[23:-1](feat4)</span><br><span class="line"> up4 = self.up_concat4(feat4, feat5)</span><br><span class="line"> up3 = self.up_concat3(feat3, up4)</span><br><span class="line"> up2 = self.up_concat2(feat2, up3)</span><br><span class="line"> up1 = self.up_concat1(feat1, up2)</span><br><span class="line"> final = self.final(up1)</span><br><span class="line"> </span><br><span class="line"> return final</span><br><span class="line"> def _initialize_weights(self, *stages):</span><br><span class="line"> for modules in stages:</span><br><span class="line"> for module in modules.modules():</span><br><span class="line"> if isinstance(module, nn.Conv2d):</span><br><span class="line"> nn.init.kaiming_normal_(module.weight)</span><br><span class="line">if module.bias is not None:</span><br><span class="line"> module.bias.data.zero_()</span><br><span class="line"> elif isinstance(module, nn.BatchNorm2d):</span><br><span class="line"> module.weight.data.fill_(1)</span><br><span class="line"> module.bias.data.zero_()</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Att-Unet"><a href="#2-Att-Unet" class="headerlink" title="2. Att-Unet"></a>2. Att-Unet</h3><ol>
+<li>原理：Att-Unet可以分为三个部分：</li>
+</ol>
+<p>⚫ 主干特征提取部分：Att-Unet的主干提取部分与Unet的主干特征提取<br>部分类似，为conv2d和MaxPool2d的堆叠，并且在conv2d和RELU<br>之间加了Batch normalization。利用主干特征提取部分，可以获得 5<br>个初步有效的特征层。在下一步，利用这 5 个有效特征层进行特征融<br>合。  </p>
+<p>⚫ 加强特征提取部分：利用上一步获得的 5 个初步有效特征层进行上采<br>样，然后将上采样结果与下一个未进行上采样的有效特征层执行Att<br>模块，得到注意力权重赋给低层特征层中，最终得到一个加上注意力<br>机制并且融合所有特征的特征层。</p>
+<p>⚫ 预测部分：利用最终获得的一个加上注意力机制并且融合所有特征的<br>特征层，对每个特征点进行分类，相当于对每一个像素点进行分类。</p>
+<ol start="2">
+<li>代码实现：</li>
+</ol>
+<p>输入(1×3×255×255)， 1 是batchsize,3是channel。经过 5 次下采样<br>（执行到class AttU_Net 的self.Conv5）时，已经是最小的feature<br>map(1× 1024 × 32 × 32 )，对其进行上采样up_conv得到<br>self.Up5(1× 512 × 64 × 64 )，然后对self.Up5(1× 512 × 64 × 64 )和<br>self.Conv4(1× 512 × 64 × 64 )执行Attention_block<br>Attention_block具体执行步骤：</p>
+<p>① 对self.Up5(1× 512 × 64 × 64 )做 1 × 1 卷积得到(1× 256 × 64 × 64 )</p>
+<p>② 对 self.Conv4(1× 512 × 64 × 64 )做 1 × 1 卷积得到(1× 256 × 64 × 64 )<br>③ 将①结果和②结果相加</p>
+<p>④ 对③结果做relu<br>⑤ 对④结果做conv( 256 × 1 )卷积，将 256 通道变为 1 通道，得到<br>(1× 1 × 64 × 64 )<br>⑥ 对⑤结果做sigmod，使得结果落在(0,1)之间，值越大，注意力权<br>重越大。<br>⑦ 将⑥得到的注意力权重和self.Conv4相乘，把注意力权重赋给低层<br>特征层。</p>
+<h3 id="Att-Unet-代码如下。或见-nets-attention-unet-py"><a href="#Att-Unet-代码如下。或见-nets-attention-unet-py" class="headerlink" title="Att-Unet 代码如下。或见 ./nets/attention_unet.py"></a>Att-Unet 代码如下。或见 ./nets/attention_unet.py</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from torch import nn</span><br><span class="line">from torch.nn import functional as F</span><br><span class="line">import torch</span><br><span class="line">from torchvision import models</span><br><span class="line">import torchvision</span><br><span class="line">from nets.vgg import VGG16</span><br><span class="line">class conv_block(nn.Module):</span><br><span class="line"> def __init__(self,ch_in,ch_out):</span><br><span class="line"> super(conv_block,self).__init__()</span><br><span class="line"> self.conv = nn.Sequential(</span><br><span class="line"> nn.Conv2d(ch_in, ch_out, </span><br><span class="line">kernel_size=3,stride=1,padding=1,bias=True),</span><br><span class="line"> nn.BatchNorm2d(ch_out),</span><br><span class="line"> nn.ReLU(inplace=True),</span><br><span class="line"> nn.Conv2d(ch_out, ch_out, </span><br><span class="line">kernel_size=3,stride=1,padding=1,bias=True),</span><br><span class="line"> nn.BatchNorm2d(ch_out),</span><br><span class="line"> nn.ReLU(inplace=True)</span><br><span class="line"> )</span><br><span class="line"> def forward(self,x):</span><br><span class="line"> x = self.conv(x)</span><br><span class="line"> return x</span><br><span class="line">class up_conv(nn.Module):</span><br><span class="line"> def __init__(self,ch_in,ch_out):</span><br><span class="line"> super(up_conv,self).__init__()</span><br><span class="line"> self.up = nn.Sequential(</span><br><span class="line"> nn.Upsample(scale_factor=2),</span><br><span class="line"> </span><br><span class="line">nn.Conv2d(ch_in,ch_out,kernel_size=3,stride=1,padding=1,bias=True),</span><br><span class="line"> nn.BatchNorm2d(ch_out),</span><br><span class="line"> nn.ReLU(inplace=True)</span><br><span class="line"> )</span><br><span class="line"> def forward(self,x):</span><br><span class="line"> x = self.up(x)</span><br><span class="line"> return x</span><br><span class="line">class Attention_block(nn.Module):</span><br><span class="line"> def __init__(self, F_g, F_l, F_int):</span><br><span class="line"> super(Attention_block, self).__init__()</span><br><span class="line"> self.W_g = nn.Sequential(</span><br><span class="line"> nn.Conv2d(F_g, F_int, kernel_size=1, stride=1, padding=0, </span><br><span class="line">bias=True),</span><br><span class="line"> nn.BatchNorm2d(F_int)</span><br><span class="line"> )</span><br><span class="line"> self.W_x = nn.Sequential(</span><br><span class="line"> nn.Conv2d(F_l, F_int, kernel_size=1, stride=1, padding=0, </span><br><span class="line">bias=True),</span><br><span class="line"> nn.BatchNorm2d(F_int)</span><br><span class="line"> )</span><br><span class="line"> self.psi = nn.Sequential(</span><br><span class="line"> nn.Conv2d(F_int, 1, kernel_size=1, stride=1, padding=0, </span><br><span class="line">bias=True),</span><br><span class="line"> nn.BatchNorm2d(1),</span><br><span class="line"> nn.Sigmoid()</span><br><span class="line"> )</span><br><span class="line"> self.relu = nn.ReLU(inplace=True)</span><br><span class="line"> def forward(self, g, x):</span><br><span class="line"> # 下采样的 gating signal 卷积</span><br><span class="line"> g1 = self.W_g(g)</span><br><span class="line"> # 上采样的 l 卷积</span><br><span class="line"> x1 = self.W_x(x)</span><br><span class="line"> # concat + relu</span><br><span class="line"> psi = self.relu(g1 + x1)</span><br><span class="line"> # channel 减为 1，并 Sigmoid,得到权重矩阵</span><br><span class="line"> psi = self.psi(psi)</span><br><span class="line"> # 返回加权的 x</span><br><span class="line"> return x * psi</span><br><span class="line">class AttU_Net(nn.Module):</span><br><span class="line"> def __init__(self, img_ch=3, output_ch=2):</span><br><span class="line"> super(AttU_Net, self).__init__()</span><br><span class="line"> self.Maxpool = nn.MaxPool2d(kernel_size=2, stride=2)</span><br><span class="line"> self.Conv1 = conv_block(ch_in=img_ch, ch_out=64)</span><br><span class="line"> self.Conv2 = conv_block(ch_in=64, ch_out=128)</span><br><span class="line"> self.Conv3 = conv_block(ch_in=128, ch_out=256)</span><br><span class="line"> self.Conv4 = conv_block(ch_in=256, ch_out=512)</span><br><span class="line"> self.Conv5 = conv_block(ch_in=512, ch_out=1024)</span><br><span class="line"> self.Up5 = up_conv(ch_in=1024, ch_out=512)</span><br><span class="line"> self.Att5 = Attention_block(F_g=512, F_l=512, F_int=256)</span><br><span class="line"> self.Up_conv5 = conv_block(ch_in=1024, ch_out=512)</span><br><span class="line"> self.Up4 = up_conv(ch_in=512, ch_out=256)</span><br><span class="line"> self.Att4 = Attention_block(F_g=256, F_l=256, F_int=128)</span><br><span class="line"> self.Up_conv4 = conv_block(ch_in=512, ch_out=256)</span><br><span class="line"> self.Up3 = up_conv(ch_in=256, ch_out=128)</span><br><span class="line"> self.Att3 = Attention_block(F_g=128, F_l=128, F_int=64)</span><br><span class="line"> self.Up_conv3 = conv_block(ch_in=256, ch_out=128)</span><br><span class="line"> self.Up2 = up_conv(ch_in=128, ch_out=64)</span><br><span class="line"> self.Att2 = Attention_block(F_g=64, F_l=64, F_int=32)</span><br><span class="line"> self.Up_conv2 = conv_block(ch_in=128, ch_out=64)</span><br><span class="line"> self.Conv_1x1 = nn.Conv2d(64, output_ch, kernel_size=1, </span><br><span class="line">stride=1, padding=0)</span><br><span class="line"> #self.sigmoid = nn.Sigmoid()</span><br><span class="line"> def forward(self, x):</span><br><span class="line"> # encoding path</span><br><span class="line"> x1 = self.Conv1(x)</span><br><span class="line"> x2 = self.Maxpool(x1)</span><br><span class="line"> x2 = self.Conv2(x2)</span><br><span class="line"> x3 = self.Maxpool(x2)</span><br><span class="line"> x3 = self.Conv3(x3)</span><br><span class="line"> x4 = self.Maxpool(x3)</span><br><span class="line"> x4 = self.Conv4(x4)</span><br><span class="line"> x5 = self.Maxpool(x4)</span><br><span class="line"> x5 = self.Conv5(x5)</span><br><span class="line"> # decoding + concat path</span><br><span class="line"> d5 = self.Up5(x5)</span><br><span class="line"> x4 = self.Att5(g=d5, x=x4)</span><br><span class="line"> d5 = torch.cat((x4, d5), dim=1)</span><br><span class="line"> d5 = self.Up_conv5(d5)</span><br><span class="line"> d4 = self.Up4(d5)</span><br><span class="line"> x3 = self.Att4(g=d4, x=x3)</span><br><span class="line"> d4 = torch.cat((x3, d4), dim=1)</span><br><span class="line"> d4 = self.Up_conv4(d4)</span><br><span class="line"> d3 = self.Up3(d4)</span><br><span class="line"> x2 = self.Att3(g=d3, x=x2)</span><br><span class="line"> d3 = torch.cat((x2, d3), dim=1)</span><br><span class="line"> d3 = self.Up_conv3(d3)</span><br><span class="line"> d2 = self.Up2(d3)</span><br><span class="line"> x1 = self.Att2(g=d2, x=x1)</span><br><span class="line"> d2 = torch.cat((x1, d2), dim=1)</span><br><span class="line"> d2 = self.Up_conv2(d2)</span><br><span class="line"> d1 = self.Conv_1x1(d2)</span><br><span class="line"> #d1 = self.sigmoid(d1)</span><br><span class="line"> #print(d1.shape)</span><br><span class="line"> return d1</span><br></pre></td></tr></table></figure>
+
+<h2 id="5、训练步骤"><a href="#5、训练步骤" class="headerlink" title="5、训练步骤"></a>5、训练步骤</h2><p>⚫ 执行train_medical.py，开始训练U-net模型，每训练 1 个epoch就会<br>在./logs/U-net保存模型文件。</p>
+<p>⚫ 执行att_train_medical.py，开始训练Att-Unet模型，每训练 1 个epoch就会<br>在./logs/AttU-net保存模型文件。</p>
+<p>一、 LOSS函数</p>
+<p>1 、Cross Entropy Loss：Cross Entropy Loss就是普通的交叉熵损失，当语义分割<br>平台利用Softmax对像素点进行分类的时候，进行使用。</p>
+<p>2 、Dice Loss：Dice loss将语义分割的评价指标作为Loss，Dice系数是一种集合相<br>似度度量函数，通常用于计算两个样本的相似度，取值范围在[0,1]。</p>
+<p>计算公式如下：</p>
+<p><img src="/images/2021-09-20-22-05-17.png"></p>
+<p>就是预测结果和真实结果的交乘上 2 ，除上预测结果加上真实结果。其值在 0 - 1 之间。越大表示预测结果和真实结果重合度越大。所以Dice系数是越大越好。作为LOSS的话是越小越好，所以使得Dice loss = 1 - Dice，就可以将Loss作为语义分<br>割的损失。</p>
+<p>二、 训练参数及策略</p>
+<ol>
+<li>初始学习率： 1 × 10 -^4 ，优化器Adam，每过 1 个epoch调整一次学习率，更新<br> 学习率的乘法因子为 0 .92。^</li>
+<li>Batch_size设置为 2 ，Epoch设置为 50 轮。^</li>
+</ol>
+<p>三、 性能指标</p>
+<p>① f_score：同上面的Dice系数。 代码见./utils/metrics.py</p>
+<p><img src="/images/2021-09-20-22-05-17.png"></p>
+<p>② mIou</p>
+<p>③ mPA</p>
+<h2 id="6、训练结果"><a href="#6、训练结果" class="headerlink" title="6、训练结果"></a>6、训练结果</h2><p>1 、 在pycharm的terminal中输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tensorboard --logdir=./runs</span><br></pre></td></tr></table></figure>
+<p>点开显示的网址，可以看到unet模型（深蓝色）和Att-unet模型（浅蓝色）的<br>tra_loss、val_loss、tra_f_score、val_f_score图<br><img src="/images/2021-09-20-22-07-49.png"></p>
+<p>2 、 执行unet_get_miou_prediction.py和attunet_get_miou_prediction.py可以得<br>到 40 张验证图片中背景和肝脏的mIou值和mPA值。</p>
+<p>计算前需要加载训练好的模型</p>
+<p>⚫ Unet模型在unet.py更改<br>model_path</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">_defaults = &#123;</span><br><span class="line">&quot;model_path&quot; : &#x27;./logs/U-net/Epoch50-Total_Loss0.0883.pth&#x27;,</span><br><span class="line">&quot;model_image_size&quot; : ( 512 , 512 , 3 ),</span><br><span class="line">&quot;num_classes&quot; : 2 ,</span><br><span class="line">&quot;cuda&quot; : True,</span><br><span class="line">&quot;blend&quot; : True</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>⚫ Att_Unet模型在Attunet.py更改model_path</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">_defaults = &#123;</span><br><span class="line">&quot;model_path&quot; : &#x27;./logs/AttU_Net/Epoch50-Total_Loss0.0187.pth</span><br><span class="line">&#x27;,</span><br><span class="line">&quot;model_image_size&quot; : ( 512 , 512 , 3 ),</span><br><span class="line">&quot;num_classes&quot; : 2 ,</span><br><span class="line">&quot;cuda&quot; : True,</span><br><span class="line">&quot;blend&quot; : True</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>⚫ 执行unet_get_miou_prediction.py得到<br><img src="/images/2021-09-20-22-08-25.png"><br>⚫ 执行attunet_get_miou_prediction.py得到</p>
+<p><img src="/images/2021-09-20-22-08-55.png"><br>可以看到Att_Unet的背景类mIou比Unet的背景mIou高 7 .93，Att_Unet<br>的肝脏类mIou比Unet 的肝脏类mIou高 0 .77； Att_Unet的背景类mPA<br>比Unet的背景mPA高3.45，Att_Unet的肝脏类mPA比Unet 的肝脏类m<br>PA高0. 46 ； Att_Unet的mIou比Unet的mIou高 4 .35，Att_Unet的mPA<br>比Unet的mPA高1.96</p>
+<h2 id="7、单张图片预测"><a href="#7、单张图片预测" class="headerlink" title="7、单张图片预测"></a>7、单张图片预测</h2><ol>
+<li><p>预测前同样需要加载训练好的模型，同上</p>
+</li>
+<li><p>执行unet_predict.py得到./results/unet000.png</p>
+</li>
+<li><p>执行attunet_predict.py得到./results/attunet000.png<br><img src="/images/2021-09-20-22-10-10.png"></p>
+</li>
+</ol>
+<p>可以看到，Att_Unet比Unet的分割效果更好。</p>
+]]></content>
+      <categories>
+        <category>计算机视觉-项目成果</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>搭建个人网站博客</title>
+    <url>/2021/09/19/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><h2 id="1、安装git"><a href="#1、安装git" class="headerlink" title="1、安装git"></a>1、安装git</h2><p><a href="https://git-scm.com/download/win">https://git-scm.com/download/win</a><br><img src="/images/2021-09-19-20-12-48.png"><br>一直下一步，验证：命令行敲&gt;git,有显示代表已装上git.</p>
+<h2 id="2、安装nodejs"><a href="#2、安装nodejs" class="headerlink" title="2、安装nodejs"></a>2、安装nodejs</h2><p><a href="https://nodejs.org/en/">https://nodejs.org/en/</a><br><img src="/images/2021-09-19-20-00-26.png"><br>一直点下一步，即可。</p>
+<h2 id="3、开始配置"><a href="#3、开始配置" class="headerlink" title="3、开始配置"></a>3、开始配置</h2><blockquote>
+<p>node -v    #查看node版本<br>npm -v    #查看npm版本<br>npm install -g cnpm –registry=<a href="http://registry.npm.taobao.org/">http://registry.npm.taobao.org</a>    #安装淘宝的cnpm 管理器<br>cnpm -v    #查看cnpm版本<br>cnpm install -g hexo-cli    #安装hexo框架<br>hexo -v    #查看hexo版本</p>
+</blockquote>
+<p>以下都是对blog目录操作：</p>
+<blockquote>
+<p>mkdir blog    #创建blog目录<br>cd blog     #进入blog目录<br>sudo hexo init     #生成博客 初始化博客<br>hexo s    #启动本地博客服务<br><a href="http://localhost:4000/">http://localhost:4000/</a>    #本地访问地址<br>#返回blog目录<br>hexo clean #清理<br>hexo g #生成<br>#Github创建一个新的仓库 YourGithubName.github.io  (我的是：<a href="https://xuanxixi.github.io/">https://xuanxixi.github.io</a>)<br>cnpm install –save hexo-deployer-git #在blog目录下安装git部署插件  </p>
+</blockquote>
+<hr>
+<h3 id="配置-config-yml"><a href="#配置-config-yml" class="headerlink" title="配置_config.yml"></a>配置_config.yml</h3><hr>
+<pre><code># Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy:
+    type: git
+    repo: https://github.com/YourGithubName/YourGithubName.github.io.git
+    branch: master
+</code></pre>
+<hr>
+<blockquote>
+<p>hexo d    #部署到Github仓库里<br><a href="https://yourgithubname.github.io/">https://YourGithubName.github.io/</a>  #访问这个地址可以查看博客<br> git clone <a href="https://github.com/litten/hexo-theme-yilia.git">https://github.com/litten/hexo-theme-yilia.git</a> themes/yilia #下载yilia主题到本地<br>修改hexo根目录下的 _config.yml 文件 ： theme: yilia<br>hexo c    #清理一下<br>hexo g    #生成<br>hexo d    #部署到远程Github仓库<br><a href="https://yourgithubname.github.io/">https://YourGithubName.github.io/</a>  #查看博客  </p>
+</blockquote>
+<p>这里输入<a href="http://xuanxixi.github.io可以看到博客网站/">http://xuanxixi.github.io可以看到博客网站</a><br><img src="/images/2021-09-19-20-21-33.png"></p>
+<h1 id="本地写markdown格式博客"><a href="#本地写markdown格式博客" class="headerlink" title="本地写markdown格式博客"></a>本地写markdown格式博客</h1><p>   在./blog/sources/_posts下放我们写的博客，都是.md格式。这里我推荐使用vscode来写博客。vscode的下载+汉化也很简单，参考：<a href="https://blog.csdn.net/x15011238662/article/details/85094006">https://blog.csdn.net/x15011238662/article/details/85094006</a></p>
+<p>在./blog/sources/_posts下打开git bash，输入</p>
+<blockquote>
+<p><img src="/images/2021-09-19-20-33-10.png"><br>hexo new “搭建个人网站博客”<br>##就可以创建 一个md文件</p>
+</blockquote>
+<h1 id="将本地博客上传到github-io"><a href="#将本地博客上传到github-io" class="headerlink" title="将本地博客上传到github.io"></a>将本地博客上传到github.io</h1><p>在./blog下面打开git bash </p>
+<blockquote>
+<p>hexo clean<br>hexo g<br>hexo d  </p>
+</blockquote>
+<p><img src="/images/2021-09-19-20-48-31.png"><br><img src="/images/2021-09-19-20-48-57.png"></p>
+<p>打开<a href="http://xuanxixi.github.io/">http://xuanxixi.github.io</a></p>
+<p><img src="/images/2021-09-19-20-51-41.png"></p>
+<p>问题：<br>error：spawn failed…<br>解决办法：<br>删除.deploy_git文件夹;<br>输入git config –global core.autocrlf false<br>然后，依次执行：<br>hexo clean<br>hexo g<br>hexo d<br>问题解决。暴力直接，有效。  </p>
+]]></content>
+      <categories>
+        <category>hexo搭建github.io</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>论文阅读 | The SpeakIn System for VoxCeleb Speaker Recognition Challange 2021</title>
+    <url>/2021/09/24/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-The%20SpeakIn%20System%20for%20VoxCeleb%20Speaker%20Recognition%20Challange%202021/</url>
+    <content><![CDATA[<blockquote>
+<p>论文题目：The SpeakIn System for VoxCeleb Speaker Recognition Challange 2021<br> Zhao, M., Ma, Y., Liu, M., and Xu, M., “The SpeakIn System for VoxCeleb Speaker Recognition Challange 2021”, <i>arXiv e-prints</i>, 2021.<br> 公司：SpeakIn Technologies Co. Ltd.</p>
+</blockquote>
+<h1 id="0-摘要"><a href="#0-摘要" class="headerlink" title="0 摘要"></a>0 摘要</h1><p>摘要本报告描述了我们提交到2021年VoxCeleb Speaker Recognition Challenge (VoxSRC)的第1和第2轨道2021)。track 1和track 2使用相同的speaker verification system，只使用VoxCeleb2-dev作为我们的training set。本报告探讨了几个部分，包括数据增强、网络结构、基于领域的大边际微调和后端优化。我们的系统是9个模型的融合，并在VoxSRC 2021的这两个轨道上取得了第一名。我们提交的minDCF是0.1034，而相应的荣誉是1.8460%。索引术语:说话人验证，说话人识别<br>Index Terms:说话人识别，说话人验证<br>speaker recognition, speaker verification</p>
+<h1 id="1-System-Description-系统描述"><a href="#1-System-Description-系统描述" class="headerlink" title="1. System Description 系统描述"></a>1. System Description 系统描述</h1><p>对于Track 1和Track 2，我们采用相同的系统设置，除了Voxceleb2-dev[1]，没有任何额外的数据。这一部分将重点介绍我们在这个挑战中实现的方法。  </p>
+<h2 id="1-1-Datasets-and-Data-Augmentation-数据集和数据增强"><a href="#1-1-Datasets-and-Data-Augmentation-数据集和数据增强" class="headerlink" title="1.1 Datasets and Data Augmentation 数据集和数据增强"></a>1.1 Datasets and Data Augmentation 数据集和数据增强</h2><h2 id="1-1-1-Training-Data"><a href="#1-1-1-Training-Data" class="headerlink" title="1.1.1. Training Data"></a>1.1.1. Training Data</h2><p>VoxCeleb2-dev数据集包含1,092,2009个话语和5,994个说话者。数据增强在训练说话人验证模型中也非常重要。我们在这里采用了3倍的速度增强[2,3]，以产生额外的2倍说话者。基于SoX速度函数，该数据集中的每个语音片段都被0.9或1.1因子扰动。然后我们获得了3,276,027个发言和17,982个发言者。传统的基于kaldi的[4,5]方法(离线增强)在该领域被广泛采用。最近的研究[6,7]提到了一种新的动态增强数据的方法(在线增强)。我们的系统包含离线和在线训练模式。这两种不同的数据增强方法分别适用于不同的训练模式:<br>• Offine训练模式:在该训练方法中，我们使用RIRs[8]和MUSAN[9]创建额外的四份训练话语副本，数据增强过程基于Kaldi VoxCeleb配方。在此之后，来自17,982个说话人的16,380,135条语音被生成，以提取声学特征。<br>• 在线训练模式:我们采用链式增强，而不是将不同类型的增强[7]串联起来。这意味着我们预先定义了一个由几个增强元素组成的效果链，并且每个增强元素都有被激活的可能性。效应链如下:</p>
+<pre><code>- 增益增加的概率为0.2
+- 白噪声增加的概率为0.2
+- RIR混响和噪声增加的概率为0.6
+- 时间延伸以0.2的概率增加
+</code></pre>
+<p>值得一提的是，在线增加也采用了离线3倍的速度增加，类别数为17,982。速度的增加会改变演讲者的音高(pitch)，而时间的延长不会改变音高(pitch)。同时加入前景噪声和背景噪声，从MUSAN噪声和RIRs噪声中随机选取。</p>
+<h2 id="1-1-2-Developing-Set"><a href="#1-1-2-Developing-Set" class="headerlink" title="1.1.2  Developing Set"></a>1.1.2  Developing Set</h2><p>为了评估我们模型的性能，我们使用了5个测试集[1,10]作为我们的开发集:<br>• VoxCeleb1-0:从只有40个说话人的VoxCeleb1测试数据集中采样37,720条音频。<br>• VoxCeleb1-E:这是VoxCeleb1-0的扩展版本。这个数据集包含1251个说话人的581,480条音频。<br>• VoxCeleb1-H:这个数据集有552,536条音频。由于这一组中的每一对都有相同的国籍和性别，这就更难了。<br>• VoxSRC20-dev:这是VoxSRC2020的验证集，试验包含由VoxCeleb_cd提供的域外数据。这个数据集有263,486条音频。<br>• VoxSRC21-val:这是VoxSRC2021的验证集，包含6万条音频。这组试验包含更多的多语言数据。  </p>
+<h2 id="1-1-3-Features"><a href="#1-1-3-Features" class="headerlink" title="1.1.3  Features"></a>1.1.3  Features</h2><p>在离线（ offline）训练模式下，基于Kaldi提取81维和96维log Mel滤波组能量。窗口大小为25毫秒，帧移为10毫秒。在没有额外语音激活检测(VAD)的情况下，提取了200帧特征。在（online）在线训练模式下，语音片段被切成2秒，并在飞行中增强。基于torchaudio提取96维log Mel滤波组能量。在两种训练模式下，所有特征均归一化为倒谱均值。</p>
+<h2 id="1-2-Network-Structures"><a href="#1-2-Network-Structures" class="headerlink" title="1.2  Network Structures"></a>1.2  Network Structures</h2><h2 id="1-2-1-Backbone"><a href="#1-2-1-Backbone" class="headerlink" title="1.2.1 Backbone"></a>1.2.1 Backbone</h2><p>卷积神经网络[6,11,12]已经成为说话人验证任务的主流解决方案。我们的骨干包括两种最先进的型号:RepVGG和ResNet</p>
+<p>• RepVGG:最近的研究提出了一种构建ConvNets的新方法。该方法称为重新参数化技术。该方法将训练时间和推理时间结构解耦。RepVGG, 作为一种重新参数化的模型，在计算机视觉领域具有很强的竞争力。我们,在第一次引入了这个RepVGG架构演讲者验证。如图1所示，RepVGG Block有一个独立的3x3和1x1卷积层使用批处理规范化和标识分支，只有批处理规范化层在训练时间。由于卷积和批处理归一化可以融合成一个卷积层和两个1x1卷积层批处理归一化层可以转换为3x3卷积层，这个块中的所有分支都等于三个3 x3的隆起。所有这些3x3卷积共享相同的设置(内核大小、步幅、组、扩张因子等等)（(kernel size, stride, groups, dilation, and so on），这样他们就可以融合成一个3x3的卷积，只需要简单地添加参数过滤器。当合并到一个3x3卷积和一个ReLU层，这个在推断过程中与VGG块相同时间。我们选择RepVGG-A2、RepVGG-B1、RepVGGB2g4和RepVGG-B2作为我们的骨干。所有的模型采用64 base channels ，除了RepVGG-A2使用96 base channels 。</p>
+<p>• ResNet:[14]作为最经典的ConvNets之一，ResNet已经证明了它在说话人验证方面的能力。在我们的系统中，既有基于基本块(basic-block-based)的ResNet-34，也有基于瓶颈块(bottleneck-block-based)的ResNet(更深层次的结构:ResNet-101和ResNet-152)。这些resnet的所有基本通道都是64。</p>
+<h2 id="1-2-2-Pooling-Method-池化方法"><a href="#1-2-2-Pooling-Method-池化方法" class="headerlink" title="1.2.2 Pooling Method 池化方法"></a>1.2.2 Pooling Method 池化方法</h2><p>池化层的目标是将变量序列聚合为话语级嵌入。实现这一目的的基本思路是沿着时间轴[15]计算均值和标准导数。然而，不同框架的贡献可能是不相等的，这一事实可能会受到限制。引入注意机制[16]来计算骨干输出的加权统计量。此外，还引入了多线程（multi-head mechanism）机制来增加注意的多样性，如多线程自注意力机制(MHSA：multi-head self-attentive)池化层[17]和自多线程注意力机制(MHA：self multi-head attention)池化层[18]。这两种方法的主要区别在于注意机制中头的定义。后者不是通过不同的“头”(我们称之为查询)来关注整个特性，而是将特性分成几个部分，每个“头”关注其相应的部分。结合以上两种多头方法，我们首次提出了一种多查询多头注意池机制(MQMHA：multi-query multihead attention pooling mechanism )。因为这方法可以帮助我们关注不同的部分，获得更多样化的信息。方法描述如下:</p>
+<p><img src="/images/2021-09-24-20-46-10.png"></p>
+<h2 id="1-2-3-损失函数"><a href="#1-2-3-损失函数" class="headerlink" title="1.2.3 损失函数"></a>1.2.3 损失函数</h2><p>近年来，基于边缘的softmax算法在说话人识别中得到了广泛的应用。为了获得更好的性能，我们通过两种方法增强AM-Softmax[19,20]和AAMSoftmax[21]损耗函数。首先，引入子中心方法[22]，以减小可能的噪声样本的影响。公式由:<br><img src="/images/2021-09-24-20-54-27.png"><br>Max函数表示选择了最近的中心它抑制了可能干扰主导类中心的噪声样本其次，我们提出了Inter-TopK惩罚，进一步关注那些获得高度相似度的比较不属于自己的样本的中心。因此，它对这些容易分类错误的中心增加了额外的惩罚。鉴于有N个样例和多个C类的批次，在AM-Softmax的基础上增加额外Inter-TopK惩罚的配方为:<br><img src="/images/2021-09-24-20-55-35.png"></p>
+<p><img src="/images/2021-09-24-20-57-51.png"></p>
+<h2 id="1-3训练策略"><a href="#1-3训练策略" class="headerlink" title="1.3训练策略"></a>1.3训练策略</h2><p>我们使用Pytorch[23]进行实验。我们所有的模型都经过两个阶段的训练。在第一阶段，SGD优化器的动力为0.9和权重衰减1e-3(在线训练4e-4)。我们使用了8个gpu和1024个小批量，初始学习率为0.08来训练我们所有的模型。如1.1.1节所述，为避免过拟合，加快训练速度，每批样本采用200帧。我们采用ReduceLROnPlateau调度器，每2000次迭代验证一次，patience为2。最小学习率为1.0e-6，衰减系数为0.1。此外，边际值从0逐渐增加到0.2[24]。在基于大边距的微调阶段（ large-margin-based fine-tuning stage）[25]中，设置与第一阶段略有不同。首先，我们将速度增广部分从训练集中去除，以避免域失配。只剩下5994个类别。其次，我们将帧大小从200改变为600，并将边缘从0.2指数级增加为0.5。AM-Softmax损失被AM-Softmax损失取代。为了使训练更加稳定，我们去掉了Inter-TopK惩罚。最后，我们采用较小的微调学习率8e-5和256批大小。当衰减系数为0.5时，学习率调度基本不变</p>
+<h2 id="1-4-Back-end-后端打分"><a href="#1-4-Back-end-后端打分" class="headerlink" title="1.4 Back-end 后端打分"></a>1.4 Back-end 后端打分</h2><p>在完成微调阶段后，从完全连通层提取512维扬声器嵌入，然后进行长度归一化，计算余弦相似度。此外，我们利用speaker-wise adaptive score normalization (AS-Norm)[3]和Quality Measure Functions (QMF)[11,25]来校准分数，这些方法大大提高了性能。对于AS-Norm，我们选择了没有任何增强的原始VoxCeleb2开发数据集。提取嵌入内容后，所有嵌入内容均为说话人平均，共5994个队列。然后，分数将由这个说话者智慧的AS-Norm使用前400名冒名顶替者的分数进行校准。对于QMF，我们结合了Kaldi计算的语音时长、基于AS-Norm的冒名者均值和非归一化嵌入量三种质量。与IDLAB的[11]方式一样，我们也从最初的VoxCeleb2-dev中选择了30k个试验作为QMF的训练集。然后训练Logistic回归(LR)作为我们的QMF模型。<br><img src="/images/2021-09-24-21-05-29.png"></p>
+<h2 id="1-5-Results"><a href="#1-5-Results" class="headerlink" title="1.5 Results"></a>1.5 Results</h2><h2 id="1-5-1-Baseline-System-Ablation-Study"><a href="#1-5-1-Baseline-System-Ablation-Study" class="headerlink" title="1.5.1. Baseline System Ablation Study"></a>1.5.1. Baseline System Ablation Study</h2><p><img src="/images/2021-09-24-21-08-31.png"><br><img src="/images/2021-09-24-22-15-41.png"><br><img src="/images/2021-09-24-22-15-07.png"><br><img src="/images/2021-09-24-22-16-40.png"><br>对于我们所有的模型，我们都遵循同样的程序，唯一的变量是我们的主干backbone.</p>
+<h2 id="1-5-2-Sub-Systems-and-Fusion-Performance子系统和融合性能"><a href="#1-5-2-Sub-Systems-and-Fusion-Performance子系统和融合性能" class="headerlink" title="1.5.2  Sub-Systems and Fusion Performance子系统和融合性能"></a>1.5.2  Sub-Systems and Fusion Performance子系统和融合性能</h2><p>表2描述了我们所有的子系统。总共使用9个不同的主干来生成不同的表示。离线训练系统同时使用81维和96维声学特征，而在线训练系统只使用96维声学特征。表3展示了我们各个子系统在各种试验中取得的结果。我们发现，与基线系统等较小的模型相比，RepVGG-B1和ResNet101等大型模型似乎产生了更好的结果。然而，一个更大的模型，如ResNet-152和RepVGG-B2，就急剧增加的参数而言，不能带来类似的性能提升。此外，值得一提的是，这些更大的模型在VoxCeleb2-dev数据集上显示出过度拟合的迹象。由于学习率小于le-4，这些大系统的EER和minDCF下降。然而，即使我们在早期阶段终止了培训，这些系统的性能仍然保持SOTA。96维Fbank特征是81维Fbank特征的良好补充。我们使用的在线系统不是最佳选择，因为我们仍在研究这种新的训练模式。虽然它显示了一个有竞争力的结果，但在离线系统中不能达到我们大的最好的结果。<br>表4显示了我们提交给VoxSRC2021的一些文件和我们的融合系统的最终结果。值得一提的是，我们的RepVGG-B1仅用一个模型就实现了0.1212 minDCF和2.2410% EER，而ResNet-152实现了0.1195 minDCF和2.16% EER。我们根据VoxCeleb1-H和VoxSRC21-val的结果调整了所有这些模型的融合权重。在VoxSRC2021挑战赛中，最终的融合结果是0.1034 minDCF和1.846% EER。与ResNet-152模型相比，minDCF和EER的融合结果分别提高了12.47%和14.54%。<br><img src="/images/2021-09-24-22-30-35.png"></p>
+<h1 id="2-Conclusions-结论"><a href="#2-Conclusions-结论" class="headerlink" title="2. Conclusions 结论"></a>2. Conclusions 结论</h1><p>在这个挑战中，我们首先在说话人验证中引入了一个新的主干结构(RepVGG)。我们还提出了MQMHA、Inter-Topk损失和基于域的大裕度微调方法。所有这些方法和大型骨干确保了我们在VoxSRC 2021的第1和2轨道上的第一个位置。本系统的最终结果为0.1034 minDCF和1.846% EER。</p>
+]]></content>
+      <categories>
+        <category>ASR声纹识别系列-论文笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>论文阅读 | IDLAB VoxCeleb Speaker Recognition Challenge 2020系统描述</title>
+    <url>/2021/09/21/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-IDLAB%20VoxCeleb%20Speaker%20Recognition%20Challenge%202020%E7%B3%BB%E7%BB%9F%E6%8F%8F%E8%BF%B0/</url>
+    <content><![CDATA[<blockquote>
+<p>论文题目：IDLAB VoxCeleb Speaker Recognition Challenge 2020 系统描述<br> J. Thienpondt, B. Desplanques, and K. Demuynck, “The IDLAB VoxCeleb Speaker Recognition Challenge 2020 System Description,” arXiv:2010.12468 [cs, eess], Oct. 2020, Accessed: Nov. 12, 2020. [Online]. Available: <a href="http://arxiv.org/abs/2010.12468">http://arxiv.org/abs/2010.12468</a>.<br> 比利时根特大学电子与信息系统学系IDLab</p>
+</blockquote>
+<h1 id="0-摘要"><a href="#0-摘要" class="headerlink" title="0 摘要"></a>0 摘要</h1><p>在本技术报告中，我们描述了IDLAB提交的VoxCeleb Speaker Recognition Challenge 2020 (VoxSRC-20)在有监督和无监督的说话人验证轨道中得分最高的参赛作品。对于监督验证轨道，我们训练了6个最先进的ECAPA-TDNN模型和4个基于Resnet34的体系结构变体的模型。在所有的模型中，我们都采用了微调策略（ large margin fine-tuning strategy），通过使用更长的训练话语，使训练过程能够使用更高的margin penalties惩罚。此外，我们使用质量感知评分校准（ quality aware score calibration），在校准系统（calibration system）中引入质量度量（quality metrics），在不同的话语条件水平上生成更一致的分数。所有系统的融合与这两种增强的应用，在开放和封闭监督验证轨道上取得了第一名的成绩。通过对比学习对无监督系统进行训练。随后通过迭代聚类生成训练嵌入的伪标签允许使用监督技术。这个程序在无监督轨道上的获奖提交，其表现接近于监督训练。<br>Index Terms:说话人识别，说话人验证，分数校准<br>speaker recognition, speaker verification, score<br>calibration</p>
+<h1 id="1-有监督的说话人验证"><a href="#1-有监督的说话人验证" class="headerlink" title="1 有监督的说话人验证"></a>1 有监督的说话人验证</h1><p>对于监督验证轨道(VoxSRC-20 track 1 &amp; 2)，我们基于我们的ECAPA-TDNN体系结构[1,2]和4个ResNet34[3]变体训练了6个系统。图1描述了ECAPA-TDNN体系结构。与[1]相比，我们通过使用2048个功能通道扩大了网络，并添加了第四个SE-Res2Block(扩张因子dilation factor为5)，以优化所有模型的验证性能。为了进一步使模型多样化，我们对所有其他五个模型进行了小规模的架构更改  ECAPA-TDNN:  </p>
+<ol>
+<li>将注意模块中间层的relu激活功能替换为Tanh激活功能。  </li>
+<li>在[4]模型的第一层中增加了双向长短期记忆(BLSTM)层。  </li>
+<li>将嵌入维数从192增加到256  </li>
+<li>60维对数梅尔滤波器组能量作为输入特征  </li>
+<li>在AAMsoftmax层<a href="SC-AAM">5</a>中每类合并两个子中心，同时在Res2Net分组卷积中整合扩张因子变动性，而不是在seres2block中。我们称之为动态膨胀(DD)。  </li>
+</ol>
+<p>除第一个直连组 directly connected group外，其余7个中心Res2Net[6]卷积组的扩张因子分别为2、3、4、5、6、2、3。所有SE-Res2Blocks使用相同的扩展配置。此外，我们基于[3]中引入的ResNet34体系结构创建了四个模型。我们通过在每个ResBlock组件后添加Squeeze-Excitation (SE)块[7]来增强所有的ResNet34模型。训练了另外三种变体:  </p>
+<ol>
+<li>合并了依赖信道的注意力统计(Channel-dependent Attentive Statistics：CAS)池化层[1]。  </li>
+<li>SC-AAM：在AAM-softmax层中，每个类使用两个副中心sub-centers。  </li>
+<li>CAS和SC-AAM的集成。</li>
+</ol>
+<p><img src="/images/2021-09-21-11-38-17.png"></p>
+<p>图1:ECAPA-TDNN系统架构。T表示输入帧的数量，C表示中间特征通道的数量，S表示说话人类别数（the number of classification speakers）。我们在SE-Res2Block中分别用k和d表示kernel的大小和dilation factor膨胀因子。详情请参阅[1]。</p>
+<h2 id="1-1训练方案"><a href="#1-1训练方案" class="headerlink" title="1.1训练方案"></a>1.1训练方案</h2><p> 在封闭的轨道上，我们训练所有模型在VoxCeleb2数据集[8]的development set上。对于开放轨道，我们添加<br>VoxCeleb1[9]数据集的development part，LibriSpeech数据集[10]的train-other-500子集和部分<br>DeepMine语料库[11]包含了来自588个波斯语说话人。我们创建了6个额外的扩增副本，使用MUSAN[12]语料库(babble含糊不清的, noise有噪声的)、RIR<a href="%E6%B7%B7%E5%93%8D">13</a>数据集和SoX (tempo up快节奏, tempo down慢节奏)和FFmpeg(压缩)库。</p>
+<p>所有模型都在2秒的随机音频上训练，以防止过拟合。输入特征是80维mfcc, ECAPA-TDNN模型的窗函数大小为25ms，帧移为10ms。对于基于ResNet的系统，我们使用80 1og Mel滤波器组能量作为输入特征。为了进一步提高模型的鲁棒性，我们将SpecAugment[14]应用于随机屏蔽0 ~ 5帧时域(time-domain)和0 ~ 8频带( frequency bands)的对数mel频谱图（log mel-spectrograms）。然后，对裁剪后的输入特征（ input features）进行倒谱（cepstral）平均归一化（mean normalized）。  </p>
+<p>AAM-softmax层的初始 margin penalty被设置为0.2。我们还对网络中的权值，使用2e-5的权值衰减，除了AAM-softmax层，它使用略高的2e-4值。系统使用Adam优化器[15]和循环学习率(CLR)进行训练，使用[16]中描述的triangular2策略。最大学习率和最小学习率分别设置为1e-3和le-8。我们使用的循环长度为130k迭代，批大小为128。所有ECAPA-TDNN模型都经过三个完整的训练周期，ResNet34模型使用一个训练周期。</p>
+<h2 id="1-2-Large-margin-fine-tuning微调策略"><a href="#1-2-Large-margin-fine-tuning微调策略" class="headerlink" title="1.2 Large margin fine-tuning微调策略"></a>1.2 Large margin fine-tuning微调策略</h2><p>在初始训练阶段之后，我们将我们提出的Large margin fine-tuning微调策略[2]应用于所有模型。在这个微调阶段，AAM-softmax层的margin增加到0.5。SpecAugment被禁用，随机音频的长度增加到6秒。CLR周期长度减小到60k，最大学习率降低到le-5。网络中没有冻结层。最后将采样策略改为[17]中描述的HPM，参数值S= 16, I=8, U =1。[2]可以进行消融研究（ablation study）。<br>我们使用 adaptive-s-normalization[18]为所有微调系统创建分数，冒名者队列（ imposter cohort size）大小为100。冒名顶替者队列（ imposter cohort size）由每个训练说话人的长度规范化（ length-normalized）话语嵌入的平均值组成。冒名顶替者队列大小（ The imposter cohort size ）被设置为100。</p>
+<h2 id="1-3-Quality-aware-score-calibration-质量感知校准分数"><a href="#1-3-Quality-aware-score-calibration-质量感知校准分数" class="headerlink" title="1.3  Quality-aware score calibration 质量感知校准分数"></a>1.3  Quality-aware score calibration 质量感知校准分数</h2><p>为了训练我们的校准系统，我们从VoxCeleb2训练数据集创建了一组试验。我们希望我们的校准系统能够在不同程度的试验持续时间中保持稳定。随后，我们定义了三种类型的试验:short-short, short-long和long-long，其中short表示2 - 6秒之间的话语，long表示6秒到VoxCeleb2数据集中最大长度的话语。我们在校准试验集中包括每种类型的10k次试验，因此总共有30k次试验。<br>目标试验和非目标试验的数量是平衡的。我们在校准集上使用logistic回归分别校准每个系统，然后计算所有模型的平均分数。随后，我们使用我们提出的“质量感知校准（quality-aware calibration）[2]对平均分数，以使评估指标的决策阈值（decision thresholds）在不同的话语条件下稳健。在质量感知校准阶段（quality-aware calibration stage），我们基于最小和最大质量值引入了两个对称质量度量函数(QMFs：Quality Measure Functions)。我们的第一个质量度量（quality metric）是由SPRAAK系统[19]的语音活动检测器(VAD：Voice Activity Detector)模块检测到的语音帧的数量。第二个metric，我们使用基于考虑嵌入和s标准化冒名顶替者队列（imposter cohort.）的内积的平均前100名冒名顶替者得分。  </p>
+<p>表1:距离度量（ distance metric）和队列规模（cohort size）对基于冒名imposter的QMF对VoxSRC-20验证集的影响。</p>
+<p><img src="/images/2021-09-21-12-29-42.png"></p>
+<p>在[2]中可以找到质量感知评分校准的详细描述。作为对[2]的补充分析，我们比较了表1中在基线ECAPA-TDNN系统上不同队列大小的冒名顶替均值计算时内积和余弦距离的使用情况。实验A和C表明，当冒名顶替者队列包含所有5994名训练扬声器时，使用余弦距离似乎比使用内积更稳定，甚至会降低性能。然而，根据内积，适当选择的队列规模似乎对冒名顶替均值是有益的，如实验B所示，我们注意到3.1% EER和0.7% MinDCF相对于基线系统的改善。</p>
+<h2 id="1-4-Fusion-system-performance-融合系统性能"><a href="#1-4-Fusion-system-performance-融合系统性能" class="headerlink" title="1.4 Fusion system performance 融合系统性能"></a>1.4 Fusion system performance 融合系统性能</h2><p>表2:在VoxSRC-20验证集上闭合轨道的最终融合提交中对所有微调系统的评估。<br><img src="/images/2021-09-21-12-33-59.png"></p>
+<p>表3:VoxSRC-20测试集上建议的微调和质量感知校准(qmf)的评估。<br><img src="/images/2021-09-21-12-34-11.png"></p>
+<p>表2提供了封闭轨道最终系统融合提交中所有微调系统的Vox-SRC20验证集的性能概述。值得注意的是，通过在SE-ResNet34系统中合并(CAS:Channel-dependent Attentive Statistics)池化。该体系结构类似于基线ECAPA-TDNN系统的性能。在CAS layer中使用Tanh激活似乎没有很大的影响。添加BLSTM layer并不会提高基线ECAPA-TDNN的性能，这可能是因为se -block已经在模型的框架层中插入了全局上下文信息。动态扩张(DD:Dynamic Dilation)实验表明，有多种方法可以逐步扩大ECAPA-TDNN系统的时间背景。有趣的是，使用过大的嵌入维数会显著降低ECAPA-TDNN的性能。我们还注意到仅使用60 log Mel滤波器组能量的性能略有下降。在AAM-softmax (SC-AAM)系统中使用两个副中心可以在基于ECAPA-TDNN和ResNet34的系统上获得额外的性能增益。VoxCeleb2数据集比VoxCelebl数据集更少被精心管理，这种更健壮的训练损失可能会弥补标记错误，但也可能弥补过于强烈的增强。在基于SE-ResNet34的系统中结合SC-AAM和CAS，实现了我们最佳的单系统性能。<br>表3给出了我们的最终系统融合在具有large margin微调和质量感知评分校准的封闭轨道中的评估。所有模型的large margin微调导致EER的相对改善3%，MinDCF的相对改善8%。使用质量感知评分校准的融合评分与语音时长和冒名顶替者平均qmf导致额外8%的EER和6%的MinDCF相对改善。<br>由于时间的限制，我们只训练了一个额外的基线ECAPA-TDNN模型用于开放发言者验证轨道。我们将表现不佳的ECAPA-TDNN替换为256维嵌入的新模型。我们最终的开放融合提交相对于封闭提交有4%的EER和2%的MinDCF。</p>
+<h1 id="2-无监督的说话人验证"><a href="#2-无监督的说话人验证" class="headerlink" title="2.无监督的说话人验证"></a>2.无监督的说话人验证</h1><h2 id="2-1-Training-without-speaker-labels-没有说话人标签-训练"><a href="#2-1-Training-without-speaker-labels-没有说话人标签-训练" class="headerlink" title="2.1 Training without speaker labels 没有说话人标签-训练"></a>2.1 Training without speaker labels 没有说话人标签-训练</h2><p>无监督的说话人验证解决了这个问题，无需使用任何手动创建的说话人身份label(VoxSRC-20 Track 3)。<br>我们在音频解决方案中定义了三个主要阶段：</p>
+<ol>
+<li>Utterance-based对比学习  </li>
+<li>伪标签生成的迭代聚类  </li>
+<li>有监督的伪标签训练</li>
+</ol>
+<h3 id="2-1-1-Contrastive-learning对比学习"><a href="#2-1-1-Contrastive-learning对比学习" class="headerlink" title="2.1.1 Contrastive learning对比学习"></a>2.1.1 Contrastive learning对比学习</h3><p>对比学习阶段[20,21,22]在未标记数据集的所有话语之间生成积极 positive 和消极negative的比较对。通过强增强，同一话语可以有两个不同的版本。可见，与被加工话语相关的说话人身份没有变化，生成的两个片段对应着一个积极的比较对。由说话人验证模型生成的说话人嵌入应该在一个正数对（a positive pair）内保持一致，这表明该说话人嵌入提取器对所应用的增强是不变的。由于没有说话人的标签，我们假设每个训练话语对应一个不同的说话人。否定比较对（ A negative comparison pair）是通过简单的话语间比较而形成的。负对内（ A negative pair）的嵌入应该是不同的，这表明网络可以区分说话者。<br>我们依赖动量对比(MoCo：Momentum Contrast)[23]来扩展可能的负比较对的数量，超出每次梯度更新的小批处理中的数据。这种MoCo技术创建了第二个动量编码器，它是原始说话人嵌入提取器（ speaker embedding extractor）的副本。动量编码器只用于正向传播。<strong>在每次迭代更新模型参数时，使用基于原始网络值的动量更新，而不是使用反向传播算法来更新模型参数</strong><br><img src="/images/2021-09-21-13-03-13.png"></p>
+<p>以0m为动量编码器的模型参数，0e为说话人嵌入提取器中相应的模型参数。动量m控制在多个小批更新迭代中输出保持的一致性。每次参数更新后，我们将最新小批处理的动量编码器输出嵌入存储在一个（ a large queue）大队列中。当将这些新数据添加到队列时，我们删除了旧的动量编码器嵌入。通过这种方法，我们存储了大量的最近的和一致的嵌入，可以用于负对比较（negative pair comparisons）。<br>原始说话人嵌入提取器的损失函数为:<br><img src="/images/2021-09-21-13-06-20.png"></p>
+<p>其中n表示 batch size，x是由原始的说话人嵌入提取器生成的长度归一化的说话人嵌入。Xm表示动量编码器的归一化嵌入。请注意，嵌入的Xi和xim+都是由应用于原始话语的不同的增强而产生的。用于负对比较的MoCo队列包含N个存储的嵌入xjm-。由于动量编码器不通过反向传播进行更新，所以可以设置较大的N值。一个比例因子( scaling factor)s被应用于增加输出对数似然( output log-likelihoods)的范围。参数更新后，MoCo队列中旧的嵌入将被mini-batch中的所有xim+替换。</p>
+<h3 id="2-1-2-Iterative-clustering-迭代聚类"><a href="#2-1-2-Iterative-clustering-迭代聚类" class="headerlink" title="2.1.2 Iterative clustering 迭代聚类"></a>2.1.2 Iterative clustering 迭代聚类</h3><p>对于大多数训练数据集来说，每个话语对应于不同的说话人的假设很可能是错误的。一旦通过对比学习训练出说话人的嵌入提取模型，我们就可以使用该模型通过提取嵌入来表征每个训练话语中的说话人。这些嵌入可以通过聚类算法进行分组。<br>聚类分层聚类算法（AHC:Agglomerative Hierarchical Clustering）是最成功的说话人分类算法之一。然而，由于内存的复杂性，不能有效地将AHC应用到当前硬件和软件的完整VoxCeleb2数据集。因此，我们依赖一个非常高效的minibatch k-means[24,25]聚类过程，将嵌入的k-means聚类中心减少到一个更易于管理的数量。由于对比学习优化了嵌入之间的余弦相似度，我们在聚类之前对嵌入进行长度归一化。初始聚类后，通过Ward连锁（Ward linkage）[26]和余弦相似度度量的AHC对k-means聚类中心进行分组。<strong>每个属于同一组k-means centers的话语被赋予同一个说话人身份伪标签。我们将这些伪标签作为真实值（ground truth），并使用有监督的AAM-softmax损失训练一个说话人嵌入提取器。</strong>通过分析该说话人验证模型对VoxSRC验证数据的性能，可以确定AHC输出聚类的数量。这个过程可以重复进行。给定伪标签训练模型生成的训练嵌入，我们可以重新执行聚类并继续使用新的伪标签训练说话人嵌入提取器。这可以重复进行，直到验证数据的性能收敛为止。</p>
+<h3 id="2-1-3-Robust-training-on-pseudo-labels-伪标签的鲁棒性训练"><a href="#2-1-3-Robust-training-on-pseudo-labels-伪标签的鲁棒性训练" class="headerlink" title="2.1.3 Robust training on pseudo-labels 伪标签的鲁棒性训练"></a>2.1.3 Robust training on pseudo-labels 伪标签的鲁棒性训练</h3><p>聚类过程的最后迭代生成可靠的伪标签，可用于在监督的方式下训练更大的说话人验证模型。然而,这些噪声和伪标签还含有标签我们依靠子中心损失（subcenter loss）[5]对这些标签错误潜在的鲁棒性,进一步优化性能,这个大模型的试验成绩可以融合的最终模型在前面的迭代聚类过程。</p>
+<h2 id="2-2-Implementation-实施-amp-部署"><a href="#2-2-Implementation-实施-amp-部署" class="headerlink" title="2.2 Implementation 实施&amp;部署"></a>2.2 Implementation 实施&amp;部署</h2><h3 id="2-2-1-Contrastive-learning对比学习"><a href="#2-2-1-Contrastive-learning对比学习" class="headerlink" title="2.2.1  Contrastive learning对比学习"></a>2.2.1  Contrastive learning对比学习</h3><p>将C = 1024的ECAPA-TDNN[1]在VoxCeleb2上进行无监督对比学习训练。我们只使用两个se - res2block来降低GPU内存需求。CLR设置与监督训练的初始阶段相同，我们在一个周期内对模型进行训练。MoCo队列的大小设置为65K，动量为0.999。对比度损失的尺度s设为10。我们在动量编码器上应用shuffle batchnorm[23]，以避免通过batchnorm统计信息的非泛化泄露。这个问题是由于嵌入提取器和动量编码器的所有正对话语被分组在一个小批中，对应于一组相同的源话语。除数据增强设置外的所有其他设置都类似于监督学习。</p>
+<p>由于增强在对比学习中起着至关重要的作用，我们实现了在线增强方案（ online augmentation protocol）。通过对5个样本进行采样，选取重叠最小的一对，减少了由嵌入提取器和动量编码器处理的3.5 s随机样本之间的重叠。更精确地减少重叠，在裁剪过程中频繁地选择话语的开头和结尾，会导致效果不佳。我们使用平衡的YouTube-8M[27]列车集的37K噪声片段进行附加噪声增强，信噪比介于5至15 dB之间。可选混响[13]应用，概率为75%。与我们的预期相反，我们注意到在加性噪声增强后应用混响可以略微提高性能。没有应用SpecAugment。</p>
+<h3 id="2-2-2-Iterative-clustering-迭代聚类"><a href="#2-2-2-Iterative-clustering-迭代聚类" class="headerlink" title="2.2.2 Iterative clustering 迭代聚类"></a>2.2.2 Iterative clustering 迭代聚类</h3><p>为了保证高质量的嵌入，我们使用通过对比损失训练的模型从完整长度的VoxCeleb2话语中提取训练嵌入。采用10K batch size的Euclidean minibatch k-means聚类将归一化嵌入分成50K簇。使用k-means算法的随机初始化。50K簇中心的分配使得AHC在下一阶段的计算是可行的。AHC集群使用fastcluster包[28]实现。我们假设以2.5K额外簇的步骤确定VoxCeleb2中最优AHC簇的数量是现实的。对伪标签上AAM-sofmax损失训练后的ECAPA-TDNN的VoxSRC-20验证集进行评估，结果显示7.5K簇提供了最优结果。该分析如图2所示。</p>
+<p>图2:VoxSRC-20验证集上的迭代聚类性能。</p>
+<p><img src="/images/2021-09-21-13-30-07.png"></p>
+<p>这一阶段的数据预处理与监督设置相同，使用标准ECAPA-TDNN和三个SERes2Blocks。为了加快训练过程，我们减少了CLR循环长度为60K。在一个CLR训练周期后，新的训练嵌入被重新聚类。最大CLR学习速率并不会随着周期的变化而衰减，系统应该能够适应改进后的伪标签。分配的集群标签在每次迭代后进行排列。以确保我们可以用同样的模型继续训练，我们替换AAM原型通过所有标准化嵌入的平均向量分配给相应的集群。性能的聚合经过7次迭代。</p>
+<h3 id="2-2-3-Robust-training-on-pseudo-labels伪标签的鲁棒性训练"><a href="#2-2-3-Robust-training-on-pseudo-labels伪标签的鲁棒性训练" class="headerlink" title="2.2.3 Robust training on pseudo-labels伪标签的鲁棒性训练"></a>2.2.3 Robust training on pseudo-labels伪标签的鲁棒性训练</h3><p>最后的聚类迭代使用伪标签训练一个C = 2048的大型ECAPA-TDNN，并在4个SE-Res2Blocks内进行动态扩张，以及每个聚类2个中心的子中心AAM。CLR调度被恢复到原来的设置。在3个周期后，模型被微调与large margin设置。我们不应用任何分数标准化或校准calibration。这些后处理步骤可以通过从伪标签生成目标和非目标试验来实现。该系统的输出分数取平均值，可与迭代聚类过程的最终模型融合。这是可能的，没有任何校准，因为系统已经训练了相同的输入数据与类似的AAM损失函数。</p>
+<h2 id="2-3-Results实验结果"><a href="#2-3-Results实验结果" class="headerlink" title="2.3  Results实验结果"></a>2.3  Results实验结果</h2><p>无监督说话人验证方法的性能如图2所示。对比学习在VoxSRC-20验证集上的EER为18.0%，在原始VoxCelebl测试集上的EER为7.3%。如果选择合适的聚类个数，通过聚类迭代分组可以提高结果。集群数量设置过低会导致性能差异，例如5K集群。在迭代过程中构建7.5K簇比生成10K簇更优。在7.5K簇的情况下，EER逐渐提高到6.5%，比初始模型相对提高了64%。最终的模型在原VoxCeleb1测试集上达到2.1%的EER。对一个更大的ECAPA-TDNN系统进行训练和大余量微调，在最终伪标签上使用2个副中心AAM进行训练，在VoxSRC-20验证集上产生6%的EER。<br>通过对比学习初始化7.5K聚类的收敛迭代聚类算法在VoxSRC-20测试集中的EER值为7.7%。使用更大的微调ECAPA-TDNN系统平均得分，最终提交分数为7.2% EER。</p>
+]]></content>
+      <categories>
+        <category>ASR声纹识别系列-论文笔记</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>论文阅读 | In defence of metric learning for speaker recognition</title>
+    <url>/2021/09/26/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB-In%20defence%20of%20metric%20learning%20for%20speaker%20recognition/</url>
+    <content><![CDATA[<blockquote>
+<p>论文题目：In defence of metric learning for speaker recognition<br> Son Chung, J., “In defence of metric learning for speaker recognition”, <i>arXiv e-prints</i>, 2020.<br> 公司：Naver Corporation, South Korea </p>
+</blockquote>
+<h1 id="0-摘要"><a href="#0-摘要" class="headerlink" title="0 摘要"></a>0 摘要</h1><p>本文的目标是“开放集”说话人识别，理想的嵌入应该能够将信息压缩成紧凑的话语级表示，紧凑说话人类内距离，增大说话人类间距离。在说话人识别中，一个流行的观点是，用分类目标训练的网络优于度量学习方法。在本文中，我们对VoxCeleb数据集上最流行的说话人识别的损失函数进行了广泛的评估。我们证明，与基于分类的损失相比，香草三元组损失表现出了竞争性的性能，那些用我们提出的度量学习目标训练的方法优于最先进的方法。<br>指标术语:说话人识别，说话人验证，度量学习。</p>
+<h1 id="1-Introduction-引言"><a href="#1-Introduction-引言" class="headerlink" title="1.  Introduction 引言"></a>1.  Introduction 引言</h1><p>介绍说话人识别的研究历史悠久，近年来受到越来越多的关注。用于说话人识别的大规模数据集，如VoxCeleb[1,2]和Speakers in the Wild[3]已经可以免费获得，促进了该领域的快速进展说话人识别可分为闭式设置和开放式设置。对于闭集设置，所有的测试标识都是在训练集中预定义的，因此可以作为一个分类问题来处理。对于开放式设置，在训练中看不到测试恒等式，这接近于实践。这是一个度量学习问题，其中声音必须映射到一个有区别的嵌入空间。这是本研究的重点，也是大多数其他研究的重点。我们正在讨论后一个问题。<br>利用深度神经网络进行说话人识别的开创性工作已经通过分类损失学习到了说话人的嵌入[1,4，5]。 从那时起，流行的方法是使用softmax分类器来训练嵌入[6,7,8]。虽然 softmax loss可以学习可分离的嵌入，但由于它没有明确地设计来优化嵌入相似性，所以它们不够有区别性。因此， softmax训练模型常常与PLDA[9]后端结合来生成评分函数(scoring functions)[5,10]。[11]解决了这一缺陷，提出了 angular softmax (A-Softmax)，其中使用余弦相似度作为 softmax 层的logit输入，许多工作证明了它在说话人识别方面优于vanilla softmax[6, 7, 8, 12, 13]。Additive margin variants，AM-Softmax[14, 15]和AAM-Softmax[16]，已经被提出通过在目标logit中引入余弦裕度惩罚（cosine margin penalty）来增加类间方差，由于其易于实现和良好的性能，这些方法已经非常流行[17,18,19,20,21,22,23,24]。然而，AM-Softmax和AM-Softmax的训练已被证明是具有挑战性的，因为它们对损失函数中的 scale and margin非常敏感。</p>
+<p>度量学习目标通过直接学习嵌入，为当前流行的基于分类的方法提供了强有力的替代。由于开集说话人识别本质上是一个度量学习问题，关键是学习类内距离小而类间距离大的特征。通过直接优化距离度量，对比 loss [25]和triplet loss [26]在说话人识别上表现良好[27,28]，但这些方法需要careful pair 或triplet loss的选择，这既耗时又对性能敏感。</p>
+<p>与我们的工作最密切相关的是原型网络（ prototypical networks）[29]，它学习一个度量空间，在这个度量空间中，开放集分类可以通过计算每个类的原型表示的距离来执行，通过一个模拟测试场景的训练过程。多重否定的使用有助于稳定学习，因为损失函数可以强制要求一个嵌入的不是批中的所有否定，而不是在triplet loss的情况下的一个特定否定。[30, 31]采用了说话人识别的原型框架。最初提出用于说话人识别的广义端到端损失[32]也与这种设置密切相关。<br>由于说话人识别系统在设计上有很大的差异，因此比较先前的工作中不同的 loss functions是具有挑战性和不可靠的。流行的主干架构包括基于tdnn的系统，如x-vector[5]和更深层次的[8]，以及来自计算机视觉社区的网络架构，如ResNet[33]。已经提出了一系列编码器来将帧级信息聚合成话语级嵌入，从简单的平均[1]到统计池[4,7]和基于字典的编码[17,34]。[5]已经证明，数据增强可以显著提高说话人识别性能，但增强方法可以从添加噪声[35]到室内脉冲响应(RIR)模拟[36]。<br>因此，为了直接比较一系列损失函数，我们在保持其他训练细节不变的情况下，进行了超过20000个gpu小时的精心实验。与普遍的看法相反，我们证明，与大多数AM-Softmax和AM-Softmax训练的网络相比，使用vanilla triplet loss 训练的网络表现出了竞争性的性能，而使用我们提出的角目标( angular objective)训练的网络表现优于所有可比方法</p>
+<h1 id="2-Training-functions-训练函数"><a href="#2-Training-functions-训练函数" class="headerlink" title="2. Training functions 训练函数"></a>2. Training functions 训练函数</h1><p>本节描述我们实验中使用的损失函数，包括原型损失函数的一个新的角度变量（ a new angular variant of the prototypical loss）。<br><img src="/images/2021-09-25-15-34-14.png"></p>
+<h2 id="2-1-Classification-objectives-目标分类"><a href="#2-1-Classification-objectives-目标分类" class="headerlink" title="2.1  Classification objectives 目标分类"></a>2.1  Classification objectives 目标分类</h2><p>VoxCeleb2开发集包含C = 5,994个演讲者或类。在训练时，每个小批包含N个来自不同说话人的话语，这些话语的嵌入为xi，对应的说话人标签为yi，其中1 &lt; i &lt; N, 1 &lt; y &lt; C。<br>softmax损失由一个softmax函数和一个多类交叉熵损失组成。它被表述为:<br><img src="/images/2021-09-26-11-50-24.png"><br>其中W和b分别是主干架构的最后一层的权重和偏差。这种损失函数只惩罚分类错误，而不明确强制类内紧性和类间分离。</p>
+<p>AM-Softmax (CosFace)。通过对权值和输入向量进行归一化，可以将softmax损失重新表述为后验概率仅依赖于权值和输入向量夹角的余弦值。这个损耗函数，被作者称为Normalised Softmax loss (NSL)，公式如下:<br><img src="/images/2021-09-26-11-53-10.png"><br>cos (θj,i)是归一化向量Wj and xi.的点积。然而，NSL学习到的嵌入并不能充分区分，因为NSL只惩罚分类错误。为了缓解这个问题，我们将 cosine margin m 引入到方程中:<br><img src="/images/2021-09-26-11-58-12.png"><br>其中s为( fixed scale factor)固定比例因子，防止训练阶段梯度过小。</p>
+<p>AAM-Softmax (ArcFace)。这相当于CosFace，除了在xi 和 Wyi之间有额外的angular margin penalty惩罚 m。加性角裕度惩罚（The additive angular margin penalty ）等于归一化超球中的测量距离裕度惩罚（the geodesic distance margin penalty）。<br><img src="/images/2021-09-26-12-04-00.png"></p>
+<h2 id="2-2-Metric-learning-objectives-度量学习目标"><a href="#2-2-Metric-learning-objectives-度量学习目标" class="headerlink" title="2.2 Metric learning objectives 度量学习目标"></a>2.2 Metric learning objectives 度量学习目标</h2><p>对于度量学习目标，每个小批包含来自N个不同说话者的M个话语，其嵌入是xj,i，其中1 &lt; j &lt; N and 1 &lt; i &lt; M。  </p>
+<p>Triplet：Triplet loss使锚点和正锚点之间的L2距离最小化(相同类别)，并使锚点和负锚点之间的距离最大化(不同类别)。<br><img src="/images/2021-09-26-12-08-13.png"><br>对于我们的实现，在小批量中从不同的说话人中抽取负样本，并通过硬负面挖掘函数（ the hard negative mining function）选择样本xk。这需要每个人说两句话。</p>
+<p>Prototypical:每个mini-batch包含一个支持集S和一个查询集q。为了简单起见，我们假设查询是每个说话者发出的第m个语音。那么原型 prototype(或质心 centroid)是:<br><img src="/images/2021-09-26-12-32-31.png"><br>采用欧几里得距离的平方作为距离度量，由原论文提出:<br><img src="/images/2021-09-26-12-33-17.png"></p>
+<p>在训练期间，每个查询例子根据到每个说话人原型的距离的softmax对N个说话人进行分类:</p>
+<p><img src="/images/2021-09-26-20-16-44.png"></p>
+<p>这里，Sj,j是查询和同一说话人的原型从支持集的平方欧氏距离。softmax函数有效地服务于hard negative mining(难分样本挖掘)的目的，因为最难分的负样本对梯度的影响最大。通常选择M的值来匹配测试时的预期情况，例如5次射击学习 5-shot learning的M=5+ 1，这样原型由5个不同的话语组成。这样，训练中的任务与测试场景中的任务完全匹配。</p>
+<p>Generalised end-to-end (GE2E)：全面的端到端(GE2E)。<br>在GE2E训练中，除查询本身外，批处理中的每个语句都被用来形成质心。因此，与查询相同类的质心比其他类的质心少计算一次。它们被定义为:<br><img src="/images/2021-09-26-20-34-41.png"><br>相似矩阵定义为嵌入点与所有质心之间的比例余弦相似度:<br><img src="/images/2021-09-26-20-38-34.png"><br>其中w&gt;0和b是可学习的 scale and bias。最终的GE2E损失定义为<br><img src="/images/2021-09-26-20-37-30.png"></p>
+<p>Angular Prototypical:<br>The angular prototypical loss使用与原始原型损耗the original prototypical loss相同的批形成same batch formation，从每个类中保留一个话语作为查询。这比GE2E-like形式更有优势，因为每个质心都是由支持集中相同数量的话语组成的，因此可以在训练过程中准确地模拟测试场景。我们使用基于余弦的相似性度量，具有可学习的e scale and bias，如GE2E损失。<br><img src="/images/2021-09-26-20-42-09.png"><br>利用角损失函数 angular loss function引入尺度不变性( scale invariance)，提高了目标对特征方差的鲁棒性(robustness)，显示出更稳定的收敛(stable convergence)[37]。结果的目标与原始的原型损失相同，公式8。</p>
+<h2 id="3-Experiments实验"><a href="#3-Experiments实验" class="headerlink" title="3. Experiments实验"></a>3. Experiments实验</h2><p>在本节中，我们将描述实验设置，这与第2节中描述的所有目标相同。</p>
+<h2 id="3-1-输入表示"><a href="#3-1-输入表示" class="headerlink" title="3.1  输入表示"></a>3.1  输入表示</h2><p>在训练中，我们使用固定长度( fixed length)的2秒时间片段，从每个话语音频中随机提取。提取频谱图的汉明窗宽度（ hamming window of width）为25ms，步长（ step）为10ms。对于Thin ResNet模型，使用257维原始频谱图（Spectrograms）作为网络的输入。对于VGGM-40和Fast ResNet，使用40维Mel滤波器组作为输入。均值和方差归一化(MVN)是通过对网络输入应用实例归一化[38]来实现的。由于VoxCeleb数据集主要由连续语音组成，语音活动检测(VAD：voice activity detection)在训练和测试中没有使用。</p>
+<h2 id="3-2-Trunk-architecture主干结构"><a href="#3-2-Trunk-architecture主干结构" class="headerlink" title="3.2. Trunk architecture主干结构"></a>3.2. Trunk architecture主干结构</h2><p>在下面描述的主干体系结构上进行了实验。前两个模型与[39]中使用和描述的模型相同，而最后一个是ResNet模型的变体，以减少计算需求。表1对体系结构进行了比较。<br>VGG-M-40<br>VGG-M模型被提出用于图像分类[40]，并被[1]用于说话人识别。该网络具有高效、分类性能好等优点。VGG-M-40是[1]提出的网络的改进，以40维滤波器组作为输入，而不是513维谱图。时间平均池化(TAP：The temporal average pooling)层取特征沿时域的平均值，以产生话语级（ utterance-level）的表示。</p>
+<p>Thin ResNet-34.<br>残差网络[33]在图像识别中得到了广泛的应用，最近又被应用到说话人识别中[2,34,17,391]。Thin ResNet-34与原来的34层ResNet相同，只是为了减少计算成本，在每个剩余块中只使用了四分之一的通道。该模型只有140万个参数，而标准的ResNet-34有2200万个参数。自注意池(SAP： Self-attentive pooling )[34]用于将帧级（frame-level）特征聚合为话语级（utterance-level）表示，同时注意对话语级说话人识别提供更多信息的帧。[34]和[39]的Thin ResNets在实现细节上略有不同，但在我们的实验中，我们使用了[39]的Thin ResNets。</p>
+<p>Fast ResNet-34.<br>滤波器的数量和大小与Thin ResNets[33,39]相同，但输入维度比[39]小，strides比[34]早，以减少计算需求。由于空间限制，可以在附带的代码中找到确切的规范。其性能与两种Thin ResNet模型相当，而计算成本却不到这些模型的一半。<br><img src="/images/2021-09-26-20-59-41.png"><br>表1:网络统计。乘积运算(MACs:Multiply accumulate operations)测量一个2秒的输入。</p>
+<h2 id="3-3-Implementation-details-实现细节"><a href="#3-3-Implementation-details-实现细节" class="headerlink" title="3.3 Implementation details 实现细节"></a>3.3 Implementation details 实现细节</h2><p>Datasets.<br>在VoxCeleb2[2]开发集上对网络进行训练，在VoxCeleb1[1]测试集上对网络进行评价。请注意，VoxCeleb2的开发集与VoxCeleb1数据集是完全分离的(即没有共同的说话人)。</p>
+<p>Training.<br>我们的实现基于PyTorch框架[41]，并在NAVER智能机器学习(NSML： NAVER Smart Machine Learning )平台[42]上进行训练。这些模型使用的是NVIDIA V100 GPU, 32GB内存，500个epochs。对于每个 epoch，我们从5994个说话人中随机抽取最多100个话语音频，以减少类别样本的不均衡。我们使用Adam优化器，初始学习率为0.001，每10个epochs.减少5%。对于度量学习目标，我们使用适合GPU的最大批大小 largest batch size。对于分类目标，我们使用 fixed batch size固定批次大小200。VGG-M-40模型的训练大约需要一天，Fast ResNet模型需要两天，Thin ResNet模型需要五天。所有实验都独立重复三次，以尽量减少随机初始化的影响，我们报告了实验的平均值和标准偏差。</p>
+<p>Data augmentation 在训练过程中，除了随机抽样外，没有进行任何数据增强。</p>
+<p>Curriculum learning. Curriculum学习。<br>AAM-Softmax损失函数从随机初始化开始表现出不稳定的收敛，m值较大，如0.3。因此，我们从m=0.1开始训练模型，并在100个epoch后将其增加到m= 0.3。这个策略在表2中被称为“ Curriculum”。类似地，如果the triplet loss在训练的早期过于困难，the triplet loss会导致模型出现偏离。我们只在100个 epochs之后才启用hard negative mining，此时网络只看到最困难的1%的negatives。</p>
+<h2 id="3-4-Evaluation-评估"><a href="#3-4-Evaluation-评估" class="headerlink" title="3.4 Evaluation 评估"></a>3.4 Evaluation 评估</h2><p>Evaluation protocol.<br>训练后的网络在VoxCelebl测试集上进行评估。我们从每个测试片段中定期采样10个4秒的暂时temporal 样本，并从每对片段中计算所有可能组合(10 × 10= 100)之间的相似性。100个相似点的平均值作为分数。该协议使用在[2，39].</p>
+<p>Results.<br><img src="/images/2021-09-26-21-54-52.png"><br>表2:VoxCelebl测试集的(EER， %)我们报告了重复实验的平均值和标准差。CHNM: Curriculum Hard Negative Mining.</p>
+<p><img src="/images/2021-09-26-21-55-17.png"><br>表3:training batch size对测试成绩的影响。在VoxCelebl测试集中使用Thin ResNet-34架构的(EER， %)。我们报告了重复实验的平均值和标准差。  </p>
+<p>结果如表2所示。可以看出，使用AM-Softmax和AAMSoftmax损失函数训练的网络性能对训练时设置的margin和scale值非常敏感。我们对m和s的许多组合进行迭代，以找到最优值。用最常见的设置训练的模型(m=0.3和s = 30的AM-Softmax)优于vanilla triplet loss.<br>通过在训练中使用多个负样本，广义端到端损失和原型损失比三重损失有所改善。当M的值与测试场景匹配时，原型网络的性能最好，这消除了超参数优化的必要性。用提出的角度目标 angular objective训练的模型的性能超过了所有基于分类和度量学习方法all<br>classification-based and metric learning methods.<br>最近在VoxCeleb2数据集上有大量的工作，但我们不会与表中的这些工作进行比较，因为这项工作的目标是比较相同条件下不同损失函数的性能。然而，我们不知道在网络参数数量相近的情况下，有哪项工作的性能比我们的方法更好。</p>
+<p>Batch size.<br>批次大小对各损失函数的影响如表3所示。我们观察到更大的批大小对度量学习方法的性能有积极的影响。这可以解释为在批内sample harder negatives<br>within the batch的能力。对于经过 classification loss.训练的网络，我们没有这样的观察。</p>
+<h2 id="4-Conclusions-结论"><a href="#4-Conclusions-结论" class="headerlink" title="4.  Conclusions 结论"></a>4.  Conclusions 结论</h2><p>在本文中，我们提出了一个度量学习在说话人识别中的例子。我们的大量实验表明，GE2E和原型网络（ prototypical networks）的性能优于目前流行的基于分类的方法。我们还提出了原型网络的角变量（angular variant of the prototypical networks），它优于所有现有的训练函数。最后，我们发布了一个用于大规模说话人识别的灵活的PyTorch训练器，可用于促进该领域的进一步研究。</p>
+]]></content>
+      <categories>
+        <category>ASR声纹识别系列-论文笔记</category>
+      </categories>
+  </entry>
+</search>

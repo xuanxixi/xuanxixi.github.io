@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/maomao.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/maomao.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/maomao.png">
+  <link rel="mask-icon" href="/images/maomao.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="pytorch-网络结构Unet和Att-Unet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="语义分割 - 识别肝脏医学图像">
+<meta property="og:url" content="http://example.com/2021/08/01/%E5%8C%BB%E5%AD%A6%E8%82%9D%E8%84%8F%E5%9B%BE%E5%83%8F-%E8%AF%AD%E4%B9%89%E5%88%86%E5%89%B2/index.html">
+<meta property="og:site_name" content="Xi Xuan&#39;s Blog">
+<meta property="og:description" content="pytorch-网络结构Unet和Att-Unet">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/2021-09-20-22-05-17.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-22-05-17.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-22-07-49.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-22-08-25.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-22-08-55.png">
+<meta property="og:image" content="http://example.com/images/2021-09-20-22-10-10.png">
+<meta property="article:published_time" content="2021-08-01T11:34:50.000Z">
+<meta property="article:modified_time" content="2021-09-20T14:17:33.957Z">
+<meta property="article:author" content="Xi Xuan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/2021-09-20-22-05-17.png">
+
+
+<link rel="canonical" href="http://example.com/2021/08/01/%E5%8C%BB%E5%AD%A6%E8%82%9D%E8%84%8F%E5%9B%BE%E5%83%8F-%E8%AF%AD%E4%B9%89%E5%88%86%E5%89%B2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/08/01/%E5%8C%BB%E5%AD%A6%E8%82%9D%E8%84%8F%E5%9B%BE%E5%83%8F-%E8%AF%AD%E4%B9%89%E5%88%86%E5%89%B2/","path":"2021/08/01/医学肝脏图像-语义分割/","title":"语义分割 - 识别肝脏医学图像"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>语义分割 - 识别肝脏医学图像 | Xi Xuan's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Xi Xuan's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section">归档</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section">分类</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section">标签</a></li>
+        <li class="menu-item menu-item-abouts"><a href="/abouts/" rel="section">关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E4%B9%89%E5%88%86%E5%89%B2-%E8%AF%86%E5%88%AB%E8%82%9D%E8%84%8F%E5%8C%BB%E5%AD%A6%E5%9B%BE%E5%83%8F"><span class="nav-number">1.</span> <span class="nav-text">语义分割 - 识别肝脏医学图像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">2.</span> <span class="nav-text">目录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%89%80%E9%9C%80%E7%8E%AF%E5%A2%83"><span class="nav-number">2.0.1.</span> <span class="nav-text">1. 所需环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">2.0.2.</span> <span class="nav-text">2. 数据集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">2.0.3.</span> <span class="nav-text">3. 数据预处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84Unet%E5%92%8CAtt-Unet"><span class="nav-number">2.0.4.</span> <span class="nav-text">4. 网络结构Unet和Att-Unet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E8%AE%AD%E7%BB%83%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.0.5.</span> <span class="nav-text">5. 训练步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E8%AE%AD%E7%BB%83%E7%BB%93%E6%9E%9C"><span class="nav-number">2.0.6.</span> <span class="nav-text">6. 训练结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-%E5%8D%95%E5%BC%A0%E5%9B%BE%E7%89%87%E9%A2%84%E6%B5%8B"><span class="nav-number">2.0.7.</span> <span class="nav-text">7. 单张图片预测</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E6%89%80%E9%9C%80%E7%8E%AF%E5%A2%83"><span class="nav-number">3.</span> <span class="nav-text">1、所需环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">4.</span> <span class="nav-text">2、数据集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">3、数据预处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84-Unet-%E5%92%8C-Att-Unet"><span class="nav-number">6.</span> <span class="nav-text">4、网络结构 Unet 和 Att-Unet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E5%B9%B2%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B%EF%BC%9A%E6%88%96%E8%A7%81-nets-vgg-py"><span class="nav-number">7.</span> <span class="nav-text">主干特征提取部分代码如下：或见.&#x2F;nets&#x2F;vgg.py</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%BC%BA%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%E9%83%A8%E5%88%86%E5%92%8C%E9%A2%84%E6%B5%8B%E9%83%A8%E5%88%86%E7%9A%84%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B%E3%80%82%E6%88%96%E8%A7%81-nets-unet-py"><span class="nav-number">8.</span> <span class="nav-text">加强特征提取部分和预测部分的代码如下。或见 .&#x2F;nets&#x2F;unet.py</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Att-Unet"><span class="nav-number">8.1.</span> <span class="nav-text">2. Att-Unet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Att-Unet-%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B%E3%80%82%E6%88%96%E8%A7%81-nets-attention-unet-py"><span class="nav-number">8.2.</span> <span class="nav-text">Att-Unet 代码如下。或见 .&#x2F;nets&#x2F;attention_unet.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E8%AE%AD%E7%BB%83%E6%AD%A5%E9%AA%A4"><span class="nav-number">9.</span> <span class="nav-text">5、训练步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%E3%80%81%E8%AE%AD%E7%BB%83%E7%BB%93%E6%9E%9C"><span class="nav-number">10.</span> <span class="nav-text">6、训练结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7%E3%80%81%E5%8D%95%E5%BC%A0%E5%9B%BE%E7%89%87%E9%A2%84%E6%B5%8B"><span class="nav-number">11.</span> <span class="nav-text">7、单张图片预测</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Xi Xuan"
+      src="/images/xuanxi.jpg">
+  <p class="site-author-name" itemprop="name">Xi Xuan</p>
+  <div class="site-description" itemprop="description"> 一杯冰咖啡 </div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xuanxixi" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xuanxixi" rel="noopener" target="_blank">GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/xuanxi1110@gmail.com" title="E-Mail → xuanxi1110@gmail.com">E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/01/%E5%8C%BB%E5%AD%A6%E8%82%9D%E8%84%8F%E5%9B%BE%E5%83%8F-%E8%AF%AD%E4%B9%89%E5%88%86%E5%89%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xuanxi.jpg">
+      <meta itemprop="name" content="Xi Xuan">
+      <meta itemprop="description" content=" 一杯冰咖啡 ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xi Xuan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          语义分割 - 识别肝脏医学图像
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-01 19:34:50" itemprop="dateCreated datePublished" datetime="2021-08-01T19:34:50+08:00">2021-08-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-20 22:17:33" itemprop="dateModified" datetime="2021-09-20T22:17:33+08:00">2021-09-20</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89-%E9%A1%B9%E7%9B%AE%E6%88%90%E6%9E%9C/" itemprop="url" rel="index"><span itemprop="name">计算机视觉-项目成果</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">pytorch-网络结构Unet和Att-Unet</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="语义分割-识别肝脏医学图像"><a href="#语义分割-识别肝脏医学图像" class="headerlink" title="语义分割 - 识别肝脏医学图像"></a>语义分割 - 识别肝脏医学图像</h2><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><h4 id="1-所需环境"><a href="#1-所需环境" class="headerlink" title="1. 所需环境"></a>1. 所需环境</h4><h4 id="2-数据集"><a href="#2-数据集" class="headerlink" title="2. 数据集"></a>2. 数据集</h4><h4 id="3-数据预处理"><a href="#3-数据预处理" class="headerlink" title="3. 数据预处理"></a>3. 数据预处理</h4><h4 id="4-网络结构Unet和Att-Unet"><a href="#4-网络结构Unet和Att-Unet" class="headerlink" title="4. 网络结构Unet和Att-Unet"></a>4. 网络结构Unet和Att-Unet</h4><h4 id="5-训练步骤"><a href="#5-训练步骤" class="headerlink" title="5. 训练步骤"></a>5. 训练步骤</h4><h4 id="6-训练结果"><a href="#6-训练结果" class="headerlink" title="6. 训练结果"></a>6. 训练结果</h4><h4 id="7-单张图片预测"><a href="#7-单张图片预测" class="headerlink" title="7. 单张图片预测"></a>7. 单张图片预测</h4><hr>
+<h2 id="1、所需环境"><a href="#1、所需环境" class="headerlink" title="1、所需环境"></a>1、所需环境</h2><p>torch==1.2.<br>torchvision==0.4.</p>
+<h2 id="2、数据集"><a href="#2、数据集" class="headerlink" title="2、数据集"></a>2、数据集</h2><ol>
+<li>原图在./ganzang_Datasets/Imags，共 400 张</li>
+<li>标签在 ./ganzang_Datasets/Labels，共 400 张</li>
+</ol>
+<h2 id="3、数据预处理"><a href="#3、数据预处理" class="headerlink" title="3、数据预处理"></a>3、数据预处理</h2><ol>
+<li><p>在训练前运行png2txt.py按照train:val=9:1划分数据集(train 360 张，val 40张)会在./ganzang_Datasets/ImageSets/Segmentation下生成trainval.txt、<br>train.txt、val.txt，里面存放的是原图图片文件名称。</p>
+</li>
+<li><p>./until/dataloader_medical.py对数据集进行预处理，不需运行，只需导入。</p>
+</li>
+</ol>
+<h2 id="4、网络结构-Unet-和-Att-Unet"><a href="#4、网络结构-Unet-和-Att-Unet" class="headerlink" title="4、网络结构 Unet 和 Att-Unet"></a>4、网络结构 Unet 和 Att-Unet</h2><p>分别运行Unet-summary.py和Att-Unet-summary.py可以得到Unet和Att-<br>Unet的网络结构和参数。或者直接打开Unet.txt和AttU-net.txt查看网络结构<br>和参数。</p>
+<ol>
+<li>Unet</li>
+</ol>
+<ol>
+<li>原理：Unet可以分为三个部分：</li>
+</ol>
+<p>⚫ 主干特征提取部分：Unet的主干特征提取部分与VGG16类似，为<br>conv2d和MaxPool2d的堆叠。利用主干特征提取部分，可以获得 5<br>个初步有效的特征层。在下一步，利用这 5 个有效特征层进行特征融<br>合。<br>⚫ 加强特征提取部分：利用上一步获得的 5 个初步有效特征层进行上采<br>样，并且进行特征融合，最终得到一个融合所有特征的特征层。<br>⚫ 预测部分：利用最终获得的一个融合所有特征的特征层，对每个特征<br>点进行分类，相当于对每一个像素点进行分类。<br>2) 代码实现：</p>
+<p>⚫ 主干特征提取部分：使用VGG16的conv2d和MaxPool2d进行堆叠，<br>当输入的图像大小为(512,512,3)时，具体实现如下：<br>Conv1:进行 2 次 3 × 3 的 64 通道卷积，获得 1 个(512,512, 64 )的初步有效<br>特征层，再进行 2 × 2 最大池化，获得 1 个( 256 , 256 , 64 )的特征层<br>Conv 2 : 进行 2 次 3 × 3 的 128 通道卷积，获得 1 个( 256 , 256 , 128 )的初步<br>有效特征层，再进行 2 × 2 最大池化，获得 1 个( 128 , 128 , 128 ) 的特征层<br>Conv 3 : 进行 3 次 3 × 3 的 256 通道卷积，获得 1 个( 128 , 128 , 256 )的初步<br>有效特征层，再进行 2 × 2 最大池化，获得 1 个( 64 , 64 , 256 ) 的特征层  </p>
+<p>Conv 4 : 进行 3 次 3 × 3 的 512 通道卷积，获得 1 个( 64 , 64 , 512 )的初步有<br>效特征层，再进行 2 × 2 最大池化，获得 1 个( 32 , 32 , 512 ) 的特征层<br>Conv 5 : 进行 3 次 3 × 3 的 256 通道卷积，获得 1 个( 32 , 32 , 512 ) 的特征层  </p>
+<h2 id="主干特征提取部分代码如下：或见-nets-vgg-py"><a href="#主干特征提取部分代码如下：或见-nets-vgg-py" class="headerlink" title="主干特征提取部分代码如下：或见./nets/vgg.py"></a>主干特征提取部分代码如下：或见./nets/vgg.py</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">import torch</span><br><span class="line">import torch.nn as nn</span><br><span class="line">from torchvision.models.utils import load_state_dict_from_url</span><br><span class="line">class VGG(nn.Module):</span><br><span class="line"> def __init__(self, features, num_classes=1000):</span><br><span class="line"> super(VGG, self).__init__()</span><br><span class="line"> self.features = features</span><br><span class="line"> self.avgpool = nn.AdaptiveAvgPool2d((7, 7))</span><br><span class="line"> self.classifier = nn.Sequential(</span><br><span class="line"> nn.Linear(512 * 7 * 7, 4096),</span><br><span class="line"> nn.ReLU(True),</span><br><span class="line"> nn.Dropout(),</span><br><span class="line"> nn.Linear(4096, 4096),</span><br><span class="line"> nn.ReLU(True),</span><br><span class="line"> nn.Dropout(),</span><br><span class="line"> nn.Linear(4096, num_classes),</span><br><span class="line"> )</span><br><span class="line"> self._initialize_weights()</span><br><span class="line"> def forward(self, x):</span><br><span class="line"> x = self.features(x)</span><br><span class="line"> x = self.avgpool(x)</span><br><span class="line"> x = torch.flatten(x, 1)</span><br><span class="line"> x = self.classifier(x)</span><br><span class="line"> return x</span><br><span class="line"> def _initialize_weights(self):</span><br><span class="line"> for m in self.modules():</span><br><span class="line"> if isinstance(m, nn.Conv2d):</span><br><span class="line"> nn.init.kaiming_normal_(m.weight, mode=&#x27;fan_out&#x27;, </span><br><span class="line">nonlinearity=&#x27;relu&#x27;)</span><br><span class="line"> if m.bias is not None:</span><br><span class="line"> nn.init.constant_(m.bias, 0)</span><br><span class="line"> elif isinstance(m, nn.BatchNorm2d):</span><br><span class="line"> nn.init.constant_(m.weight, 1)</span><br><span class="line"> nn.init.constant_(m.bias, 0)</span><br><span class="line"> elif isinstance(m, nn.Linear):</span><br><span class="line"> nn.init.normal_(m.weight, 0, 0.01)</span><br><span class="line"> nn.init.constant_(m.bias, 0)</span><br><span class="line">def make_layers(cfg, batch_norm=False, in_channels = 3):</span><br><span class="line"> layers = []</span><br><span class="line"> for v in cfg:</span><br><span class="line"> if v == &#x27;M&#x27;:</span><br><span class="line"> layers += [nn.MaxPool2d(kernel_size=2, stride=2)]</span><br><span class="line"> else:</span><br><span class="line"> conv2d = nn.Conv2d(in_channels, v, kernel_size=3, padding=1)</span><br><span class="line"> if batch_norm:</span><br><span class="line"> layers += [conv2d, nn.BatchNorm2d(v), nn.ReLU(inplace=True)]</span><br><span class="line"> else:</span><br><span class="line"> layers += [conv2d, nn.ReLU(inplace=True)]</span><br><span class="line"> in_channels = v</span><br><span class="line"> return nn.Sequential(*layers)</span><br><span class="line"># 512,512,3 -&gt; 512,512,64 -&gt; 256,256,64 -&gt; 256,256,128 -&gt; 128,128,128 -&gt; </span><br><span class="line">128,128,256 -&gt; 64,64,256</span><br><span class="line"># 64,64,512 -&gt; 32,32,512 -&gt; 32,32,512</span><br><span class="line">cfgs = &#123;</span><br><span class="line"> &#x27;D&#x27;: [64, 64, &#x27;M&#x27;, 128, 128, &#x27;M&#x27;, 256, 256, 256, &#x27;M&#x27;, 512, 512, 512, &#x27;M&#x27;, </span><br><span class="line">512, 512, 512, &#x27;M&#x27;]</span><br><span class="line">&#125;</span><br><span class="line">def VGG16(pretrained, in_channels, **kwargs):</span><br><span class="line"> model = VGG(make_layers(cfgs[&quot;D&quot;], batch_norm = False, in_channels = </span><br><span class="line">in_channels), **kwargs)</span><br><span class="line"> if pretrained:</span><br><span class="line"> state_dict = </span><br><span class="line">load_state_dict_from_url(&quot;https://download.pytorch.org/models/vgg16-</span><br><span class="line">397923af.pth&quot;, model_dir=&quot;./model_data&quot;)</span><br><span class="line"> model.load_state_dict(state_dict)</span><br><span class="line"> </span><br><span class="line"> del model.avgpool</span><br><span class="line"> del model.classifier</span><br><span class="line"> return model</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>⚫ 加强特征提取部分：利用上一步得到的 5 个初步的有效特征层进行特征融合，特征融合的方式是对特征层进行上采样，并进行堆叠。获得一个(512,512,64)的融合了所有特征的特征层<br>⚫ 预测部分：利用一个 1 × 1 卷积进行通道调整，将最终特征层的通道数<br>调整成num_classes=2（肝脏、背景）。</p>
+<h2 id="加强特征提取部分和预测部分的代码如下。或见-nets-unet-py"><a href="#加强特征提取部分和预测部分的代码如下。或见-nets-unet-py" class="headerlink" title="加强特征提取部分和预测部分的代码如下。或见 ./nets/unet.py"></a>加强特征提取部分和预测部分的代码如下。或见 ./nets/unet.py</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">import torch</span><br><span class="line">import torch.nn as nn</span><br><span class="line">from nets.vgg import VGG16</span><br><span class="line">class unetUp(nn.Module):</span><br><span class="line"> def __init__(self, in_size, out_size):</span><br><span class="line"> super(unetUp, self).__init__()</span><br><span class="line"> self.conv1 = nn.Conv2d(in_size, out_size, kernel_size=3, </span><br><span class="line">padding=1)</span><br><span class="line"> self.conv2 = nn.Conv2d(out_size, out_size, kernel_size=3, </span><br><span class="line">padding=1)</span><br><span class="line"> self.up = nn.UpsamplingBilinear2d(scale_factor=2)</span><br><span class="line"> def forward(self, inputs1, inputs2):</span><br><span class="line"> outputs = torch.cat([inputs1, self.up(inputs2)], 1)</span><br><span class="line"> outputs = self.conv1(outputs)</span><br><span class="line"> outputs = self.conv2(outputs)</span><br><span class="line"> return outputs</span><br><span class="line">class Unet(nn.Module):</span><br><span class="line"> def __init__(self, num_classes=21, in_channels=3, </span><br><span class="line">pretrained=False):</span><br><span class="line"> super(Unet, self).__init__()</span><br><span class="line"> self.vgg = VGG16(pretrained=pretrained,in_channels=in_channels)</span><br><span class="line"> in_filters = [192, 384, 768, 1024]</span><br><span class="line"> out_filters = [64, 128, 256, 512]</span><br><span class="line"> # upsampling</span><br><span class="line"> # 64,64,512</span><br><span class="line"> self.up_concat4 = unetUp(in_filters[3], out_filters[3])</span><br><span class="line"> # 128,128,256</span><br><span class="line"> self.up_concat3 = unetUp(in_filters[2], out_filters[2])</span><br><span class="line"> # 256,256,128</span><br><span class="line"> self.up_concat2 = unetUp(in_filters[1], out_filters[1])</span><br><span class="line"> # 512,512,64</span><br><span class="line"> self.up_concat1 = unetUp(in_filters[0], out_filters[0])</span><br><span class="line"> # final conv (without any concat)</span><br><span class="line"> self.final = nn.Conv2d(out_filters[0], num_classes, 1)</span><br><span class="line"> def forward(self, inputs):</span><br><span class="line"> feat1 = self.vgg.features[ :4 ](inputs)</span><br><span class="line"> feat2 = self.vgg.features[4 :9 ](feat1)</span><br><span class="line"> feat3 = self.vgg.features[9 :16](feat2)</span><br><span class="line"> feat4 = self.vgg.features[16:23](feat3)</span><br><span class="line"> feat5 = self.vgg.features[23:-1](feat4)</span><br><span class="line"> up4 = self.up_concat4(feat4, feat5)</span><br><span class="line"> up3 = self.up_concat3(feat3, up4)</span><br><span class="line"> up2 = self.up_concat2(feat2, up3)</span><br><span class="line"> up1 = self.up_concat1(feat1, up2)</span><br><span class="line"> final = self.final(up1)</span><br><span class="line"> </span><br><span class="line"> return final</span><br><span class="line"> def _initialize_weights(self, *stages):</span><br><span class="line"> for modules in stages:</span><br><span class="line"> for module in modules.modules():</span><br><span class="line"> if isinstance(module, nn.Conv2d):</span><br><span class="line"> nn.init.kaiming_normal_(module.weight)</span><br><span class="line">if module.bias is not None:</span><br><span class="line"> module.bias.data.zero_()</span><br><span class="line"> elif isinstance(module, nn.BatchNorm2d):</span><br><span class="line"> module.weight.data.fill_(1)</span><br><span class="line"> module.bias.data.zero_()</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Att-Unet"><a href="#2-Att-Unet" class="headerlink" title="2. Att-Unet"></a>2. Att-Unet</h3><ol>
+<li>原理：Att-Unet可以分为三个部分：</li>
+</ol>
+<p>⚫ 主干特征提取部分：Att-Unet的主干提取部分与Unet的主干特征提取<br>部分类似，为conv2d和MaxPool2d的堆叠，并且在conv2d和RELU<br>之间加了Batch normalization。利用主干特征提取部分，可以获得 5<br>个初步有效的特征层。在下一步，利用这 5 个有效特征层进行特征融<br>合。  </p>
+<p>⚫ 加强特征提取部分：利用上一步获得的 5 个初步有效特征层进行上采<br>样，然后将上采样结果与下一个未进行上采样的有效特征层执行Att<br>模块，得到注意力权重赋给低层特征层中，最终得到一个加上注意力<br>机制并且融合所有特征的特征层。</p>
+<p>⚫ 预测部分：利用最终获得的一个加上注意力机制并且融合所有特征的<br>特征层，对每个特征点进行分类，相当于对每一个像素点进行分类。</p>
+<ol start="2">
+<li>代码实现：</li>
+</ol>
+<p>输入(1×3×255×255)， 1 是batchsize,3是channel。经过 5 次下采样<br>（执行到class AttU_Net 的self.Conv5）时，已经是最小的feature<br>map(1× 1024 × 32 × 32 )，对其进行上采样up_conv得到<br>self.Up5(1× 512 × 64 × 64 )，然后对self.Up5(1× 512 × 64 × 64 )和<br>self.Conv4(1× 512 × 64 × 64 )执行Attention_block<br>Attention_block具体执行步骤：</p>
+<p>① 对self.Up5(1× 512 × 64 × 64 )做 1 × 1 卷积得到(1× 256 × 64 × 64 )</p>
+<p>② 对 self.Conv4(1× 512 × 64 × 64 )做 1 × 1 卷积得到(1× 256 × 64 × 64 )<br>③ 将①结果和②结果相加</p>
+<p>④ 对③结果做relu<br>⑤ 对④结果做conv( 256 × 1 )卷积，将 256 通道变为 1 通道，得到<br>(1× 1 × 64 × 64 )<br>⑥ 对⑤结果做sigmod，使得结果落在(0,1)之间，值越大，注意力权<br>重越大。<br>⑦ 将⑥得到的注意力权重和self.Conv4相乘，把注意力权重赋给低层<br>特征层。</p>
+<h3 id="Att-Unet-代码如下。或见-nets-attention-unet-py"><a href="#Att-Unet-代码如下。或见-nets-attention-unet-py" class="headerlink" title="Att-Unet 代码如下。或见 ./nets/attention_unet.py"></a>Att-Unet 代码如下。或见 ./nets/attention_unet.py</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line">from torch import nn</span><br><span class="line">from torch.nn import functional as F</span><br><span class="line">import torch</span><br><span class="line">from torchvision import models</span><br><span class="line">import torchvision</span><br><span class="line">from nets.vgg import VGG16</span><br><span class="line">class conv_block(nn.Module):</span><br><span class="line"> def __init__(self,ch_in,ch_out):</span><br><span class="line"> super(conv_block,self).__init__()</span><br><span class="line"> self.conv = nn.Sequential(</span><br><span class="line"> nn.Conv2d(ch_in, ch_out, </span><br><span class="line">kernel_size=3,stride=1,padding=1,bias=True),</span><br><span class="line"> nn.BatchNorm2d(ch_out),</span><br><span class="line"> nn.ReLU(inplace=True),</span><br><span class="line"> nn.Conv2d(ch_out, ch_out, </span><br><span class="line">kernel_size=3,stride=1,padding=1,bias=True),</span><br><span class="line"> nn.BatchNorm2d(ch_out),</span><br><span class="line"> nn.ReLU(inplace=True)</span><br><span class="line"> )</span><br><span class="line"> def forward(self,x):</span><br><span class="line"> x = self.conv(x)</span><br><span class="line"> return x</span><br><span class="line">class up_conv(nn.Module):</span><br><span class="line"> def __init__(self,ch_in,ch_out):</span><br><span class="line"> super(up_conv,self).__init__()</span><br><span class="line"> self.up = nn.Sequential(</span><br><span class="line"> nn.Upsample(scale_factor=2),</span><br><span class="line"> </span><br><span class="line">nn.Conv2d(ch_in,ch_out,kernel_size=3,stride=1,padding=1,bias=True),</span><br><span class="line"> nn.BatchNorm2d(ch_out),</span><br><span class="line"> nn.ReLU(inplace=True)</span><br><span class="line"> )</span><br><span class="line"> def forward(self,x):</span><br><span class="line"> x = self.up(x)</span><br><span class="line"> return x</span><br><span class="line">class Attention_block(nn.Module):</span><br><span class="line"> def __init__(self, F_g, F_l, F_int):</span><br><span class="line"> super(Attention_block, self).__init__()</span><br><span class="line"> self.W_g = nn.Sequential(</span><br><span class="line"> nn.Conv2d(F_g, F_int, kernel_size=1, stride=1, padding=0, </span><br><span class="line">bias=True),</span><br><span class="line"> nn.BatchNorm2d(F_int)</span><br><span class="line"> )</span><br><span class="line"> self.W_x = nn.Sequential(</span><br><span class="line"> nn.Conv2d(F_l, F_int, kernel_size=1, stride=1, padding=0, </span><br><span class="line">bias=True),</span><br><span class="line"> nn.BatchNorm2d(F_int)</span><br><span class="line"> )</span><br><span class="line"> self.psi = nn.Sequential(</span><br><span class="line"> nn.Conv2d(F_int, 1, kernel_size=1, stride=1, padding=0, </span><br><span class="line">bias=True),</span><br><span class="line"> nn.BatchNorm2d(1),</span><br><span class="line"> nn.Sigmoid()</span><br><span class="line"> )</span><br><span class="line"> self.relu = nn.ReLU(inplace=True)</span><br><span class="line"> def forward(self, g, x):</span><br><span class="line"> # 下采样的 gating signal 卷积</span><br><span class="line"> g1 = self.W_g(g)</span><br><span class="line"> # 上采样的 l 卷积</span><br><span class="line"> x1 = self.W_x(x)</span><br><span class="line"> # concat + relu</span><br><span class="line"> psi = self.relu(g1 + x1)</span><br><span class="line"> # channel 减为 1，并 Sigmoid,得到权重矩阵</span><br><span class="line"> psi = self.psi(psi)</span><br><span class="line"> # 返回加权的 x</span><br><span class="line"> return x * psi</span><br><span class="line">class AttU_Net(nn.Module):</span><br><span class="line"> def __init__(self, img_ch=3, output_ch=2):</span><br><span class="line"> super(AttU_Net, self).__init__()</span><br><span class="line"> self.Maxpool = nn.MaxPool2d(kernel_size=2, stride=2)</span><br><span class="line"> self.Conv1 = conv_block(ch_in=img_ch, ch_out=64)</span><br><span class="line"> self.Conv2 = conv_block(ch_in=64, ch_out=128)</span><br><span class="line"> self.Conv3 = conv_block(ch_in=128, ch_out=256)</span><br><span class="line"> self.Conv4 = conv_block(ch_in=256, ch_out=512)</span><br><span class="line"> self.Conv5 = conv_block(ch_in=512, ch_out=1024)</span><br><span class="line"> self.Up5 = up_conv(ch_in=1024, ch_out=512)</span><br><span class="line"> self.Att5 = Attention_block(F_g=512, F_l=512, F_int=256)</span><br><span class="line"> self.Up_conv5 = conv_block(ch_in=1024, ch_out=512)</span><br><span class="line"> self.Up4 = up_conv(ch_in=512, ch_out=256)</span><br><span class="line"> self.Att4 = Attention_block(F_g=256, F_l=256, F_int=128)</span><br><span class="line"> self.Up_conv4 = conv_block(ch_in=512, ch_out=256)</span><br><span class="line"> self.Up3 = up_conv(ch_in=256, ch_out=128)</span><br><span class="line"> self.Att3 = Attention_block(F_g=128, F_l=128, F_int=64)</span><br><span class="line"> self.Up_conv3 = conv_block(ch_in=256, ch_out=128)</span><br><span class="line"> self.Up2 = up_conv(ch_in=128, ch_out=64)</span><br><span class="line"> self.Att2 = Attention_block(F_g=64, F_l=64, F_int=32)</span><br><span class="line"> self.Up_conv2 = conv_block(ch_in=128, ch_out=64)</span><br><span class="line"> self.Conv_1x1 = nn.Conv2d(64, output_ch, kernel_size=1, </span><br><span class="line">stride=1, padding=0)</span><br><span class="line"> #self.sigmoid = nn.Sigmoid()</span><br><span class="line"> def forward(self, x):</span><br><span class="line"> # encoding path</span><br><span class="line"> x1 = self.Conv1(x)</span><br><span class="line"> x2 = self.Maxpool(x1)</span><br><span class="line"> x2 = self.Conv2(x2)</span><br><span class="line"> x3 = self.Maxpool(x2)</span><br><span class="line"> x3 = self.Conv3(x3)</span><br><span class="line"> x4 = self.Maxpool(x3)</span><br><span class="line"> x4 = self.Conv4(x4)</span><br><span class="line"> x5 = self.Maxpool(x4)</span><br><span class="line"> x5 = self.Conv5(x5)</span><br><span class="line"> # decoding + concat path</span><br><span class="line"> d5 = self.Up5(x5)</span><br><span class="line"> x4 = self.Att5(g=d5, x=x4)</span><br><span class="line"> d5 = torch.cat((x4, d5), dim=1)</span><br><span class="line"> d5 = self.Up_conv5(d5)</span><br><span class="line"> d4 = self.Up4(d5)</span><br><span class="line"> x3 = self.Att4(g=d4, x=x3)</span><br><span class="line"> d4 = torch.cat((x3, d4), dim=1)</span><br><span class="line"> d4 = self.Up_conv4(d4)</span><br><span class="line"> d3 = self.Up3(d4)</span><br><span class="line"> x2 = self.Att3(g=d3, x=x2)</span><br><span class="line"> d3 = torch.cat((x2, d3), dim=1)</span><br><span class="line"> d3 = self.Up_conv3(d3)</span><br><span class="line"> d2 = self.Up2(d3)</span><br><span class="line"> x1 = self.Att2(g=d2, x=x1)</span><br><span class="line"> d2 = torch.cat((x1, d2), dim=1)</span><br><span class="line"> d2 = self.Up_conv2(d2)</span><br><span class="line"> d1 = self.Conv_1x1(d2)</span><br><span class="line"> #d1 = self.sigmoid(d1)</span><br><span class="line"> #print(d1.shape)</span><br><span class="line"> return d1</span><br></pre></td></tr></table></figure>
+
+<h2 id="5、训练步骤"><a href="#5、训练步骤" class="headerlink" title="5、训练步骤"></a>5、训练步骤</h2><p>⚫ 执行train_medical.py，开始训练U-net模型，每训练 1 个epoch就会<br>在./logs/U-net保存模型文件。</p>
+<p>⚫ 执行att_train_medical.py，开始训练Att-Unet模型，每训练 1 个epoch就会<br>在./logs/AttU-net保存模型文件。</p>
+<p>一、 LOSS函数</p>
+<p>1 、Cross Entropy Loss：Cross Entropy Loss就是普通的交叉熵损失，当语义分割<br>平台利用Softmax对像素点进行分类的时候，进行使用。</p>
+<p>2 、Dice Loss：Dice loss将语义分割的评价指标作为Loss，Dice系数是一种集合相<br>似度度量函数，通常用于计算两个样本的相似度，取值范围在[0,1]。</p>
+<p>计算公式如下：</p>
+<p><img src="/images/2021-09-20-22-05-17.png"></p>
+<p>就是预测结果和真实结果的交乘上 2 ，除上预测结果加上真实结果。其值在 0 - 1 之间。越大表示预测结果和真实结果重合度越大。所以Dice系数是越大越好。作为LOSS的话是越小越好，所以使得Dice loss = 1 - Dice，就可以将Loss作为语义分<br>割的损失。</p>
+<p>二、 训练参数及策略</p>
+<ol>
+<li>初始学习率： 1 × 10 -^4 ，优化器Adam，每过 1 个epoch调整一次学习率，更新<br> 学习率的乘法因子为 0 .92。^</li>
+<li>Batch_size设置为 2 ，Epoch设置为 50 轮。^</li>
+</ol>
+<p>三、 性能指标</p>
+<p>① f_score：同上面的Dice系数。 代码见./utils/metrics.py</p>
+<p><img src="/images/2021-09-20-22-05-17.png"></p>
+<p>② mIou</p>
+<p>③ mPA</p>
+<h2 id="6、训练结果"><a href="#6、训练结果" class="headerlink" title="6、训练结果"></a>6、训练结果</h2><p>1 、 在pycharm的terminal中输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tensorboard --logdir=./runs</span><br></pre></td></tr></table></figure>
+<p>点开显示的网址，可以看到unet模型（深蓝色）和Att-unet模型（浅蓝色）的<br>tra_loss、val_loss、tra_f_score、val_f_score图<br><img src="/images/2021-09-20-22-07-49.png"></p>
+<p>2 、 执行unet_get_miou_prediction.py和attunet_get_miou_prediction.py可以得<br>到 40 张验证图片中背景和肝脏的mIou值和mPA值。</p>
+<p>计算前需要加载训练好的模型</p>
+<p>⚫ Unet模型在unet.py更改<br>model_path</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">_defaults = &#123;</span><br><span class="line">&quot;model_path&quot; : &#x27;./logs/U-net/Epoch50-Total_Loss0.0883.pth&#x27;,</span><br><span class="line">&quot;model_image_size&quot; : ( 512 , 512 , 3 ),</span><br><span class="line">&quot;num_classes&quot; : 2 ,</span><br><span class="line">&quot;cuda&quot; : True,</span><br><span class="line">&quot;blend&quot; : True</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>⚫ Att_Unet模型在Attunet.py更改model_path</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">_defaults = &#123;</span><br><span class="line">&quot;model_path&quot; : &#x27;./logs/AttU_Net/Epoch50-Total_Loss0.0187.pth</span><br><span class="line">&#x27;,</span><br><span class="line">&quot;model_image_size&quot; : ( 512 , 512 , 3 ),</span><br><span class="line">&quot;num_classes&quot; : 2 ,</span><br><span class="line">&quot;cuda&quot; : True,</span><br><span class="line">&quot;blend&quot; : True</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>⚫ 执行unet_get_miou_prediction.py得到<br><img src="/images/2021-09-20-22-08-25.png"><br>⚫ 执行attunet_get_miou_prediction.py得到</p>
+<p><img src="/images/2021-09-20-22-08-55.png"><br>可以看到Att_Unet的背景类mIou比Unet的背景mIou高 7 .93，Att_Unet<br>的肝脏类mIou比Unet 的肝脏类mIou高 0 .77； Att_Unet的背景类mPA<br>比Unet的背景mPA高3.45，Att_Unet的肝脏类mPA比Unet 的肝脏类m<br>PA高0. 46 ； Att_Unet的mIou比Unet的mIou高 4 .35，Att_Unet的mPA<br>比Unet的mPA高1.96</p>
+<h2 id="7、单张图片预测"><a href="#7、单张图片预测" class="headerlink" title="7、单张图片预测"></a>7、单张图片预测</h2><ol>
+<li><p>预测前同样需要加载训练好的模型，同上</p>
+</li>
+<li><p>执行unet_predict.py得到./results/unet000.png</p>
+</li>
+<li><p>执行attunet_predict.py得到./results/attunet000.png<br><img src="/images/2021-09-20-22-10-10.png"></p>
+</li>
+</ol>
+<p>可以看到，Att_Unet比Unet的分割效果更好。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Xi Xuan
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2021/08/01/%E5%8C%BB%E5%AD%A6%E8%82%9D%E8%84%8F%E5%9B%BE%E5%83%8F-%E8%AF%AD%E4%B9%89%E5%88%86%E5%89%B2/" title="语义分割 - 识别肝脏医学图像">http://example.com/2021/08/01/医学肝脏图像-语义分割/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/14/%E3%80%90%E8%B6%85%E8%AF%A6%E7%BB%86%E3%80%91windows10%E8%A3%85tensorflow1%E3%80%81tensorflow2%E7%8E%AF%E5%A2%83/" rel="prev" title="【超详细】windows10装tensorflow1、tensorflow2环境">
+                  <i class="fa fa-chevron-left"></i> 【超详细】windows10装tensorflow1、tensorflow2环境
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/19/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99%E5%8D%9A%E5%AE%A2/" rel="next" title="搭建个人网站博客">
+                  搭建个人网站博客 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HePeng</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">39k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">35 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
