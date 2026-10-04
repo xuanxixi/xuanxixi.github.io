@@ -41,7 +41,7 @@ My research interests include speech and signal processing, speech deepfake dete
 
 
 # 💬 Talks and Academic Activities
-- *2026.09*, Presenter, "[Disentangling Speaker Traits for Deepfake Source Verification via Chebyshev Polynomial and Riemannian Metric Learning](https://www.isca-archive.org/interspeech_2026/xuan26_interspeech.pdf)", Interspeech 2026, International Convention Centre (ICC), Darling Harbour, Sydney, Australia.
+- *2026.09*, "[Disentangling Speaker Traits for Deepfake Source Verification via Chebyshev Polynomial and Riemannian Metric Learning](https://www.isca-archive.org/interspeech_2026/xuan26_interspeech.pdf)", Interspeech 2026, International Convention Centre (ICC), Darling Harbour, Sydney, Australia.
 - *2026.09*, Doctoral Student Panelist, Young Female Researchers in Speech Workshop (YFRSW), Interspeech 2026, The Law Building, University of New South Wales (UNSW), Sydney, Australia.
 - *2026.07*, "[TransLaw: A Large-Scale Dataset and Multi-Agent Benchmark Simulating Professional Translation of Hong Kong Case Law](https://arxiv.org/pdf/2507.00875)", ICML 2026, COEX Convention & Exhibition Center, Seoul, South Korea.
 - *2026.03*, Invited online talk, "[WaveSP-Net: Learnable Wavelet-Domain Sparse Prompt Tuning for Speech Deepfake Detection](https://arxiv.org/pdf/2510.05305)", SpeechHome, China. \| [\[slides\]](https://drive.google.com/file/d/1gvP_TKA0qwKUOzhU4T-1APFlgK24v9R6/view?usp=sharing)
