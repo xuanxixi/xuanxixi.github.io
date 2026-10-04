@@ -6,7 +6,7 @@
 # `jekyll serve`. If you change this file, please restart the server process.
 
 # Site Settings
-title                    : "Lorem ipsum"
+title                    : "Xi Xuan"
 description              : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. "
 repository               : "RayeRen/acad-homepage.github.io"
 google_scholar_stats_use_cdn : true
@@ -21,42 +21,19 @@ baidu_site_verification  :  # get baidu_site_verification from https://ziyuan.ba
 
 # Site Author
 author:
-  name             : "Lorem ipsum"
-  avatar           : "images/android-chrome-512x512.png"
-  bio              : "Lorem ipsum College"
-  location         : "Beijing, China"
+  name             : "Xi Xuan (宣茜)"
+  avatar           : "images/xuanxixi.jpeg"
+  bio              : "University of Eastern Finland"
+  location         : "Finland"
   employer         :
   pubmed           : 
-  googlescholar    : "https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID"
-  email            : "Lorem@ipsum.com"
-  researchgate     :  # e.g., "https://www.researchgate.net/profile/yourprofile"
-  uri              :
-  bitbucket        :
-  codepen          :
-  dribbble         :
-  flickr           :
-  facebook         :
-  foursquare       :
-  github           : # e.g., "github username"
-  google_plus      :
-  keybase          :
-  instagram        :
-  impactstory      : # e.g., "https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
-  lastfm           :
-  linkedin         : # e.g., "linkedin username"
-  dblp             : # e.g., "https://dblp.org/pid/xx/xxxx.html"
-  orcid            : # e.g., "https://orcid.org/xxxx"
-  pinterest        :
-  soundcloud       :
-  stackoverflow    : # http://stackoverflow.com/users/123456/username
-  steam            :
-  tumblr           :
-  twitter          : 
-  vine             :
-  weibo            :
-  xing             :
-  youtube          :
-  wikipedia        :
+  googlescholar    : "https://scholar.google.com.hk/citations?hl=en&user=RmvV9x0AAAAJ&view_op=list_works&sortby=pubdate"
+  email            : "xi.xuan@uef.fi"
+  researchgate     :  "https://www.researchgate.net/profile/Xi-Xuan?ev=hdr_xprf"
+  github           : "https://github.com/xuanxixi"
+  linkedin         : "https://www.linkedin.com/in/xi-xuan-21b20537a/"
+  orcid            : "https://orcid.org/0009-0009-5952-1015"
+  huggingface      : "https://huggingface.co/xxuan-speech"
 
 
 # Reading Files
