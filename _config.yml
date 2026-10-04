@@ -7,8 +7,8 @@
 
 # Site Settings
 title                    : "Xi Xuan"
-description              : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. "
-repository               : "RayeRen/acad-homepage.github.io"
+description              : ""
+repository               : "xuanxixi/xuanxixi.github.io"
 google_scholar_stats_use_cdn : true
 
 # google analytics
@@ -27,14 +27,13 @@ author:
   location         : "Finland"
   employer         :
   pubmed           : 
-  googlescholar    : "https://scholar.google.com.hk/citations?hl=en&user=RmvV9x0AAAAJ&view_op=list_works&sortby=pubdate"
+  googlescholar    : "https://scholar.google.com/citations?user=RmvV9x0AAAAJ&hl=en"
   email            : "xi.xuan@uef.fi"
-  researchgate     :  "https://www.researchgate.net/profile/Xi-Xuan?ev=hdr_xprf"
-  github           : "https://github.com/xuanxixi"
-  linkedin         : "https://www.linkedin.com/in/xi-xuan-21b20537a/"
+  researchgate     : "https://www.researchgate.net/profile/Xi-Xuan"
+  github           : "xuanxixi"
+  linkedin         : "xi-xuan-21b20537a"
   orcid            : "https://orcid.org/0009-0009-5952-1015"
   huggingface      : "https://huggingface.co/xxuan-speech"
-
 
 # Reading Files
 include:
