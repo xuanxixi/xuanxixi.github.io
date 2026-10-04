@@ -17,16 +17,26 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. Suspendisse condimentum, libero vel tempus mattis, risus risus vulputate libero, elementum fermentum mi neque vel nisl. Maecenas facilisis maximus dignissim. Curabitur mattis vulputate dui, tincidunt varius libero luctus eu. Mauris mauris nulla, scelerisque eget massa id, tincidunt congue felis. Sed convallis tempor ipsum rhoncus viverra. Pellentesque nulla orci, accumsan volutpat fringilla vitae, maximus sit amet tortor. Aliquam ultricies odio ut volutpat scelerisque. Donec nisl nisl, porttitor vitae pharetra quis, fringilla sed mi. Fusce pretium dolor ut aliquam consequat. Cras volutpat, tellus accumsan mattis molestie, nisl lacus tempus massa, nec malesuada tortor leo vel quam. Aliquam vel ex consectetur, vehicula leo nec, efficitur eros. Donec convallis non urna quis feugiat.
+Hi 👋, I am a Doctoral Researcher at the University of Eastern Finland (UEF), supervised by [Prof. Tomi Kinnunen](https://cs.joensuu.fi/pages/tkinnu/webpage/). I will soon be a visiting scholar at the Statistical Speech Technology Group at the University of Illinois Urbana-Champaign (UIUC), working under the supervision of [Prof. Mark Hasegawa-Johnson](https://speechtechnology.web.illinois.edu/mark-a-hasegawa-johnson/).
 
-My research interest includes neural machine translation and computer vision. I have published more than 100 papers at the top international AI conferences with total <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'>google scholar citations <strong><span id='total_cit'>260000+</span></strong></a> (You can also use google scholar badge <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'><img src="https://img.shields.io/endpoint?url={{ url | url_encode }}&logo=Google%20Scholar&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>).
+My research interests include speech and signal processing, speech deepfake detection, source tracing, speaker recognition, and audio forensics.
 
+# Experience
+- *2027 - *, Researcher, Beckman Institute, University of Illinois Urbana-Champaign, Urbana, IL, USA.
+- *2024 - 2027*, PhD Student, School of Computing, University of Eastern Finland, Joensuu, Finland.
+- *2023 - 2025*, P/T Senior Research Assistant, Department of Linguistics and Translation, City University of Hong Kong, Hong Kong SAR, China.
 
 # 🔥 News
-- *2022.02*: &nbsp;🎉🎉 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
-- *2022.02*: &nbsp;🎉🎉 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
+- *2026.09*: &nbsp;🎉🎉 One paper has been accepted to NeurIPS 2026!
+- *2026.06*: &nbsp;🎉🎉 One paper has been accepted to ICML-AI4Law 2026!
+- *2026.06*: &nbsp;🎉🎉 One paper has been accepted to Interspeech 2026!
+- *2026.01*: &nbsp;🎉🎉 Four paper has been accepted to ICASSP 2026!
+- *2025.08*: &nbsp;🎉🎉 One paper has been accepted to ASRU 2025!
+- *2025.07*: &nbsp;🎉🎉 One paper has been accepted to Interspeech 2025 - Security and Privacy in Speech Communication (Oral)!
+- *2024.06*: &nbsp;🎉🎉 One paper has been accepted to Interspeech 2024 - Young Female* Researchers in Speech Workshop (YFRSW 2024)!
+- *2023.02*: &nbsp;🎉🎉 One journal paper has been accepted to 《Computer Engineering and Applications》/《计算机工程与应用》!
 
-# 📝 Publications 
+# 📝 Selected Publications
 
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">CVPR 2016</div><img src='images/500x300.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
