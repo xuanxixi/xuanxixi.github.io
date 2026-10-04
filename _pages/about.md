@@ -42,7 +42,7 @@ My research interests include speech and signal processing, speech deepfake dete
 
 # 💬 Talks and Academic Activities
 - *2026.09*, Doctoral Student Panelist, Young Female Researchers in Speech Workshop (YFRSW), Interspeech 2026, The Law Building, University of New South Wales (UNSW), Sydney, Australia.
-- *2026.03*, Invited online talk, "[WaveSP-Net: Learnable Wavelet-Domain Sparse Prompt Tuning for Speech Deepfake Detection](https://arxiv.org/pdf/2510.05305)", SpeechHome, China. \| [\[slides\]](https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-%5Bmodule%5D-goto)
+- *2026.03*, Invited online talk, "[WaveSP-Net: Learnable Wavelet-Domain Sparse Prompt Tuning for Speech Deepfake Detection](https://arxiv.org/pdf/2510.05305)", SpeechHome, China. \| [\[slides\]](https://drive.google.com/file/d/1gvP_TKA0qwKUOzhU4T-1APFlgK24v9R6/view?usp=sharing)
 - *2025.08*, "[Multilingual Source Tracing of Speech Deepfakes: A First Benchmark](https://arxiv.org/abs/2508.04143)", Symposium on Security and Privacy in Speech Communication (SPSC), Interspeech 2025, Rotterdam, The Netherlands. \| [\[slides\]](https://drive.google.com/file/d/1d5QUL5CgBHhJUY1r609r1vVLaiL13aOJ/view)
 - *2024.08*, "Efficient Real-Time Multi-Scenario Speaker Recognition with Mel-Spectrogram-Based Hybrid TDNN for Edge System", Young Female Researchers in Speech Workshop (YFRSW), Interspeech 2024, Kos Island, Greece.
 - *2023.08*, Conference on "Hong Kong Bilingual Legal System: Retrospect and Prospect" (香港雙語法制：回顧與前瞻), Faculty of Law, The University of Hong Kong, Hong Kong SAR, China.
