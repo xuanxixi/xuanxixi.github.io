@@ -40,9 +40,14 @@ My research interests include speech and signal processing, speech deepfake dete
 - *2023.02*: &nbsp;🎉🎉 One journal paper has been accepted to 《Computer Engineering and Applications》/《计算机工程与应用》!
 
 
-# 💬 Invited Talks and Panels
+# 💬 Talks and Academic Activities
 - *2026.09*, Doctoral Student Panelist, Young Female Researchers in Speech Workshop (YFRSW), Interspeech 2026, The Law Building, University of New South Wales (UNSW), Sydney, Australia.
 - *2026.03*, Invited online talk, "WaveSP-Net: Learnable Wavelet-Domain Sparse Prompt Tuning for Speech Deepfake Detection", SpeechHome, China.
+- *2025.08*, "[Multilingual Source Tracing of Speech Deepfakes: A First Benchmark](https://arxiv.org/abs/2508.04143)", Symposium on Security and Privacy in Speech Communication (SPSC), Interspeech 2025, Rotterdam, The Netherlands. \| [\[slides\]](https://drive.google.com/file/d/1d5QUL5CgBHhJUY1r609r1vVLaiL13aOJ/view)
+- *2024.08*, "Efficient Real-Time Multi-Scenario Speaker Recognition with Mel-Spectrogram-Based Hybrid TDNN for Edge System", Young Female Researchers in Speech Workshop (YFRSW), Interspeech 2024, Kos Island, Greece.
+- *2023.08*, Conference on "Hong Kong Bilingual Legal System: Retrospect and Prospect" (香港雙語法制：回顧與前瞻), Faculty of Law, The University of Hong Kong, Hong Kong SAR, China.
+- *2023.06*, CogSci 2023 Hong Kong Meetups & Workshop, Esther Lee Building, The Chinese University of Hong Kong (CUHK), Shatin, Hong Kong SAR, China.
+- *2021.10*, Summit on Music Intelligence (世界音乐人工智能大会), Central Conservatory of Music (中央音樂學院), Beijing, China.
 
 # 🎖 Honors and Awards
 - *2026.05*: IEEE Signal Processing Society Travel Grant, ICASSP 2026.
