@@ -17,14 +17,17 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-Hi 👋, I am a Doctoral Researcher at the University of Eastern Finland (UEF), supervised by [Prof. Tomi Kinnunen](https://cs.joensuu.fi/pages/tkinnu/webpage/). I will soon be a visiting scholar at the Statistical Speech Technology Group at the University of Illinois Urbana-Champaign (UIUC), working under the supervision of [Prof. Mark Hasegawa-Johnson](https://speechtechnology.web.illinois.edu/mark-a-hasegawa-johnson/).
+Hi 👋, I am a Doctoral Researcher at the University of Eastern Finland (UEF), supervised by [Prof. Tomi Kinnunen](https://cs.joensuu.fi/pages/tkinnu/webpage/). I will be a visiting scholar at the Statistical Speech Technology Group at the University of Illinois Urbana-Champaign (UIUC), working under the supervision of [Prof. Mark Hasegawa-Johnson](https://ece.illinois.edu/about/directory/faculty/jhasegaw).
 
 My research interests include speech and signal processing, speech deepfake detection, source tracing, speaker recognition, and audio forensics.
 
-# Experience
-- *2027 - *, Researcher, Beckman Institute, University of Illinois Urbana-Champaign, Urbana, IL, USA.
-- *2024 - 2027*, PhD Student, School of Computing, University of Eastern Finland, Joensuu, Finland.
+# 🏛️ Research Experience
+- 2027, Visiting Scholar, Beckman Institute, University of Illinois Urbana-Champaign, Urbana, IL, USA.
+- *2024.08 - 2027.08*, PhD Student, School of Computing, University of Eastern Finland, Joensuu, Finland.
 - *2023 - 2025*, P/T Senior Research Assistant, Department of Linguistics and Translation, City University of Hong Kong, Hong Kong SAR, China.
+
+# 📚 Teaching
+- *2024.08 - 2024.12*, Teaching Assistant, Artificial Intelligence, School of Computing, University of Eastern Finland.
 
 # 🔥 News
 - *2026.09*: &nbsp;🎉🎉 One paper has been accepted to NeurIPS 2026!
@@ -38,7 +41,7 @@ My research interests include speech and signal processing, speech deepfake dete
 
 
 # 💬 Invited Talks and Panels
-- *2026.09*, Invited panelist, Doctoral Student Panel, Young Female Researchers in Speech Workshop (YFRSW), Interspeech 2026, Sydney, Australia.
+- *2026.09*, Doctoral Student Panelist, Young Female Researchers in Speech Workshop (YFRSW), Interspeech 2026, The Law Building, University of New South Wales (UNSW), Sydney, Australia.
 - *2026.03*, Invited online talk, "WaveSP-Net: Learnable Wavelet-Domain Sparse Prompt Tuning for Speech Deepfake Detection", SpeechHome, China.
 
 # 🎖 Honors and Awards
