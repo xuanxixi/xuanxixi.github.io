@@ -50,6 +50,7 @@ My research interests include speech and signal processing, speech deepfake dete
 - *2025.11*, AI-DOC Annual Research Seminar 2025, Aalto University, Espoo, Finland.
 - *2025.08*, "[Multilingual Source Tracing of Speech Deepfakes: A First Benchmark](https://www.isca-archive.org/spsc_2025/xuan25_spsc.pdf)", Symposium on Security and Privacy in Speech Communication (SPSC), Interspeech 2025, Rotterdam, The Netherlands. \| [\[slides\]](https://drive.google.com/file/d/1d5QUL5CgBHhJUY1r609r1vVLaiL13aOJ/view)
 - *2024.08*, "Efficient Real-Time Multi-Scenario Speaker Recognition with Mel-Spectrogram-Based Hybrid TDNN for Edge System", Young Female Researchers in Speech Workshop (YFRSW), Interspeech 2024, Kos Island, Greece. \| [\[abstract book\]](https://drive.google.com/file/d/1FnsazIRoI5Xdb-7nuJvm_1cWH6lS5Ke7/view)
+- *2024.03*, The 4th Speaker Recognition Workshop (第四届声纹识别研讨会), Tsinghua University, Beijing, China.
 - *2023.08*, "[Solving the Unsolvable: Translating Case Law in Hong Kong](https://arxiv.org/pdf/2501.09444)", Conference on "Hong Kong Bilingual Legal System: Retrospect and Prospect" (香港雙語法制：回顧與前瞻), Faculty of Law, The University of Hong Kong, Hong Kong SAR, China.
 - *2023.06*, CogSci 2023 Hong Kong Meetups & Workshop, Esther Lee Building, The Chinese University of Hong Kong (CUHK), Shatin, Hong Kong SAR, China.
 - *2021.10*, Summit on Music Intelligence (世界音乐人工智能大会), Central Conservatory of Music (中央音樂學院), Beijing, China.
