@@ -46,9 +46,11 @@ My research interests include speech and signal processing, speech deepfake dete
 - *2026.07*, "[TransLaw: A Large-Scale Dataset and Multi-Agent Benchmark Simulating Professional Translation of Hong Kong Case Law](https://arxiv.org/pdf/2507.00875)", ICML 2026, COEX Convention & Exhibition Center, Seoul, South Korea.
 - *2026.05*, "[WaveSP-Net: Learnable Wavelet-Domain Sparse Prompt Tuning for Speech Deepfake Detection](https://arxiv.org/pdf/2510.05305)", ICASSP 2026, Barcelona, Spain. 
 - *2026.03*, Invited online talk, ICASSP 2026 Pre-conference Talk, SpeechHome, China. \| [\[slides\]](https://drive.google.com/file/d/1gvP_TKA0qwKUOzhU4T-1APFlgK24v9R6/view?usp=sharing)
-- *2025.08*, "[Multilingual Source Tracing of Speech Deepfakes: A First Benchmark](https://arxiv.org/abs/2508.04143)", Symposium on Security and Privacy in Speech Communication (SPSC), Interspeech 2025, Rotterdam, The Netherlands. \| [\[slides\]](https://drive.google.com/file/d/1d5QUL5CgBHhJUY1r609r1vVLaiL13aOJ/view)
-- *2024.08*, "Efficient Real-Time Multi-Scenario Speaker Recognition with Mel-Spectrogram-Based Hybrid TDNN for Edge System", Young Female Researchers in Speech Workshop (YFRSW), Interspeech 2024, Kos Island, Greece.
-- *2023.08*, Conference on "Hong Kong Bilingual Legal System: Retrospect and Prospect" (香港雙語法制：回顧與前瞻), Faculty of Law, The University of Hong Kong, Hong Kong SAR, China.
+- *2025.12*, "[Fake-Mamba: Real-Time Speech Deepfake Detection Using Bidirectional Mamba as Self-Attention's Alternative](https://arxiv.org/pdf/2508.09294)", IEEE ASRU 2025, Honolulu, Hawaii, USA.
+- *2025.11*, AI-DOC Annual Research Seminar 2025, Aalto University, Espoo, Finland.
+- *2025.08*, "[Multilingual Source Tracing of Speech Deepfakes: A First Benchmark](https://www.isca-archive.org/spsc_2025/xuan25_spsc.pdf)", Symposium on Security and Privacy in Speech Communication (SPSC), Interspeech 2025, Rotterdam, The Netherlands. \| [\[slides\]](https://drive.google.com/file/d/1d5QUL5CgBHhJUY1r609r1vVLaiL13aOJ/view)
+- *2024.08*, "Efficient Real-Time Multi-Scenario Speaker Recognition with Mel-Spectrogram-Based Hybrid TDNN for Edge System", Young Female Researchers in Speech Workshop (YFRSW), Interspeech 2024, Kos Island, Greece. \| [\[abstract book\]](https://drive.google.com/file/d/1FnsazIRoI5Xdb-7nuJvm_1cWH6lS5Ke7/view)
+- *2023.08*, "[Solving the Unsolvable: Translating Case Law in Hong Kong](https://arxiv.org/pdf/2501.09444)", Conference on "Hong Kong Bilingual Legal System: Retrospect and Prospect" (香港雙語法制：回顧與前瞻), Faculty of Law, The University of Hong Kong, Hong Kong SAR, China.
 - *2023.06*, CogSci 2023 Hong Kong Meetups & Workshop, Esther Lee Building, The Chinese University of Hong Kong (CUHK), Shatin, Hong Kong SAR, China.
 - *2021.10*, Summit on Music Intelligence (世界音乐人工智能大会), Central Conservatory of Music (中央音樂學院), Beijing, China.
 
