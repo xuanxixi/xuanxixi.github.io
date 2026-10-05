@@ -55,6 +55,7 @@ My research interests include speech and signal processing, speech deepfake dete
 - *2023.08*, "[Solving the Unsolvable: Translating Case Law in Hong Kong](https://arxiv.org/pdf/2501.09444)", Conference on "Hong Kong Bilingual Legal System: Retrospect and Prospect" (香港雙語法制：回顧與前瞻), Faculty of Law, The University of Hong Kong, Hong Kong SAR, China.
 - *2023.06*, CogSci 2023 Hong Kong Meetups & Workshop, Esther Lee Building, The Chinese University of Hong Kong (CUHK), Shatin, Hong Kong SAR, China.
 - *2021.10*, Summit on Music Intelligence (世界音乐人工智能大会), Central Conservatory of Music (中央音樂學院), Beijing, China.
+- *2021.09*, China Fashion Week (中国国际时装周), 798 Art District, Beijing, China.
 
 # 🎖 Honors and Awards
 - *2026.05*: IEEE Signal Processing Society Travel Grant, ICASSP 2026.
