@@ -27,7 +27,8 @@ My research interests include speech and signal processing, speech deepfake dete
 - *2023 - 2025*, P/T Senior Research Assistant, Department of Linguistics and Translation, City University of Hong Kong, Hong Kong SAR, China.
 
 # 📚 Teaching
-- *2024.08 - 2024.12*, Teaching Assistant, Artificial Intelligence, School of Computing, University of Eastern Finland.
+At UEF, I worked as a Teaching Assistant for the following master's courses:
+- 3621688: Artificial Intelligence, Autumn Semester 2024
 
 # 🔥 News
 - *2026.09*: &nbsp;🎉🎉 One paper has been accepted to NeurIPS 2026!
