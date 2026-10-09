@@ -17,7 +17,7 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-Hi 👋, I am a Doctoral Researcher at the University of Eastern Finland (UEF), supervised by [Prof. Tomi Kinnunen](https://cs.joensuu.fi/pages/tkinnu/webpage/). I will be a visiting scholar at the Statistical Speech Technology Group at the University of Illinois Urbana-Champaign (UIUC), working under the supervision of [Prof. Mark Hasegawa-Johnson](https://ece.illinois.edu/about/directory/faculty/jhasegaw).
+Hi 👋, I am a Doctoral Researcher at the University of Eastern Finland (UEF), supervised by [Prof. Tomi Kinnunen](https://scholar.google.com.hk/citations?hl=zh-CN&user=e3SPjpoAAAAJ&view_op=list_works). I will be a visiting scholar at the Statistical Speech Technology Group at the University of Illinois Urbana-Champaign (UIUC), working under the supervision of [Prof. Mark Hasegawa-Johnson](https://ece.illinois.edu/about/directory/faculty/jhasegaw).
 
 My research interests include speech and signal processing, speech deepfake detection, source tracing, speaker recognition, and audio forensics.
 
