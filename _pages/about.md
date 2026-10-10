@@ -41,7 +41,7 @@ At UEF, I worked as a Teaching Assistant for the following master's courses:
 - *2023.02*: &nbsp;🎉🎉 One journal paper has been accepted to 《Computer Engineering and Applications》/《计算机工程与应用》!
 
 
-# 💬 Talks and Academic Activities
+# 💬 Academic Activities
 - *2026.11*, AI-DOC 2nd Annual Research Seminar 2026, University of Turku, Turku, Finland.
 - *2026.10*, "[Disentangling Speaker Traits for Deepfake Source Verification via Chebyshev Polynomial and Riemannian Metric Learning](https://www.isca-archive.org/interspeech_2026/xuan26_interspeech.pdf)", Interspeech 2026, International Convention Centre (ICC), Darling Harbour, Sydney, Australia.
 - *2026.09*, Doctoral Student Panelist, Young Female Researchers in Speech Workshop (YFRSW), Interspeech 2026, The Law Building, University of New South Wales (UNSW), Sydney, Australia.
