@@ -59,5 +59,6 @@ At UEF, I worked as a Teaching Assistant for the following master's courses:
 - *2021.09*, China Fashion Week (中国国际时装周), 798 Art District, Beijing, China.
 
 # 🎖 Honors and Awards
+- *2026.10*: NeurIPS 2026 Top Reviewer (Datasets & Benchmarks Track).
 - *2026.05*: IEEE Signal Processing Society Travel Grant, ICASSP 2026.
 - *2016*: China National Scholarship, Ministry of Education of China (top 1%, the highest scholarship for students in China).
