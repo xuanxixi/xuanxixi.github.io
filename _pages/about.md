@@ -31,10 +31,12 @@ At UEF, I worked as a Teaching Assistant for the following master's courses:
 - 3621688: Artificial Intelligence, Autumn Semester 2024
 
 # 🔥 News
+- *2026.11*: &nbsp;🎉🎉 One journal paper has been accepted to Pattern Recognition!
 - *2026.09*: &nbsp;🎉🎉 One paper has been accepted to NeurIPS 2026!
 - *2026.06*: &nbsp;🎉🎉 One paper has been accepted to ICML-AI4Law 2026!
 - *2026.06*: &nbsp;🎉🎉 One paper has been accepted to Interspeech 2026!
 - *2026.01*: &nbsp;🎉🎉 Four paper has been accepted to ICASSP 2026!
+- *2026.01*: &nbsp;🎉🎉 One journal paper has been accepted to Neurocomputing!
 - *2025.08*: &nbsp;🎉🎉 One paper has been accepted to ASRU 2025!
 - *2025.07*: &nbsp;🎉🎉 One paper has been accepted to Interspeech 2025 - Security and Privacy in Speech Communication (Oral)!
 - *2024.06*: &nbsp;🎉🎉 One paper has been accepted to Interspeech 2024 - Young Female* Researchers in Speech Workshop (YFRSW 2024)!
